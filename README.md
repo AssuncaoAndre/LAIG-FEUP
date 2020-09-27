@@ -1,10 +1,10 @@
 # LAIG 2020/2021
 
-## Group T0xG0y
+## Group T7G09
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201801010 | ...                |
-| Jane Doe         | 201801011 | ...                |
+| Luís Assunção    | 201806140 |up201806140@fe.up.pt|
+| João Rocha       | 201806261 |up201806261@fe.up.pt|
 
 ----
 
