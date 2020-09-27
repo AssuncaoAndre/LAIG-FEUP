@@ -1,6 +1,6 @@
 # LAIG 2020/2021
 
-## Group T7G09
+## Group T07G09
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
 | Luís Assunção    | 201806140 |up201806140@fe.up.pt|
