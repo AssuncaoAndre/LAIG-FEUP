@@ -49,7 +49,7 @@
        <ambient r="0" g="0" b="0" a="1.0" />        <!-- ambient component -->
         <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        <!-- diffuse component -->
         <specular r="1.0" g="1.0" b="1.0" a="1.0"  />       <!-- specular component -->
-   </light>  
+   </light>
 </lights>
 
 
@@ -106,19 +106,13 @@
         <texture id="erva_texture">         <!-- declared texture superimposes the texture received from parent node
                                       id="null" maintains texture from parent node
                                       id="clear" clears texture declaration received from parent node -->
-        
+
 
             <amplification afs="1.0" aft="1.0" />            <!-- for primitives = dx/afs, dy/aft -->
 
         </texture>
 
         <!-- geom. transf. are optional and may be repeated, in any order, as necessary: -->
-
-        <transformations>
-            <translation x="ff" y="ff" z="ff" />
-            <rotation axis="cc" angle="ff" />
-            <scale sx="ff" sy="ff" sz="ff" />
-        </transformations>
 
        <!-- declaring descendants, at least one node or one leaf must be present
             descendants may be mixed, nodes and leafs -->
@@ -128,36 +122,18 @@
            <noderef id="cadeira" />   <!-- "ss" is the identifier of a node or of leaf; -->
                                  <!-- may be repeated as necessary. It can refer an -->
                                  <!-- identifier of another node, before or later defined in the file. -->
-         
+
          	 <noderef id="toalha" />
-         
+
          	 <noderef id="piscina" />
-         
+
          	 <noderef id="chuveiro" />
-
-           <!-- next lines define nodes of type leaf; may be repeated, in any order, as necessary -->
-           <leaf type="rectangle" x1="ff" y1="ff" x2="ff" y2="ff" />
-                  <!-- 2D coordinates on the XY plane for left-top and right-bottom vertices. -->
-
-           <leaf type="cylinder" height="ff" topRadius="ff" bottomRadius="ff" stacks="ii" slices="ii"/>
-                  <!-- height, top radius, bottom radius, sections along height (stacks), parts per section (slices); main axis is aligned with ZZ; must have top and bottom caps -->
-
-           <leaf type="sphere" radius="ff" slices="ii" stacks="ii"/>
-                  <!-- radius, sections along radius, parts per section -->
-
-           <leaf type="triangle" x1="ff" y1="ff" x2="ff" y2="ff" x3="ff" y3="ff" />
-                  <!-- x y coordinates of each vertex; triangle on plane XY -->
-
-
-            <leaf type="torus" inner="ff" outer="ff" slices="ii" loops="ii" />
-
-           <!-- inner and outer radius, sections around the inner radius, sections around the outer radius  -->
 
         </descendants>
 
     </node>
 
-  
+
   	  <node id="toalha">
       <material id="not_shiny_material" />
       <texture id="toalha_texture">
@@ -171,19 +147,19 @@
         <leaf type="rectangle" x1="0" y1="0" x2="2.0" y2="1.0" />
       </descendants>
   	</node>
-  
-  
+
+
      <!--********
      ************
      ************
  		    CADEIRA
      *************
 	   **********-->
-    <node id="cadeira">       
-        <material id="not_shiny_material" />      
+    <node id="cadeira">
+        <material id="not_shiny_material" />
 
-        <texture id="madeira_texture">         
-            <amplification afs="1.0" aft="1.0" />    
+        <texture id="madeira_texture">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
             <translation x="1.0" y="0" z="1.0" />
@@ -191,16 +167,16 @@
         </transformations>
        	<descendants>
            <noderef id="pernas"/>
-           <noderef id="assento"/> 
+           <noderef id="assento"/>
            <noderef id="encosto"/>
         </descendants>
     </node>
 
 
-    <node id="assento">       
-        <material id="null" />      
-        <texture id="null">         
-            <amplification afs="1.0" aft="1.0" />    
+    <node id="assento">
+        <material id="null" />
+        <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
       	  <transformations>
             <translation x="0" y="1" z="1" />
@@ -212,10 +188,10 @@
     </node>
 
 
-    <node id="encosto">       
-        <material id="null" />      
-        <texture id="null">         
-            <amplification afs="1.0" aft="1.0" />    
+    <node id="encosto">
+        <material id="null" />
+        <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
       	<transformations>
             <translation x="0" y="1.0" z="0" />
@@ -225,10 +201,10 @@
         </descendants>
     </node>
 
-    <node id="pernas">       
-        <material id="null" />      
-        <texture id="null">         
-            <amplification afs="1.0" aft="1.0" />    
+    <node id="pernas">
+        <material id="null" />
+        <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
        	<descendants>
            <noderef id="perna1"/>
@@ -237,11 +213,11 @@
            <noderef id="perna4"/>
         </descendants>
     </node>
-  
-      <node id="perna1">       
-        <material id="null" />      
-        <texture id="null">         
-            <amplification afs="1.0" aft="1.0" />    
+
+      <node id="perna1">
+        <material id="null" />
+        <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
           <transformations>
             <translation x="0.2" y="0" z="0.2" />
@@ -252,10 +228,10 @@
         </descendants>
     </node>
 
-    <node id="perna2">       
-        <material id="null" />      
-        <texture id="null">         
-            <amplification afs="1.0" aft="1.0" />    
+    <node id="perna2">
+        <material id="null" />
+        <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
           <transformations>
             <translation x="0.2" y="-5" z="0.8" />
@@ -265,11 +241,11 @@
            <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6"/>
         </descendants>
     </node>
-  
-    <node id="perna3">       
-        <material id="null" />      
-        <texture id="null">         
-            <amplification afs="1.0" aft="1.0" />    
+
+    <node id="perna3">
+        <material id="null" />
+        <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
           <transformations>
             <translation x="0.8" y="0" z="0.8" />
@@ -279,11 +255,11 @@
            <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6"/>
         </descendants>
     </node>
-  
-    <node id="perna4">       
-        <material id="null" />      
-        <texture id="null">         
-            <amplification afs="1.0" aft="1.0" />    
+
+    <node id="perna4">
+        <material id="null" />
+        <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
             <translation x="0.8" y="0" z="0.2" />
@@ -295,14 +271,14 @@
     </node>
 
 
-  
+
      <!--********
      ************
      ************
  		    PISCINA
      *************
 	   **********-->
-      
+
     <node id="piscina">
       <material id="shiny_material" />
       <texture id="piscina_texture">
@@ -311,16 +287,16 @@
       <transformations>
         <rotation axis="xx" angle="-90.0" />
         <translation x="2.5" y="0" z="2.5" />
-        
+
       </transformations>
       <descendants>
-        <leaf type="rectangle" x1="0.0" y1="0.0" x2="5.0" y2="5.0" /> 
+        <leaf type="rectangle" x1="0.0" y1="0.0" x2="5.0" y2="5.0" />
         <noderef id="boia"/>
         <noderef id="bola"/>
         <noderef id="prancha"/>
       </descendants>
   	</node>
-  
+
   	<node id="bola">
       <material id="not_shiny_material" />
       <texture id="bola_texture">
@@ -333,7 +309,7 @@
         <leaf type="sphere" radius="1" slices="6" stacks="6"/>
       </descendants>
   	</node>
-  
+
   	<node id="boia">
       <material id="shiny_material" />
       <texture id="boia_texture">
@@ -346,7 +322,7 @@
         <leaf type="torus" inner="0.5" outer="1" slices="6" loops="6" />
       </descendants>
   	</node>
-  
+
     <node id="prancha">
       <material id="not_shiny_material" />
       <texture id="prancha_texture">
@@ -357,7 +333,7 @@
       </transformations>
       <descendants>
         <noderef id="prancha_suporte" />
-        
+
       </descendants>
   	</node>
 
@@ -373,12 +349,12 @@
         <noderef id="suporte_generico"/>
       </descendants>
     </node>
-  
-  
+
+
      <!--********
      ************
      ************
- 		SUPORTE GENÉRICO 
+ 		SUPORTE GENÉRICO
      *************
 	   **********-->
 
@@ -391,7 +367,7 @@
         <leaf type="cylinder" height="0.3" topRadius="0.3" bottomRadius="0.3" stacks="1" slices="4"/>
       </descendants>
   	</node>
-	
+
 
     <!--****************
     ********************
@@ -535,5 +511,5 @@
       <leaf type="cylinder" height="3" topRadius="0.5" bottomRadius="0.5" stacks="1" slices="8"/>
     </descendants>
   </node>
-    
+
 </lsf>
