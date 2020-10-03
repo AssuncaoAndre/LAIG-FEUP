@@ -457,10 +457,14 @@ class MySceneGraph {
 
             this.onXMLMinorError("To do: Parse nodes.");
             // Transformations
+/*                 this.log(i);
+                this.log(transformationsIndex);
+                this.log(materialIndex);
+                this.log(textureIndex);
+                this.log(descendantsIndex); */
+            // Material (not now)
 
-            // Material
-
-            // Texture
+            // Texture (not now)
 
             // Descendants
         }
