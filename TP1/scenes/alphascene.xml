@@ -141,7 +141,7 @@
       </texture>
       <transformations>
         <translation x="1.0" y="0" z="4.0" />
-        <rotation axis="xx" angle="-90" />
+        <rotation axis="x" angle="-90" />
       </transformations>
       <descendants>
         <leaf type="rectangle" x1="0" y1="0" x2="2.0" y2="1.0" />
@@ -163,7 +163,7 @@
         </texture>
         <transformations>
             <translation x="1.0" y="0" z="1.0" />
-            <rotation axis="xx" angle="-90" />
+            <rotation axis="x" angle="-90" />
         </transformations>
        	<descendants>
            <noderef id="pernas"/>
@@ -180,7 +180,7 @@
         </texture>
       	  <transformations>
             <translation x="0" y="1" z="1" />
-            <rotation axis="xx" angle="-90" />
+            <rotation axis="x" angle="-90" />
         </transformations>
        	<descendants>
             <leaf type="rectangle" x1="0" y1="0" x2="1.0" y2="1.0" />
@@ -221,7 +221,7 @@
         </texture>
           <transformations>
             <translation x="0.2" y="0" z="0.2" />
-            <rotation axis="xx" angle="90" />
+            <rotation axis="x" angle="90" />
         </transformations>
        	<descendants>
            <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6"/>
@@ -235,7 +235,7 @@
         </texture>
           <transformations>
             <translation x="0.2" y="-5" z="0.8" />
-            <rotation axis="xx" angle="90" />
+            <rotation axis="x" angle="90" />
         </transformations>
        	<descendants>
            <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6"/>
@@ -249,7 +249,7 @@
         </texture>
           <transformations>
             <translation x="0.8" y="0" z="0.8" />
-            <rotation axis="xx" angle="90" />
+            <rotation axis="x" angle="90" />
         </transformations>
        	<descendants>
            <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6"/>
@@ -263,7 +263,7 @@
         </texture>
         <transformations>
             <translation x="0.8" y="0" z="0.2" />
-          	<rotation axis="xx" angle="-90.0" />
+          	<rotation axis="x" angle="-90.0" />
         </transformations>
        	<descendants>
            <leaf type="cylinder" height="1" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6"/>
@@ -285,7 +285,7 @@
         <amplificaton afs="1.0" aft="1.0" />
       </texture>
       <transformations>
-        <rotation axis="xx" angle="-90.0" />
+        <rotation axis="x" angle="-90.0" />
         <translation x="2.5" y="0" z="2.5" />
 
       </transformations>
@@ -343,7 +343,7 @@
         <amplification afs="1.0" aft="1.0" />
       </texture>
       <transformations>
-        <rotation axis="xx" angle="-90.0" />
+        <rotation axis="x" angle="-90.0" />
       </transformations>
       <descendants>
         <noderef id="suporte_generico"/>
@@ -405,7 +405,7 @@
         <amplificaton afs="1.0" aft="1.0" />
       </texture>
       <transformations>
-        <rotation axis="xx" angle="-90.0" />
+        <rotation axis="x" angle="-90.0" />
         <translation x="0.0" y="0.0" z="10.0" />
       </transformations>
       <descendants>
@@ -429,7 +429,7 @@
         <amplification afs="1.0" aft="1.0" />
       </texture>
       <transformations>
-        <rotation axis="yy" angle="-90.0"/>
+        <rotation axis="y" angle="-90.0"/>
         <translation x="10.0" y="0.0" z="0.0" />
       </transformations>
       <descendants>
@@ -443,7 +443,7 @@
         <amplification afs="1.0" aft="1.0" />
       </texture>
       <transformations>
-        <rotation axis="yy" angle="90.0" />
+        <rotation axis="y" angle="90.0" />
         <translation x="0.0" y="0.0" z="10.0" />
       </transformations>
       <descendants>
@@ -457,7 +457,7 @@
         <amplification afs="1.0" aft="1.0" />
       </texture>
       <transformations>
-        <rotation axis="yy" angle="180.0" />
+        <rotation axis="y" angle="180.0" />
         <translation x="10.0" y="0.0" z="10.0" />
       </transformations>
       <descendants>
@@ -492,7 +492,7 @@
     </texture>
     <transformations>
       <translation x="0.0" y="1.5" z="0.0" />
-      <rotation axis="xx" angle="90" />
+      <rotation axis="x" angle="90" />
     </transformations>
     <descendants>
       <noderef id="suporte_generico" />
@@ -505,7 +505,7 @@
       <amplification afs="1.0" aft="1.0" />
     </texture>
     <transformations>
-      <rotation axis="xx" angle="90" />
+      <rotation axis="x" angle="90" />
     </transformations>
     <descendants>
       <leaf type="cylinder" height="3" topRadius="0.5" bottomRadius="0.5" stacks="1" slices="8"/>
