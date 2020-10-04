@@ -469,34 +469,37 @@ class MySceneGraph {
             for(var j=0;j<transformationsNode.length;j++) 
             {
                 this.log(transformationsNode[j].nodeName);
-                if(transformationsNode[j].nodeName=="translation") 
+                 if(transformationsNode[j].nodeName=="translation") 
                 {
-                    var x = this.XMLreader.getFloat(transformationsNode[j].children[0],'x');
-                    var y = this.XMLreader.getFloat(transformationsNode[j],'y');
-                    var z = this.XMLreader.getFloat(transformationsNode[j],'z');
+                    this.log(transformationsNode[j].attributes[0]);
+                    var x = this.XMLreader.getFloat(transformationsNode[j].attributes,'x');
+                    var y = this.XMLreader.getFloat(transformationsNode[j].attributes,'y');
+                    var z = this.XMLreader.getFloat(transformationsNode[j].attributes,'z');
                 
                 if(x==null||y==null||z==null)
-                    return "No values for translation";
+                this.onXMLError("No values for translation");
                 else if(isNaN(x)||isNaN(y)||isNaN(z))
-                    return "Non numeric values for translation";
-                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]);
-                
-                }
+                this.onXMLError ("Non numeric values for translation");
+                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]); 
+            
+                } 
 
-                if(transformationsNode[j].nodeName=="translation") 
+                if(transformationsNode[j].nodeName=="rotation") 
                 {
-                    var x = this.XMLreader.getFloat(transformationsNode[j],'x');
-                    var y = this.XMLreader.getFloat(transformationsNode[j],'y');
-                    var z = this.XMLreader.getFloat(transformationsNode[j],'z');
-                
-                if(x==null||y==null||z==null)
-                    return "No values for translation";
-                else if(isNaN(x)||isNaN(y)||isNaN(z))
-                    return "Non numeric values for translation";
+                   
+                    var axis = this.XMLreader.getString(transformationsNode[j],'axis');
+                    var angle = this.XMLreader.getFloat(transformationsNode[j],'angle');
 
-                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]);
                 
-                }
+                if(angle==null||axis==null)
+                    this.onXMLError( "No values for rotation");
+                else if(isNaN(angle))
+                this.onXMLError( "Non numeric values for rotation");
+                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]); 
+            
+                } 
+
+                
             }
             // Material (not now)
 
