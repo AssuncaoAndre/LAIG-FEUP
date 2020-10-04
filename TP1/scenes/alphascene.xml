@@ -63,6 +63,8 @@
       <texture id="toalha_texture" path="./scenes/images/toalha_texture.jpg" />
       <texture id="paredes_texture" path="./scenes/images/bank.jpg" />
       <texture id="metal_texture" path="./scenes/images/metal_texture.png" />
+      <texture id="bola_texture" path="./scenes/images/bola_texture.jpg"/>
+      
     </textures>
 
 
@@ -290,7 +292,7 @@
 
       <node id="piscina">
         <material id="shiny_material" />
-        <texture id="piscina_texture">
+        <texture id="water_texture">
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
@@ -312,20 +314,20 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="2" y="0" z="3" />
+          <translation x="2" y="0.9" z="3" />
         </transformations>
         <descendants>
-          <leaf type="sphere" radius="1" slices="6" stacks="6" />
+          <leaf type="sphere" radius="1" slices="10" stacks="10" />
         </descendants>
       </node>
 
       <node id="boia">
         <material id="shiny_material" />
-        <texture id="boia_texture">
+        <texture id="bola_texture">
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="4" y="0" z="4" />
+          <translation x="4" y="0.2" z="4" />
         </transformations>
         <descendants>
           <leaf type="torus" inner="0.5" outer="1" slices="6" loops="6" />
@@ -333,12 +335,12 @@
       </node>
 
       <node id="prancha">
-        <material id="not_shiny_material" />
-        <texture id="prancha_texture">
+        <material id="shiny_material" />
+        <texture id="metal_texture">
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0" y="0" z="3" />
+          <translation x="0" y="0.3" z="3" />
         </transformations>
         <descendants>
           <noderef id="prancha_suporte" />
@@ -395,7 +397,7 @@
         <descendants>
           <noderef id="paredes"/>
           <noderef id="chão"/>
-          <noderef id="teto"/>
+          <!--<noderef id="teto"/>-->
         </descendants>
       </node>
 
@@ -416,7 +418,7 @@
 
       <node id="chão">
         <material id="null" />
-        <texture id="chao_texture">
+        <texture id="erva_texture">
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
@@ -430,7 +432,7 @@
 
       <node id="parede_trás">
         <material id="null" />
-        <texture id="parede_texture">
+        <texture id="paredes_texture">
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
@@ -442,7 +444,7 @@
 
       <node id="parede_direita">
         <material id="null" />
-        <texture id="parede_texture">
+        <texture id="paredes_texture">
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
@@ -456,7 +458,7 @@
 
       <node id="parede_esquerda">
         <material id="null" />
-        <texture id="parede_texture">
+        <texture id="paredes_texture">
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
@@ -470,7 +472,7 @@
 
       <node id="parede_frente">
         <material id="null" />
-        <texture id="parede_texture">
+        <texture id="paredes_texture">
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>

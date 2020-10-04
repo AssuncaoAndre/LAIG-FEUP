@@ -419,6 +419,7 @@ class MySceneGraph {
    */
   parseNodes(nodesNode) {
         var children = nodesNode.children;
+        
 
         this.nodes = [];
 
@@ -428,7 +429,7 @@ class MySceneGraph {
 
         // Any number of nodes.
         for (var i = 0; i < children.length; i++) {
-
+            this.log(nodesNode.children[i].id);
             if (children[i].nodeName != "node") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
@@ -455,13 +456,48 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var descendantsIndex = nodeNames.indexOf("descendants");
 
-            this.onXMLMinorError("To do: Parse nodes.");
+
             // Transformations
-/*                 this.log(i);
-                this.log(transformationsIndex);
-                this.log(materialIndex);
-                this.log(textureIndex);
-                this.log(descendantsIndex); */
+
+            //this.onXMLMinorError("To do: Parse nodes.");
+            var tranformationMatrix=mat4.create();
+            var transformationsNode = grandChildren[transformationsIndex].children;
+            //this.log(transformationsNode);
+            
+           
+            
+            for(var j=0;j<transformationsNode.length;j++) 
+            {
+                this.log(transformationsNode[j].nodeName);
+                if(transformationsNode[j].nodeName=="translation") 
+                {
+                    var x = this.XMLreader.getFloat(transformationsNode[j].children[0],'x');
+                    var y = this.XMLreader.getFloat(transformationsNode[j],'y');
+                    var z = this.XMLreader.getFloat(transformationsNode[j],'z');
+                
+                if(x==null||y==null||z==null)
+                    return "No values for translation";
+                else if(isNaN(x)||isNaN(y)||isNaN(z))
+                    return "Non numeric values for translation";
+                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]);
+                
+                }
+
+                if(transformationsNode[j].nodeName=="translation") 
+                {
+                    var x = this.XMLreader.getFloat(transformationsNode[j],'x');
+                    var y = this.XMLreader.getFloat(transformationsNode[j],'y');
+                    var z = this.XMLreader.getFloat(transformationsNode[j],'z');
+                
+                if(x==null||y==null||z==null)
+                    return "No values for translation";
+                else if(isNaN(x)||isNaN(y)||isNaN(z))
+                    return "Non numeric values for translation";
+
+                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]);
+                
+                }
+            }
             // Material (not now)
 
             // Texture (not now)
