@@ -64,7 +64,7 @@
       <texture id="paredes_texture" path="./scenes/images/bank.jpg" />
       <texture id="metal_texture" path="./scenes/images/metal_texture.png" />
       <texture id="bola_texture" path="./scenes/images/bola_texture.jpg"/>
-      
+
     </textures>
 
 
@@ -148,7 +148,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="1.0" y="0" z="4.0" />
+          <translation x="7.75" y="0" z="2.0" />
           <rotation axis="x" angle="-90" />
         </transformations>
         <descendants>
@@ -297,7 +297,7 @@
         </texture>
         <transformations>
           <rotation axis="x" angle="-90.0" />
-          <translation x="2.5" y="0" z="2.5" />
+          <translation x="2.5" y="0" z="7.5" />
 
         </transformations>
         <descendants>
@@ -314,7 +314,7 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="2" y="0.9" z="3" />
+          <translation x="4.00" y="0.9" z="-1.00" />
         </transformations>
         <descendants>
           <leaf type="sphere" radius="1" slices="10" stacks="10" />
@@ -327,7 +327,7 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="4" y="0.2" z="4" />
+          <translation x="2.50" y="0.2" z="-4.00" />
         </transformations>
         <descendants>
           <leaf type="torus" inner="0.5" outer="1" slices="6" loops="6" />
@@ -340,11 +340,11 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0" y="0.3" z="3" />
+          <translation x="0" y="0.3" z="-2.25" />
         </transformations>
         <descendants>
           <noderef id="prancha_suporte" />
-
+          <leaf type="rectangle" x1="0.0" y1="0.0" x2="1.0" y2="0.5" />
         </descendants>
       </node>
 
@@ -496,7 +496,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="3" y="1.5" z="8" />
+          <translation x="3" y="1.5" z="8.75" />
         </transformations>
         <descendants>
           <noderef id="chuveiro_cabeca" />
