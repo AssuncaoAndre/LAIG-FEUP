@@ -371,6 +371,46 @@ class MySceneGraph {
      */
     parseTextures(texturesNode) {
 
+        var children = texturesNode.children;
+
+        this.textures = [];
+
+        var texturesNo = 0;
+
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].nodeName != "texture") {
+                this.onXMLMinorError("unknwon tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            var textureID = this.reader.getString(children[i], "id");
+
+            // Get id of the current texture.
+            if (textureID == null)
+                return "no ID defined for texture";
+
+            // Checks for repeated IDs.
+            if (this.textures[textureID] != null)
+                return "ID must be unique for each texture (conflict: ID = " + textureID + ")";
+
+            // Checks path od the current texture.
+            var path = children[i].getAttribute("path");
+            if (path == null)
+                return "no Path defined for texture";
+
+            /*this.textures[textureID] = [texture, amplifFactorS, amplifFactorT];
+            oneTextureDefined = true;*/
+
+            var texture = new CGFtexture(this.scene, "./scenes/" + filepath);
+            this.textures[textureID] = [texture];
+            
+            texturesNo++;
+        }
+
+        // Checks if there is at least one texture block
+        if (texturesNo <= 0)
+            return "at least one texture block must be defined";
+
         //For each texture in textures block, check ID and file URL
         this.onXMLMinorError("To do: Parse textures.");
         return null;
@@ -403,7 +443,7 @@ class MySceneGraph {
 
             // Checks for repeated IDs.
             if (this.materials[materialID] != null)
-                return "ID must be unique for each light (conflict: ID = " + materialID + ")";
+                return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
             //Continue here
             this.onXMLMinorError("To do: Parse materials.");
@@ -422,6 +462,7 @@ class MySceneGraph {
         
 
         this.nodes = [];
+        
 
         var grandChildren = [];
         var grandgrandChildren = [];
@@ -437,9 +478,11 @@ class MySceneGraph {
 
             // Get id of the current node.
             var nodeID = this.reader.getString(children[i], 'id');
+            
             if (nodeID == null)
                 return "no ID defined for nodeID";
 
+            this.nodes[nodeID]=MyNode(nodeID);
             // Checks for repeated IDs.
             if (this.nodes[nodeID] != null)
                 return "ID must be unique for each node (conflict: ID = " + nodeID + ")";
@@ -460,7 +503,7 @@ class MySceneGraph {
             // Transformations
 
             //this.onXMLMinorError("To do: Parse nodes.");
-            var tranformationMatrix=mat4.create();
+            
             var transformationsNode = grandChildren[transformationsIndex].children;
             //this.log(transformationsNode);
             
@@ -471,31 +514,49 @@ class MySceneGraph {
                 this.log(transformationsNode[j].nodeName);
                  if(transformationsNode[j].nodeName=="translation") 
                 {
-                    this.log(transformationsNode[j].attributes[0]);
-                    var x = this.XMLreader.getFloat(transformationsNode[j].attributes,'x');
-                    var y = this.XMLreader.getFloat(transformationsNode[j].attributes,'y');
-                    var z = this.XMLreader.getFloat(transformationsNode[j].attributes,'z');
-                
-                if(x==null||y==null||z==null)
-                this.onXMLError("No values for translation");
-                else if(isNaN(x)||isNaN(y)||isNaN(z))
-                this.onXMLError ("Non numeric values for translation");
-                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]); 
+                    var x=transformationsNode[j].getAttribute('x');
+                    var y=transformationsNode[j].getAttribute('y');
+                    var z=transformationsNode[j].getAttribute('z');
+
+                    //to do assume default values
+                    if(x==null||y==null||z==null)
+                        this.onXMLError("No values for translation");
+                    else if(isNaN(x)||isNaN(y)||isNaN(z))
+                        this.onXMLError ("Non numeric values for translation");
+                    mat4.translate(this.nodes[nodeID].trasnformMatrix,this.nodes[nodeID].tranformMatrix,[x,y,z]); 
             
                 } 
 
                 if(transformationsNode[j].nodeName=="rotation") 
                 {
                    
-                    var axis = this.XMLreader.getString(transformationsNode[j],'axis');
-                    var angle = this.XMLreader.getFloat(transformationsNode[j],'angle');
+                    var axis = transformationsNode[j].getAttribute('axis');
+                    var angle = transformationsNode[j].getAttribute('angle');
 
                 
                 if(angle==null||axis==null)
                     this.onXMLError( "No values for rotation");
                 else if(isNaN(angle))
                 this.onXMLError( "Non numeric values for rotation");
-                mat4.translate(tranformationMatrix,tranformationMatrix,[x,y,z]); 
+                mat4.rotate(this.nodes[nodeID].trasnformMatrix,this.nodes[nodeID].trasnformMatrix,[angle*DEGREE_TO_RAD,axis]); 
+            
+                } 
+
+                if(transformationsNode[j].nodeName=="scale") 
+                {
+                    
+                   
+                    var sx = transformationsNode[j].getAttribute('sx');
+                    var sy = transformationsNode[j].getAttribute('sy');
+                    var sz = transformationsNode[j].getAttribute('sz');
+
+                
+                if(sx==null||sy==null || sz==null)
+                    this.onXMLError( "No values for scale");
+                else if(isNaN(sx)||isNaN(sy)||isNaN(sz))
+                    this.onXMLError( "Non numeric values for rotation");
+                    
+                    mat4.scale(this.nodes[nodeID].trasnformMatrix,this.nodes[nodeID].trasnformMatrix,[sx,sy,sz]); 
             
                 } 
 
