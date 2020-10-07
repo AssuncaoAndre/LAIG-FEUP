@@ -18,6 +18,8 @@ function MyNode(nodeID) {
 
     // The texture ID.
     this.textureID = null;
+    this.textureAFS;
+    this.textureAFT;
 
     this.transformMatrix = mat4.create();
     mat4.identity(this.transformMatrix);

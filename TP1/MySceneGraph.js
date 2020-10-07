@@ -366,7 +366,7 @@ class MySceneGraph {
     }
 
     /**
-     * Parses the <textures> block. 
+     * Parses the <textures> block.
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
@@ -398,12 +398,9 @@ class MySceneGraph {
             if (path == null)
                 return "no Path defined for texture";
 
-            /*this.textures[textureID] = [texture, amplifFactorS, amplifFactorT];
-            oneTextureDefined = true;*/
-
-            var texture = new CGFtexture(this.scene, "./scenes/" + filepath);
+            var texture = new CGFtexture(this.scene, path);
             this.textures[textureID] = [texture];
-            
+
             texturesNo++;
         }
 
@@ -411,8 +408,8 @@ class MySceneGraph {
         if (texturesNo <= 0)
             return "at least one texture block must be defined";
 
-        //For each texture in textures block, check ID and file URL
-        this.onXMLMinorError("To do: Parse textures.");
+        this.log("Parsed textures");
+
         return null;
     }
 
@@ -428,29 +425,118 @@ class MySceneGraph {
         var grandChildren = [];
         var nodeNames = [];
 
+        var materialsNo = 0;
+
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
 
-            if (children[i].nodeName != "material") {
-                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+          if (children[i].nodeName != "material") {
+            this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
             }
 
-            // Get id of the current material.
-            var materialID = this.reader.getString(children[i], 'id');
-            if (materialID == null)
-                return "no ID defined for material";
+          // Get id of the current material.
+          var materialID = this.reader.getString(children[i], 'id');
+          if (materialID == null)
+            return "no ID defined for material";
 
-            // Checks for repeated IDs.
-            if (this.materials[materialID] != null)
-                return "ID must be unique for each material (conflict: ID = " + materialID + ")";
+          // Checks for repeated IDs.
+          if (this.materials[materialID] != null)
+            return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
-            //Continue here
-            this.onXMLMinorError("To do: Parse materials.");
+          grandChildren = children[i].children;
+          var shininess = null;
+          var ambient = null;
+          var diffuse = null;
+          var specular = null;
+          var emissive = null;
+
+          for(var j = 0; j < grandChildren.length; j++) {
+
+            if (grandChildren[j].nodeName == "shininess")
+              shininess = grandChildren[j].getAttribute("value");
+
+            if (grandChildren[j].nodeName == "ambient") {
+                ambient = [grandChildren[j].getAttribute("r"), grandChildren[j].getAttribute("g"), grandChildren[j].getAttribute("b"), grandChildren[j].getAttribute("a")];
+            }
+             
+            if (grandChildren[j].nodeName == "diffuse")
+              diffuse = [grandChildren[j].getAttribute("r"), grandChildren[j].getAttribute("g"), grandChildren[j].getAttribute("b"), grandChildren[j].getAttribute("a")];
+
+            if (grandChildren[j].nodeName == "specular")
+              specular = [grandChildren[j].getAttribute("r"), grandChildren[j].getAttribute("g"), grandChildren[j].getAttribute("b"), grandChildren[j].getAttribute("a")];
+
+            if (grandChildren[j].nodeName == "emissive")
+              emissive = [grandChildren[j].getAttribute("r"), grandChildren[j].getAttribute("g"), grandChildren[j].getAttribute("b"), grandChildren[j].getAttribute("a")];
+          }
+
+          var matError = null;
+
+          if (shininess == null)
+            return "shininess must be defined for each material (conflict: ID = " + materialID + ")";
+
+          if (ambient == null)
+            return "ambient must be defined for each material (conflict: ID = " + materialID + ")";
+
+          matError = this.checkRGBA(ambient[0], ambient[1], ambient[2], ambient[3]);
+          if(matError != null)
+            return matError + " (conflict: ID = " + materialID + " -> ambient)";
+
+          if (diffuse == null)
+            return "diffuse must be defined for each material (conflict: ID = " + materialID + ")";
+
+          matError = this.checkRGBA(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
+          if(matError != null)
+            return matError + " (conflict: ID = " + materialID + " -> diffuse)";
+
+          if (specular == null)
+            return "specular must be defined for each material (conflict: ID = " + materialID + ")";
+
+          matError = this.checkRGBA(specular[0], specular[1], specular[2], specular[3]);
+          if(matError != null)
+            return matError + " (conflict: ID = " + materialID + " -> specular)";
+
+          if (emissive == null)
+            return "emissive must be defined for each material (conflict: ID = " + materialID + ")";
+
+          matError = this.checkRGBA(emissive[0], emissive[1], emissive[2], emissive[3]);
+          if(matError != null)
+            return matError + " (conflict: ID = " + materialID + " -> emissive)";
+
+          // Create material.
+          var material = new CGFappearance(this.scene);
+          material.setShininess(shininess);
+          material.setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
+          material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
+          material.setSpecular(specular[0], specular[1], specular[2], specular[3]);
+          material.setEmission(emissive[0], emissive[1], emissive[2], emissive[3]);
+          this.materials[materialID] = material;
+          materialsNo++;
         }
 
-        //this.log("Parsed materials");
+        // Checks if there is at least one material block
+        if (materialsNo <= 0)
+        return "at least one material block must be defined";
+
+        this.log("Parsed materials");
+
         return null;
+    }
+
+    checkRGBA(r, g, b, a) {
+      if (r < 0 || r > 1 || isNaN(r))
+        return "r of rgba must be a value between 0 and 255";
+
+      if (g < 0 || g > 1 || isNaN(g))
+        return "g of rgba must be a value between 0 and 255";
+
+      if (b < 0 || b > 1 || isNaN(b))
+        return "b of rgba must be a value between 0 and 255";
+
+      if (a < 0 || a > 1 || isNaN(a))
+        return "a of rgba must be a value between 0 and 1";
+
+      return null;
     }
 
     /**
@@ -488,6 +574,9 @@ class MySceneGraph {
                 return "ID must be unique for each node (conflict: ID = " + nodeID + ")";
 
             grandChildren = children[i].children;
+            console.log(nodeID);
+            this.nodes[nodeID]=new MyNode(nodeID);
+            console.log(this.nodes[nodeID]);
 
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
@@ -523,7 +612,7 @@ class MySceneGraph {
                         this.onXMLError("No values for translation");
                     else if(isNaN(x)||isNaN(y)||isNaN(z))
                         this.onXMLError ("Non numeric values for translation");
-                    mat4.translate(this.nodes[nodeID].trasnformMatrix,this.nodes[nodeID].tranformMatrix,[x,y,z]); 
+                    mat4.translate(this.nodes[nodeID].transformMatrix ,this.nodes[nodeID].transformMatrix ,[x,y,z]); 
             
                 } 
 
@@ -534,12 +623,18 @@ class MySceneGraph {
                     var angle = transformationsNode[j].getAttribute('angle');
 
                 
-                if(angle==null||axis==null)
-                    this.onXMLError( "No values for rotation");
-                else if(isNaN(angle))
-                this.onXMLError( "Non numeric values for rotation");
-                mat4.rotate(this.nodes[nodeID].trasnformMatrix,this.nodes[nodeID].trasnformMatrix,[angle*DEGREE_TO_RAD,axis]); 
-            
+                    if(angle==null||axis==null)
+                        this.onXMLError( "No values for rotation");
+                    else if(isNaN(angle))
+                    this.onXMLError( "Non numeric values for rotation");
+                    if(axis=='x')
+                    mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[1,0,0]); 
+
+                    if(axis=='y')
+                    mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[0,1,0]);
+                
+                    if(axis=='z')
+                    mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[0,0,1]);                
                 } 
 
                 if(transformationsNode[j].nodeName=="scale") 
@@ -556,17 +651,83 @@ class MySceneGraph {
                 else if(isNaN(sx)||isNaN(sy)||isNaN(sz))
                     this.onXMLError( "Non numeric values for rotation");
                     
-                    mat4.scale(this.nodes[nodeID].trasnformMatrix,this.nodes[nodeID].trasnformMatrix,[sx,sy,sz]); 
+                    mat4.scale(this.nodes[nodeID].transformMatrix,this.nodes[nodeID].transformMatrix,[sx,sy,sz]); 
             
                 } 
 
                 
             }
             // Material (not now)
+            this.nodes[nodeID].materialID=grandChildren[materialIndex].getAttribute('id');
 
             // Texture (not now)
-
+            this.nodes[nodeID].textureID=grandChildren[textureIndex].getAttribute('id');
+            if(this.nodes[nodeID].textureAFS=grandChildren[textureIndex].children[0].nodeName=="amplification")
+            {
+                this.nodes[nodeID].textureAFS=grandChildren[textureIndex].children[0].getAttribute('afs');
+                this.nodes[nodeID].textureAFT=grandChildren[textureIndex].children[0].getAttribute('aft');
+            }
+            else
+            {
+                this.onXMLMinorError("No amplification defined. Assuming afs=1.0 and aft=1.0");
+                this.nodes[nodeID].textureAFS=1.0;
+                this.nodes[nodeID].textureAFT=1.0;
+            }
             // Descendants
+            var descendantsNode = grandChildren[descendantsIndex].children;
+            for(var j=0;j<descendantsNode.length;j++) 
+            {
+                this.log(descendantsNode[j].nodeName);
+                 if(descendantsNode[j].nodeName=="leaf") 
+                {
+                    
+                    var type=grandChildren[descendantsIndex].children[j].getAttribute('type');
+                    if(type=="rectangle")
+                    {
+                       var x1=grandChildren[descendantsIndex].children[j].getAttribute('x1');
+                       var y1=grandChildren[descendantsIndex].children[j].getAttribute('y1');
+                       var x2=grandChildren[descendantsIndex].children[j].getAttribute('x2');
+                       var y2=grandChildren[descendantsIndex].children[j].getAttribute('y2');
+                       this.nodes[nodeID].leaves.push(new MyRectangle(this.scene,x1,y1,x2,y2));
+                    }
+
+                    else if(type=="cylinder")
+                    {
+                        var height=grandChildren[descendantsIndex].children[j].getAttribute('height');
+                        var topRadius=grandChildren[descendantsIndex].children[j].getAttribute('topRadius');
+                        var bottomRadius=grandChildren[descendantsIndex].children[j].getAttribute('bottomRadius');
+                        var stacks=grandChildren[descendantsIndex].children[j].getAttribute('stacks');
+                        var slices=grandChildren[descendantsIndex].children[j].getAttribute('slices');
+                        //this.nodes[nodeID].leaves.push(new Cylinder(this.scene,bottomRadius, topRadius, height,  slices, stacks));                        
+                    }
+
+                    else if(type=="triangle")
+                    {
+                        
+                    }
+
+                    else if(type=="sphere")
+                    {
+                        
+                    }
+
+                    else if(type=="torus")
+                    {
+                        
+                    }
+                    else
+                    {
+                        this.onXMLMinorError("Unkown leaf type "+type+". Skipping leaf");
+                    }
+                
+                } 
+
+                if(descendantsNode[j].nodeName=="noderef") 
+                {
+                    this.nodes[nodeID].children.push(grandChildren[descendantsIndex].children[j].getAttribute('id'));
+                } 
+            }
+            
         }
     }
 

@@ -73,7 +73,7 @@
 
           requires a distinct "id". At least one material should be present. -->
       <material id="alpha_material">
-        <shininess value="ff" />
+        <shininess value="0.5" />
         <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
         <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
         <specular r="0.6" g="0.0" b="0.0" a="1.0" />
