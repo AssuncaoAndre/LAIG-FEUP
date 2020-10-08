@@ -399,7 +399,7 @@ class MySceneGraph {
                 return "no Path defined for texture";
 
             var texture = new CGFtexture(this.scene, path);
-            this.textures[textureID] = [texture];
+            this.textures[textureID] = texture;
 
             texturesNo++;
         }
@@ -698,17 +698,29 @@ class MySceneGraph {
                         var bottomRadius=grandChildren[descendantsIndex].children[j].getAttribute('bottomRadius');
                         var stacks=grandChildren[descendantsIndex].children[j].getAttribute('stacks');
                         var slices=grandChildren[descendantsIndex].children[j].getAttribute('slices');
-                        //this.nodes[nodeID].leaves.push(new Cylinder(this.scene,bottomRadius, topRadius, height,  slices, stacks));                        
+                        this.nodes[nodeID].leaves.push(new MyCylinder(this.scene, height,bottomRadius, topRadius,  slices, stacks));                        
                     }
 
                     else if(type=="triangle")
                     {
-                        
+                        var x1=grandChildren[descendantsIndex].children[j].getAttribute('x1');
+                        var y1=grandChildren[descendantsIndex].children[j].getAttribute('y1');
+                        var z1=grandChildren[descendantsIndex].children[j].getAttribute('z1');
+                        var x2=grandChildren[descendantsIndex].children[j].getAttribute('x2');
+                        var y2=grandChildren[descendantsIndex].children[j].getAttribute('y2');
+                        var z2=grandChildren[descendantsIndex].children[j].getAttribute('z3');
+                        var x3=grandChildren[descendantsIndex].children[j].getAttribute('x3');
+                        var y3=grandChildren[descendantsIndex].children[j].getAttribute('y3');
+                        var z3=grandChildren[descendantsIndex].children[j].getAttribute('z3');
+                        this.nodes[nodeID].leaves.push(new MyTriangle(this.scene,x1,y1,z1,x2,y2,z2,x3,y3,z3));
                     }
-
+                    
                     else if(type=="sphere")
                     {
-                        
+                        var radius=grandChildren[descendantsIndex].children[j].getAttribute('radius');
+                        var stacks=grandChildren[descendantsIndex].children[j].getAttribute('stacks');
+                        var slices=grandChildren[descendantsIndex].children[j].getAttribute('slices');
+                        this.nodes[nodeID].leaves.push(new MySphere(this.scene,radius,slices,stacks));                        
                     }
 
                     else if(type=="torus")
@@ -830,9 +842,55 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+       
+        this.displayScene_aux(this.idRoot,this.nodes[this.idRoot].textureID);
+    }
+    displayScene_aux(idNode,parentTex)
+    {
+        
+        var currNode=this.nodes[idNode];
+        
+        if(this.materials[currNode.materialID]!=null)
+        {
+            this.materials[currNode.materialID].apply();
+        }
+       
+
+        if (this.textures[currNode.textureID] != null)
+        {
+            this.textures[currNode.textureID].bind(0);
+            parentTex=currNode.textureID;
+        } 
+      
         
         //To do: Create display loop for transversing the scene graph, calling the root node's display function
+          this.scene.multMatrix(currNode.transformMatrix);
         
-        //this.nodes[this.idRoot].display()
+         for(var i=0;i<currNode.children.length;i++)
+        {
+            this.scene.pushMatrix();
+            this.displayScene_aux(currNode.children[i],parentTex);
+            this.scene.popMatrix();
+        }
+ 
+         
+        for (var i=0;i<currNode.leaves.length;i++)
+        {
+            this.scene.pushMatrix();
+            
+             if (this.textures[currNode.textureID] != null)
+            {
+                this.textures[currNode.textureID].bind(0);
+                parentTex=currNode.textureID;
+            } 
+            else
+            {
+                
+                this.textures[parentTex].bind(0);
+            } 
+            
+            currNode.leaves[i].display();
+            this.scene.popMatrix();
+        } 
     }
 }

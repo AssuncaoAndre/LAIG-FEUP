@@ -3,7 +3,7 @@
     <initials>
       <reference length="2" />
       <!-- axis length; "0" means no axis displayed -->
-      <root id="alpha_root" />
+      <root id="root" />
       <!-- identifier of root node of the scene graph; this node -->
       <!-- must be defined in one of the following NODE declarations -->
     </initials>
@@ -396,7 +396,7 @@
         </transformations>
         <descendants>
           <noderef id="paredes"/>
-          <noderef id="chão"/>
+          <noderef id="chao"/>
           <!--<noderef id="teto"/>-->
         </descendants>
       </node>
@@ -416,7 +416,7 @@
         </descendants>
       </node>
 
-      <node id="chão">
+      <node id="chao">
         <material id="null" />
         <texture id="erva_texture">
           <amplificaton afs="1.0" aft="1.0" />

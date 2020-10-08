@@ -14,10 +14,10 @@
 */
 
 class MyTriangle extends CGFobject {
-    constructor(scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
+    constructor(scene,x1, y1, z1, x2, y2, z2, x3, y3, z3) {
         super(scene);
 
-        this.id = id;
+        
 
         // Initialize Vertices as 3D vectors
         this.v1 = vec3.fromValues(x1, y1, z1);
