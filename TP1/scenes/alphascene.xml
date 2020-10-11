@@ -41,15 +41,14 @@
 
     <lights>
       <!-- NOTE: this block "light" must be repeated as necessary with different "id". At least one light should be present, and a maximum of eight lights is accepted. -->
-      <light id="alpha_light">
-        <!-- light identifier -->
-        <enable value="1" /> <!-- enable/disable -->
-        <position x="10" y="12" z="9.5" w="1.0" />
-        <!-- light position; w=1: point light; w=0: directional light -->
-
-        <ambient r="0" g="0" b="0" a="1.0" /> <!-- ambient component -->
-        <diffuse r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- diffuse component -->
-        <specular r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- specular component -->
+      
+      <light id="demoLight">            <!-- light identifier -->
+          <enable value="1" />
+          <!-- enable/disable -->
+          <position x="10" y="12" z="9.5" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
+          <ambient r="0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
+          <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />             <!-- diffuse component -->
+          <specular r="1.0" g="1.0" b="1.0" a="1.0" />            <!-- specular component -->
       </light>
     </lights>
 
@@ -74,25 +73,25 @@
           requires a distinct "id". At least one material should be present. -->
       <material id="alpha_material">
         <shininess value="0.5" />
-        <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
-        <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
-        <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+        <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
       </material>
 
       <material id="shiny_material">
         <shininess value="0.8" />
-        <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
-        <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
-        <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+        <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
       </material>
 
       <material id="not_shiny_material">
         <shininess value="0.2" />
-        <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
-        <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
-        <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+        <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
       </material>
     </materials>
@@ -171,8 +170,8 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="1.0" y="0" z="1.0" />
-          <rotation axis="x" angle="-90" />
+         -- <translation x="1.0" y="0" z="2.0" />
+          <rotation axis="y" angle="90" />
         </transformations>
         <descendants>
           <noderef id="pernas" />
@@ -189,7 +188,7 @@
         </texture>
         <transformations>
           <translation x="0" y="1" z="1" />
-          <rotation axis="x" angle="-90" />
+          <rotation axis="x" angle="-90.0" />
         </transformations>
         <descendants>
           <leaf type="rectangle" x1="0" y1="0" x2="1.0" y2="1.0" />
@@ -216,6 +215,10 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
+          <translation x="0.2" y="1" z="0.2"/>
+          <scale sx="0.5" sy="1" sz="0.5"/>
+          <rotation axis="x" angle="90.0" />
+          
         </transformations>
         <descendants>
           <noderef id="perna1" />
@@ -231,8 +234,8 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.2" y="0" z="0.2" />
-          <rotation axis="x" angle="90" />
+          <translation x="1.2" y="0" z="0"/>
+          
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -245,8 +248,9 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.2" y="-5" z="0.8" />
-          <rotation axis="x" angle="90" />
+          <translation x="1.2" y="1.2" z="0"/>
+          
+          
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -259,8 +263,9 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.8" y="0" z="0.8" />
-          <rotation axis="x" angle="90" />
+          <translation x="0" y="1.2" z="0"/>
+          
+          
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -273,8 +278,8 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.8" y="0" z="0.2" />
-          <rotation axis="x" angle="-90.0" />
+          
+          
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -297,11 +302,11 @@
         </texture>
         <transformations>
           <rotation axis="x" angle="-90.0" />
-          <translation x="2.5" y="0" z="7.5" />
+          <translation x="0" y="-10" z="0" />
 
         </transformations>
         <descendants>
-          <leaf type="rectangle" x1="0.0" y1="0.0" x2="5.0" y2="5.0" />
+          <leaf type="rectangle" x1="-5.0" y1="-5.0" x2="5.0" y2="5.0" />
           <noderef id="boia" />
           <noderef id="bola" />
           <noderef id="prancha" />

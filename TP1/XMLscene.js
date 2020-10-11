@@ -38,7 +38,7 @@ class XMLscene extends CGFscene {
 
         this.defaultAppearance=new CGFappearance(this);
         this.cylinder = new MyCylinder(this, 2,1,0.5,10,10);
-        this.sphere=new MySphere(this,1.5,10,10);
+        this.sphere=new MySphere(this,1,30,30);
         this.triangle= new MyTriangle(this,0,0,0,0,0,1,0,1,1);
 
     }
@@ -142,8 +142,11 @@ class XMLscene extends CGFscene {
         }
 
         this.popMatrix();
+        
         //this.triangle.display();
+       
         //this.sphere.display();
+        
         //this.cylinder.display();
         // ---- END Background, camera and axis setup
     }
