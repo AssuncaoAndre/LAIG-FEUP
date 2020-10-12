@@ -35,7 +35,7 @@ class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
-        // File reading 
+        // File reading
         this.reader = new CGFXMLreader();
 
         /*
@@ -200,7 +200,7 @@ class MySceneGraph {
     }
 
     /**
-     * Parses the <initials> block. 
+     * Parses the <initials> block.
      * @param {initials block element} initialsNode
      */
     parseInitials(initialsNode) {
@@ -224,7 +224,7 @@ class MySceneGraph {
 
         this.idRoot = id;
 
-        // Get axis length        
+        // Get axis length
         if(referenceIndex == -1)
             this.onXMLMinorError("no axis_length defined for scene; assuming 'length = 1'");
 
@@ -459,7 +459,7 @@ class MySceneGraph {
             if (grandChildren[j].nodeName == "ambient") {
                 ambient = [parseFloat(grandChildren[j].getAttribute("r")), parseFloat(grandChildren[j].getAttribute("g")), parseFloat(grandChildren[j].getAttribute("b")), parseFloat(grandChildren[j].getAttribute("a"))];
             }
-             
+
             if (grandChildren[j].nodeName == "diffuse")
               diffuse = [parseFloat(grandChildren[j].getAttribute("r")), parseFloat(grandChildren[j].getAttribute("g")), parseFloat(grandChildren[j].getAttribute("b")), parseFloat(grandChildren[j].getAttribute("a"))];
 
@@ -545,10 +545,10 @@ class MySceneGraph {
    */
   parseNodes(nodesNode) {
         var children = nodesNode.children;
-        
+
 
         this.nodes = [];
-        
+
 
         var grandChildren = [];
         var grandgrandChildren = [];
@@ -564,7 +564,7 @@ class MySceneGraph {
 
             // Get id of the current node.
             var nodeID = this.reader.getString(children[i], 'id');
-            
+
             if (nodeID == null)
                 return "no ID defined for nodeID";
 
@@ -592,16 +592,16 @@ class MySceneGraph {
             // Transformations
 
             //this.onXMLMinorError("To do: Parse nodes.");
-            
+
             var transformationsNode = grandChildren[transformationsIndex].children;
             //this.log(transformationsNode);
-            
-           
-            
-            for(var j=0;j<transformationsNode.length;j++) 
+
+
+
+            for(var j=0;j<transformationsNode.length;j++)
             {
                 //this.log(transformationsNode[j].nodeName);
-                 if(transformationsNode[j].nodeName=="translation") 
+                 if(transformationsNode[j].nodeName=="translation")
                 {
                     var x=parseFloat(transformationsNode[j].getAttribute('x'));
                     var y=parseFloat(transformationsNode[j].getAttribute('y'));
@@ -612,54 +612,54 @@ class MySceneGraph {
                         this.onXMLError("No values for translation");
                     else if(isNaN(x)||isNaN(y)||isNaN(z))
                         this.onXMLError ("Non numeric values for translation");
-                    mat4.translate(this.nodes[nodeID].transformMatrix ,this.nodes[nodeID].transformMatrix ,[x,y,z]); 
-            
-                } 
+                    mat4.translate(this.nodes[nodeID].transformMatrix ,this.nodes[nodeID].transformMatrix ,[x,y,z]);
 
-                if(transformationsNode[j].nodeName=="rotation") 
+                }
+
+                if(transformationsNode[j].nodeName=="rotation")
                 {
-                   
+
                     var axis = transformationsNode[j].getAttribute('axis');
                     var angle = parseFloat(transformationsNode[j].getAttribute('angle'));
 
-                    
-                
+
+
                     if(angle==null||axis==null)
                         this.onXMLError( "No values for rotation");
                     else if(isNaN(angle))
                     {
                         this.onXMLError( "No numeric values for rotation");
                     }
-                    
+
                      if(axis=='x')
-                    mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[1,0,0]); 
+                    mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[1,0,0]);
 
                     if(axis=='y')
                     mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[0,1,0]);
-                
+
                     if(axis=='z')
-                    mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[0,0,1]);                
+                    mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix,angle*DEGREE_TO_RAD,[0,0,1]);
                 }
 
-                if(transformationsNode[j].nodeName=="scale") 
+                if(transformationsNode[j].nodeName=="scale")
                 {
-                    
-                   
+
+
                     var sx = parseFloat(transformationsNode[j].getAttribute('sx'));
                     var sy = parseFloat(transformationsNode[j].getAttribute('sy'));
                     var sz = parseFloat(transformationsNode[j].getAttribute('sz'));
 
-                
+
                 if(sx==null||sy==null || sz==null)
                     this.onXMLError( "No values for scale");
                 else if(isNaN(sx)||isNaN(sy)||isNaN(sz))
                     this.onXMLError( "Non numeric values for scale");
-                    
-                    mat4.scale(this.nodes[nodeID].transformMatrix,this.nodes[nodeID].transformMatrix,[sx,sy,sz]); 
-            
-                } 
 
-                
+                    mat4.scale(this.nodes[nodeID].transformMatrix,this.nodes[nodeID].transformMatrix,[sx,sy,sz]);
+
+                }
+
+
             }
             // Material (not now)
             this.nodes[nodeID].materialID=grandChildren[materialIndex].getAttribute('id');
@@ -679,12 +679,12 @@ class MySceneGraph {
             }
             // Descendants
             var descendantsNode = grandChildren[descendantsIndex].children;
-            for(var j=0;j<descendantsNode.length;j++) 
+            for(var j=0;j<descendantsNode.length;j++)
             {
                 //this.log(descendantsNode[j].nodeName);
-                 if(descendantsNode[j].nodeName=="leaf") 
+                 if(descendantsNode[j].nodeName=="leaf")
                 {
-                    
+
                     var type=grandChildren[descendantsIndex].children[j].getAttribute('type');
                     if(type=="rectangle")
                     {
@@ -702,7 +702,7 @@ class MySceneGraph {
                         var bottomRadius=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('bottomRadius'));
                         var stacks=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('stacks'));
                         var slices=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('slices'));
-                        this.nodes[nodeID].leaves.push(new MyCylinder(this.scene, height,bottomRadius, topRadius,  slices, stacks));                        
+                        this.nodes[nodeID].leaves.push(new MyCylinder(this.scene, height,bottomRadius, topRadius,  slices, stacks));
                     }
 
                     else if(type=="triangle")
@@ -718,33 +718,37 @@ class MySceneGraph {
                         var z3=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('z3'));
                         this.nodes[nodeID].leaves.push(new MyTriangle(this.scene,x1,y1,z1,x2,y2,z2,x3,y3,z3));
                     }
-                    
+
                     else if(type=="sphere")
                     {
                         var radius_sphere=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('radius'));
                         var slices_sphere=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('slices'));
                         var stacks_sphere=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('stacks'));
                         //console.log(radius_sphere,stacks_sphere,slices_sphere);
-                        this.nodes[nodeID].leaves.push(new MySphere(this.scene,radius_sphere,slices_sphere,stacks_sphere));                        
+                        this.nodes[nodeID].leaves.push(new MySphere(this.scene,radius_sphere,slices_sphere,stacks_sphere));
                     }
 
                     else if(type=="torus")
                     {
-                        
+                      var innerRadious_torus=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('inner'));
+                      var outerRadious_torus=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('outer'));
+                      var slices_torus=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('slices'));
+                      var loops_torus=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute('loops'));
+                      this.nodes[nodeID].leaves.push(new MyTorus(this.scene,innerRadious_torus,outerRadious_torus,slices_torus,loops_torus));
                     }
                     else
                     {
                         this.onXMLMinorError("Unkown leaf type "+type+". Skipping leaf");
                     }
-                
-                } 
 
-                if(descendantsNode[j].nodeName=="noderef") 
+                }
+
+                if(descendantsNode[j].nodeName=="noderef")
                 {
                     this.nodes[nodeID].children.push(grandChildren[descendantsIndex].children[j].getAttribute('id'));
-                } 
+                }
             }
-            
+
         }
     }
 
@@ -847,62 +851,64 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-       
+
         this.displayScene_aux(this.idRoot,this.nodes[this.idRoot].textureID);
+
+
     }
     displayScene_aux(idNode,parentTex)
     {
-        
+
         var currNode=this.nodes[idNode];
-        
+
         if(this.materials[currNode.materialID]!=null)
         {
             //console.log(this.materials[currNode.materialID]);
             //console.log(currNode.materialID);
             this.materials[currNode.materialID].apply();
         }
-       
+
 
         if (this.textures[currNode.textureID] != null)
         {
             this.textures[currNode.textureID].bind(0);
             parentTex=currNode.textureID;
-        } 
-      
-        
+        }
+
+
         //To do: Create display loop for transversing the scene graph, calling the root node's display function
           this.scene.multMatrix(currNode.transformMatrix);
-        
+
          for(var i=0;i<currNode.children.length;i++)
         {
             this.scene.pushMatrix();
             this.displayScene_aux(currNode.children[i],parentTex);
             this.scene.popMatrix();
         }
- 
-         
+
+
         for (var i=0;i<currNode.leaves.length;i++)
         {
             this.scene.pushMatrix();
-            
+
              if (this.textures[currNode.textureID] != null)
             {
                 this.textures[currNode.textureID].bind(0);
                 parentTex=currNode.textureID;
-            } 
+            }
             else
             {
-                
+
                 this.textures[parentTex].bind(0);
-            } 
-            
-            
+            }
+
+
 
             currNode.leaves[i].display();
 
-            
-            
+
+
             this.scene.popMatrix();
-        } 
+        }
     }
 }

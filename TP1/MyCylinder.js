@@ -18,7 +18,7 @@ class MyCylinder extends CGFobject {
 
         for (var i = 0; i < this.slices; i++) {
             // All vertices have to be declared for a given face
-            // even if they are shared with others, as the normals 
+            // even if they are shared with others, as the normals
             // in each face will be different
 
             var sa = Math.sin(ang);
@@ -39,13 +39,15 @@ class MyCylinder extends CGFobject {
             this.indices.push( (4 * i + 1),4 * i, (4 * i + 2));
             this.indices.push( (4 * i + 2),(4 * i + 3), (4 * i + 1));
 
-             this.texCoords.push(1 / this.slices * i, 1);
+            this.texCoords.push(1 / this.slices * i, 1);
             this.texCoords.push(1 / this.slices * (i + 1), 1);
             this.texCoords.push(1 / this.slices * i, 0);
-            this.texCoords.push(1 / this.slices * (i + 1), 0); 
+            this.texCoords.push(1 / this.slices * (i + 1), 0);
 
             ang += alphaAng;
         }
+
+
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();

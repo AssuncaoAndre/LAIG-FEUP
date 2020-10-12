@@ -41,7 +41,7 @@
 
     <lights>
       <!-- NOTE: this block "light" must be repeated as necessary with different "id". At least one light should be present, and a maximum of eight lights is accepted. -->
-      
+
       <light id="demoLight">            <!-- light identifier -->
           <enable value="1" />
           <!-- enable/disable -->
@@ -165,12 +165,11 @@
 
       <node id="cadeira">
         <material id="not_shiny_material" />
-
         <texture id="madeira_texture">
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-         -- <translation x="1.0" y="0" z="2.0" />
+          <translation x="1.0" y="0" z="2.0" />
           <rotation axis="y" angle="90" />
         </transformations>
         <descendants>
@@ -218,7 +217,7 @@
           <translation x="0.2" y="1" z="0.2"/>
           <scale sx="0.5" sy="1" sz="0.5"/>
           <rotation axis="x" angle="90.0" />
-          
+
         </transformations>
         <descendants>
           <noderef id="perna1" />
@@ -235,7 +234,7 @@
         </texture>
         <transformations>
           <translation x="1.2" y="0" z="0"/>
-          
+
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -249,8 +248,8 @@
         </texture>
         <transformations>
           <translation x="1.2" y="1.2" z="0"/>
-          
-          
+
+
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -264,8 +263,8 @@
         </texture>
         <transformations>
           <translation x="0" y="1.2" z="0"/>
-          
-          
+
+
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -278,8 +277,8 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          
-          
+
+
         </transformations>
         <descendants>
           <leaf type="cylinder" height="1" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
@@ -301,9 +300,8 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
+          <translation x="10.0" y="0.1" z="10.0" />
           <rotation axis="x" angle="-90.0" />
-          <translation x="0" y="-10" z="0" />
-
         </transformations>
         <descendants>
           <leaf type="rectangle" x1="-5.0" y1="-5.0" x2="5.0" y2="5.0" />
@@ -319,7 +317,7 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="4.00" y="0.9" z="-1.00" />
+          <translation x="-2.0" y="-2.0" z="0.0" />
         </transformations>
         <descendants>
           <leaf type="sphere" radius="1" slices="10" stacks="10" />
@@ -332,7 +330,7 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="2.50" y="0.2" z="-4.00" />
+          <translation x="2.50" y="0.0" z="0.0" />
         </transformations>
         <descendants>
           <leaf type="torus" inner="0.5" outer="1" slices="6" loops="6" />
@@ -345,7 +343,7 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0" y="0.3" z="-2.25" />
+          <translation x="0.0" y="0.0" z="1.0" />
         </transformations>
         <descendants>
           <noderef id="prancha_suporte" />
@@ -427,11 +425,11 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
+          <translation x="0.0" y="0.0" z="20.0" />
           <rotation axis="x" angle="-90.0" />
-          <translation x="0.0" y="0.0" z="10.0" />
         </transformations>
         <descendants>
-          <leaf type="rectangle" x1="0.0" y1="0.0" x2="10.0" y2="10.0" />
+          <leaf type="rectangle" x1="0.0" y1="0.0" x2="20.0" y2="20.0" />
         </descendants>
       </node>
 
@@ -443,7 +441,7 @@
         <transformations>
         </transformations>
         <descendants>
-          <leaf type="rectangle" x1="0.0" y1="0.0" x2="10.0" y2="5.0" />
+          <leaf type="rectangle" x1="0.0" y1="0.0" x2="20.0" y2="5.0" />
         </descendants>
       </node>
 
@@ -453,11 +451,11 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
+          <translation x="20.0" y="0.0" z="0.0" />
           <rotation axis="y" angle="-90.0" />
-          <translation x="10.0" y="0.0" z="0.0" />
         </transformations>
         <descendants>
-          <leaf type="rectangle" x1="0.0" y1="0.0" x2="10.0" y2="5.0" />
+          <leaf type="rectangle" x1="0.0" y1="0.0" x2="20.0" y2="5.0" />
         </descendants>
       </node>
 
@@ -467,11 +465,11 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
+          <translation x="0.0" y="0.0" z="20.0" />
           <rotation axis="y" angle="90.0" />
-          <translation x="0.0" y="0.0" z="10.0" />
         </transformations>
         <descendants>
-          <leaf type="rectangle" x1="0.0" y1="0.0" x2="10.0" y2="5.0" />
+          <leaf type="rectangle" x1="0.0" y1="0.0" x2="20.0" y2="5.0" />
         </descendants>
       </node>
 
@@ -481,11 +479,11 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
+          <translation x="20.0" y="0.0" z="20.0" />
           <rotation axis="y" angle="180.0" />
-          <translation x="10.0" y="0.0" z="10.0" />
         </transformations>
         <descendants>
-          <leaf type="rectangle" x1="0.0" y1="0.0" x2="10.0" y2="5.0" />
+          <leaf type="rectangle" x1="0.0" y1="0.0" x2="20.0" y2="5.0" />
         </descendants>
       </node>
 
