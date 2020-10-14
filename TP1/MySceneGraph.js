@@ -609,9 +609,15 @@ class MySceneGraph {
 
                     //to do assume default values
                     if(x==null||y==null||z==null)
-                        this.onXMLError("No values for translation");
+                    {
+                        this.onXMLMinorError("No values for translation, skiping");
+                        continue;
+                    }
                     else if(isNaN(x)||isNaN(y)||isNaN(z))
-                        this.onXMLError ("Non numeric values for translation");
+                    {
+                        this.onXMLMinorError ("Non numeric values for trasnlation, skiping");
+                        continue;
+                    }
                     mat4.translate(this.nodes[nodeID].transformMatrix ,this.nodes[nodeID].transformMatrix ,[x,y,z]);
 
                 }
@@ -625,10 +631,19 @@ class MySceneGraph {
 
 
                     if(angle==null||axis==null)
-                        this.onXMLError( "No values for rotation");
+                    {
+                        this.onXMLMinorError( "No values for rotation, skiping");
+                        continue;
+                    }
                     else if(isNaN(angle))
                     {
-                        this.onXMLError( "No numeric values for rotation");
+                        this.onXMLMinorError( "Non numeric value for angle, skiping");
+                        continue;
+                    }
+                    if(axis!='x' && axis!='y' && axis!='z')
+                    {
+                        this.onXMLMinorError("Unknown axis provided for ratation, skiping");
+                        continue;
                     }
 
                      if(axis=='x')
@@ -651,9 +666,15 @@ class MySceneGraph {
 
 
                 if(sx==null||sy==null || sz==null)
-                    this.onXMLError( "No values for scale");
+                {
+                    this.onXMLMinorError( "No values for scale, skiping");
+                    continue;
+                }
                 else if(isNaN(sx)||isNaN(sy)||isNaN(sz))
-                    this.onXMLError( "Non numeric values for scale");
+                {
+                    this.onXMLMinorError( "Non numeric values for scale, skiping");
+                    continue;
+                }
 
                     mat4.scale(this.nodes[nodeID].transformMatrix,this.nodes[nodeID].transformMatrix,[sx,sy,sz]);
 
@@ -663,17 +684,41 @@ class MySceneGraph {
             }
             // Material (not now)
             this.nodes[nodeID].materialID=grandChildren[materialIndex].getAttribute('id');
+            if(typeof this.materials[this.nodes[nodeID].materialID]=='undefined' && this.nodes[nodeID].materialID!='null')
+            {
+                this.onXMLMinorError("Unknown material "+this.nodes[nodeID].materialID+". Assuming null");
+                if(nodeID!=this.idRoot)
+                this.nodes[nodeID].materialID='null';
+                else 
+                this.onXMLError("Root node: Can't assume null. Terminating");
+
+            }
 
             // Texture (not now)
             this.nodes[nodeID].textureID=grandChildren[textureIndex].getAttribute('id');
-            if(this.nodes[nodeID].textureAFS=parseFloat(grandChildren[textureIndex].children[0].nodeName=="amplification"))
+            if(this.nodes[nodeID].textureID=='null' || this.nodes[nodeID].textureID=='clear')
+            ;
+            else if(this.nodes[nodeID].textureAFS=grandChildren[textureIndex].children[0].nodeName=="amplification")
             {
                 this.nodes[nodeID].textureAFS=parseFloat(grandChildren[textureIndex].children[0].getAttribute('afs'));
                 this.nodes[nodeID].textureAFT=parseFloat(grandChildren[textureIndex].children[0].getAttribute('aft'));
+                if(isNaN(this.nodes[nodeID].textureAFS)||isNaN(this.nodes[nodeID].textureAFT))
+                {
+                    this.onXMLMinorError("Non-numeric values for Amplification. Assuming afs=1.0 and aft=1.0");
+                    this.nodes[nodeID].textureAFS=1.0;
+                    this.nodes[nodeID].textureAFT=1.0;
+                }
+                else if(this.nodes[nodeID].textureAFS==null || this.nodes[nodeID].textureAFT==null)
+                {
+                    this.onXMLMinorError("No value provided for Amplification. Assuming afs=1.0 and aft=1.0");
+                    this.nodes[nodeID].textureAFS=1.0;
+                    this.nodes[nodeID].textureAFT=1.0;
+                }
+
             }
             else
             {
-                this.onXMLMinorError("No amplification defined. Assuming afs=1.0 and aft=1.0");
+                this.onXMLMinorError("No amplification defined for texture "+this.nodes[nodeID].textureID+". Assuming afs=1.0 and aft=1.0");
                 this.nodes[nodeID].textureAFS=1.0;
                 this.nodes[nodeID].textureAFT=1.0;
             }
@@ -738,7 +783,7 @@ class MySceneGraph {
                     }
                     else
                     {
-                        this.onXMLMinorError("Unkown leaf type "+type+". Skipping leaf");
+                        this.onXMLMinorError("Unknown leaf type "+type+". Skipping leaf");
                     }
 
                 }
@@ -896,9 +941,13 @@ class MySceneGraph {
                 this.textures[currNode.textureID].bind(0);
                 parentTex=currNode.textureID;
             }
+            else if(currNode.textureID=="clear")
+            {
+                ;
+            }
             else
             {
-
+                console.log(parentTex);
                 this.textures[parentTex].bind(0);
             }
 

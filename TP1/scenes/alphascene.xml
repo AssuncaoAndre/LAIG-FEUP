@@ -147,11 +147,11 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="7.75" y="0" z="2.0" />
+          <translation x="7.75" y="0" z="3.0" />
           <rotation axis="x" angle="-90" />
         </transformations>
         <descendants>
-          <leaf type="rectangle" x1="0" y1="0" x2="2.0" y2="1.0" />
+          <leaf type="rectangle" x1="0" y1="0" x2="4.0" y2="2.0" />
         </descendants>
       </node>
 
@@ -343,11 +343,12 @@
           <amplificaton afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.0" y="0.0" z="1.0" />
+          <translation x="0.0" y="5.0" z="0.3" />
+          <rotation axis="z" angle="-90.0" />
         </transformations>
         <descendants>
           <noderef id="prancha_suporte" />
-          <leaf type="rectangle" x1="0.0" y1="0.0" x2="1.0" y2="0.5" />
+          <leaf type="rectangle" x1="0.0" y1="0.0" x2="3.0" y2="1.0" />
         </descendants>
       </node>
 
@@ -357,7 +358,8 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <rotation axis="x" angle="-90.0" />
+          <translation x="0.0" y="0.1" z="-0.3" />
+          <rotation axis="z" angle="-90.0" />
         </transformations>
         <descendants>
           <noderef id="suporte_generico" />
@@ -513,7 +515,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.0" y="1.5" z="0.0" />
+          <translation x="0.2" y="1.5" z="0.0" />
           <rotation axis="x" angle="90" />
         </transformations>
         <descendants>
@@ -527,10 +529,11 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
+          <translation x="0" y="1.5" z="0"/>
           <rotation axis="x" angle="90" />
         </transformations>
         <descendants>
-          <leaf type="cylinder" height="3" topRadius="0.5" bottomRadius="0.5" stacks="1" slices="8" />
+          <leaf type="cylinder" height="3" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="8" />
         </descendants>
       </node>
     </nodes>
