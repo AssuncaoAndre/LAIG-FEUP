@@ -42,13 +42,22 @@
     <lights>
       <!-- NOTE: this block "light" must be repeated as necessary with different "id". At least one light should be present, and a maximum of eight lights is accepted. -->
 
-      <light id="demoLight">            <!-- light identifier -->
+       <light id="demoLight">            <!-- light identifier -->
           <enable value="1" />
           <!-- enable/disable -->
           <position x="10" y="12" z="9.5" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
           <ambient r="0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
           <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />             <!-- diffuse component -->
           <specular r="1.0" g="1.0" b="1.0" a="1.0" />            <!-- specular component -->
+      </light> 
+
+      <light id="Light2">            <!-- light identifier -->
+        <enable value="1" />
+        <!-- enable/disable -->
+        <position x="5" y="5" z="5" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
+        <ambient r="1.0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
+        <diffuse r="1.0" g="0.0" b="0.0" a="1.0" />             <!-- diffuse component -->
+        <specular r="1.0" g="0.0" b="0.0" a="0.0" />            <!-- specular component -->
       </light>
     </lights>
 
@@ -124,17 +133,21 @@
         <!-- declaring descendants, at least one node or one leaf must be present
         descendants may be mixed, nodes and leafs -->
         <descendants>
-
+          
           <noderef id="caixa_cena" />
           <noderef id="cadeira" /> <!-- "ss" is the identifier of a node or of leaf; -->
           <!-- may be repeated as necessary. It can refer an -->
           <!-- identifier of another node, before or later defined in the file. -->
-
+          
           <noderef id="toalha" />
-
+          
           <noderef id="piscina" />
-
+          
           <noderef id="chuveiro" />
+          
+          
+
+          <leaf type="triangle" x1="8.0" y1="0" x2="4.0" y2="4.0" x3="0" y3="0.0" />
 
         </descendants>
 
@@ -297,7 +310,7 @@
       <node id="piscina">
         <material id="shiny_material" />
         <texture id="water_texture">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
           <translation x="10.0" y="0.1" z="10.0" />
@@ -314,7 +327,7 @@
       <node id="bola">
         <material id="not_shiny_material" />
         <texture id="bola_texture">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
           <translation x="-2.0" y="-2.0" z="0.0" />
@@ -327,7 +340,7 @@
       <node id="boia">
         <material id="shiny_material" />
         <texture id="bola_texture">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
           <translation x="2.50" y="0.0" z="0.0" />
@@ -340,7 +353,7 @@
       <node id="prancha">
         <material id="shiny_material" />
         <texture id="metal_texture">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
           <translation x="0.0" y="5.0" z="0.3" />
@@ -358,7 +371,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.0" y="0.1" z="-0.3" />
+          <translation x="0.0" y="0.3" z="-0.3" />
           <rotation axis="z" angle="-90.0" />
         </transformations>
         <descendants>
@@ -377,7 +390,7 @@
       <node id="suporte_generico">
         <material id="null" />
         <texture id="null">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
         </transformations>
@@ -395,7 +408,7 @@
       <node id="caixa_cena">
         <material id="not_shiny_material" />
         <texture id="clear">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
         </transformations>
@@ -409,7 +422,7 @@
       <node id="paredes">
         <material id="not_shiny_material" />
         <texture id="paredes_texture">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
         </transformations>
@@ -424,7 +437,7 @@
       <node id="chao">
         <material id="null" />
         <texture id="erva_texture">
-          <amplificaton afs="1.0" aft="1.0" />
+          <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
           <translation x="0.0" y="0.0" z="20.0" />

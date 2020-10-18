@@ -41,6 +41,12 @@ class XMLscene extends CGFscene {
         this.sphere = new MySphere(this,1,30,30);
         this.triangle = new MyTriangle(this,0,0,0,0,0,1,0,1,1);
         this.torus = new MyTorus(this, 0.5, 2, 8, 20);
+
+        //Objects connected to MyInterface
+        
+
+
+
     }
 
     /**
@@ -53,6 +59,7 @@ class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
+       
         var i = 0;
         // Lights index.
 
@@ -70,10 +77,14 @@ class XMLscene extends CGFscene {
                 this.lights[i].setSpecular(...graphLight[4]);
 
                 this.lights[i].setVisible(true);
+
                 if (graphLight[0])
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
+
+
+                    
 
                 this.lights[i].update();
 
@@ -94,7 +105,11 @@ class XMLscene extends CGFscene {
 
         this.initLights();
 
+        this.interface.create(this.graph);
+        
         this.sceneInited = true;
+
+
     }
 
     /**
@@ -117,8 +132,8 @@ class XMLscene extends CGFscene {
         this.pushMatrix();
 
         for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
+            this.lights[i].setVisible(false);
+            this.lights[i].update();
         }
 
         if (this.sceneInited) {

@@ -32,13 +32,11 @@ class MyTorus extends CGFobject {
             var z = this.innerRadius * sin_slices;
 
             this.vertices.push(x, y, z);
-            this.normals.push(
-               cos_loops * sin_slices,
-               sin_loops * sin_slices,
-               cos_slices);
+            this.normals.push(x,y,z);
 
-            this.texCoords.push(u);
-            this.texCoords.push(v);
+
+              this.texCoords.push(v);
+              this.texCoords.push(u);
           }
         }
 
