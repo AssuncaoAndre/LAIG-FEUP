@@ -34,7 +34,7 @@ class MySceneGraph {
     this.axisCoords["x"] = [1, 0, 0];
     this.axisCoords["y"] = [0, 1, 0];
     this.axisCoords["z"] = [0, 0, 1];
-
+    this.defaultCamera;
     // File reading
     this.reader = new CGFXMLreader();
 
@@ -239,7 +239,103 @@ class MySceneGraph {
    * @param {view block element} viewsNode
    */
   parseViews(viewsNode) {
-    this.onXMLMinorError("To do: Parse views and create cameras.");
+    this.cameras=[];
+    this.camerasName=[];
+    var camerasNo=0;
+    var def_set=false;
+    this.defaultCamera = viewsNode.getAttribute("default");
+    for (var i = 0; i < viewsNode.children.length; i++) {
+      
+      if (viewsNode.children[i].nodeName == "perspective") {
+        
+        var cameraID = viewsNode.children[i].getAttribute("id");
+        var near = parseFloat(viewsNode.children[i].getAttribute("near"));
+        var far = parseFloat(viewsNode.children[i].getAttribute("far"));
+        var angle = parseFloat(viewsNode.children[i].getAttribute("angle"));
+        if(viewsNode.children[i].children.length!=2)
+        this.onXMLError("Perspective declaration has a invalid nunmber of children");
+        
+        for (var j = 0; j < viewsNode.children[i].children.length; j++) {
+          
+          if (viewsNode.children[i].children[j].nodeName == "from")
+          {
+            
+            var from_x = parseFloat(viewsNode.children[i].children[j].getAttribute("x"));
+            var from_y = parseFloat(viewsNode.children[i].children[j].getAttribute("y"));
+            var from_z = parseFloat(viewsNode.children[i].children[j].getAttribute("z"));
+            
+          }
+          else if (viewsNode.children[i].children[j].nodeName == "to")
+          {
+            var to_x = parseFloat(viewsNode.children[i].children[j].getAttribute("x"));
+            var to_y = parseFloat(viewsNode.children[i].children[j].getAttribute("y"));
+            var to_z = parseFloat(viewsNode.children[i].children[j].getAttribute("z"));
+          }
+          else this.onXMLMinorError("Unknown perspective child "+viewsNode.children[i].children[j].nodeName+".Skipping");
+        }
+       
+        var camera = new CGFcamera(angle,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z]);
+        if(cameraID==this.defaultCamera)
+        def_set=true;
+        this.cameras[cameraID] = camera;
+        this.camerasName[camerasNo]=cameraID;
+        camerasNo++;
+      }
+      if (viewsNode.children[i].nodeName == "ortho") {
+        
+        var cameraID = viewsNode.children[i].getAttribute("id");
+        var near = parseFloat(viewsNode.children[i].getAttribute("near"));
+        var far = parseFloat(viewsNode.children[i].getAttribute("far"));
+        var left = parseFloat(viewsNode.children[i].getAttribute("left"));
+        var right = parseFloat(viewsNode.children[i].getAttribute("right"));
+        var top = parseFloat(viewsNode.children[i].getAttribute("top"));
+        var bottom = parseFloat(viewsNode.children[i].getAttribute("bottom"));
+        if(viewsNode.children[i].children.length!=3)
+        this.onXMLError("Perspective declaration has a invalid nunmber of children");
+        
+        for (var j = 0; j < viewsNode.children[i].children.length; j++) {
+          
+          if (viewsNode.children[i].children[j].nodeName == "from")
+          {
+            
+            var from_x = parseFloat(viewsNode.children[i].children[j].getAttribute("x"));
+            var from_y = parseFloat(viewsNode.children[i].children[j].getAttribute("y"));
+            var from_z = parseFloat(viewsNode.children[i].children[j].getAttribute("z"));
+            
+          }
+          else if (viewsNode.children[i].children[j].nodeName == "to")
+          {
+            var to_x = parseFloat(viewsNode.children[i].children[j].getAttribute("x"));
+            var to_y = parseFloat(viewsNode.children[i].children[j].getAttribute("y"));
+            var to_z = parseFloat(viewsNode.children[i].children[j].getAttribute("z"));
+          }
+          else if (viewsNode.children[i].children[j].nodeName == "up")
+          {
+            var up_x = parseFloat(viewsNode.children[i].children[j].getAttribute("x"));
+            var up_y = parseFloat(viewsNode.children[i].children[j].getAttribute("y"));
+            var up_z = parseFloat(viewsNode.children[i].children[j].getAttribute("z"));
+          }
+          else this.onXMLMinorError("Unknown ortho child "+ viewsNode.children[i].children[j].nodeName+".Skipping");
+        }
+
+        var camera = new CGFcameraOrtho(left,right,top,bottom,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
+        if(cameraID==this.defaultCamera)
+        def_set=true;
+        this.camerasName[camerasNo]=cameraID;
+        this.cameras[cameraID] = camera;
+        camerasNo++;
+      }
+    }
+    if(def_set==false)
+    {
+      this.onXMLMinorError("Default view not defined. Assuming first instance of camera");
+      this.defaultCamera=viewsNode.children[0].cameraID;
+    }
+    
+
+    
+    //this.onXMLMinorError("To do: Parse views and create cameras.");
+    //console.log(this.defaultCamera);
     return null;
   }
 

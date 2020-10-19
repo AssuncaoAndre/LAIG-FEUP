@@ -31,11 +31,14 @@ class MyInterface extends CGFinterface {
         var i=0;
         var light=this.gui.addFolder('lights');
         
-        console.log(this.scene.lights);
+        //console.log(this.scene.lights);
         for (var key in graph.lights) {
             light.add(this.scene.lights[i], 'enabled').name(key);
             i++;
         }
+        //console.log(graph.cameras);
+        this.gui.add(graph,'defaultCamera',graph.camerasName).name('Cameras');
+        //this.gui.add(this.scene, 'selectedTexture', this.scene.textures).name('Textures').onChange(this.scene.onSelectedTextureChanged.bind(this.scene));
         
     }
 
