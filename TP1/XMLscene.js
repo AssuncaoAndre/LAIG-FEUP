@@ -40,7 +40,7 @@ class XMLscene extends CGFscene {
         this.cylinder = new MyCylinder(this, 2,1,0.5,10,10);
         this.sphere = new MySphere(this,1,30,30);
         this.triangle = new MyTriangle(this,0,0,0,0,0,1,0,1,1);
-        this.torus = new MyTorus(this, 0.5, 2, 8, 20);
+        this.torus = new MyTorus(this, 0.5, 2, 20, 20);
 
         //Objects connected to MyInterface
         
@@ -173,9 +173,10 @@ class XMLscene extends CGFscene {
         //this.triangle.display();
 
         //this.sphere.display();
-
+        //this.cylinder.enableNormalViz();
         //this.cylinder.display();
 
+        //this.torus.enableNormalViz();
         //this.torus.display();
         // ---- END Background, camera and axis setup
     }

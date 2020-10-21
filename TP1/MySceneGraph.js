@@ -291,7 +291,7 @@ class MySceneGraph {
         var top = parseFloat(viewsNode.children[i].getAttribute("top"));
         var bottom = parseFloat(viewsNode.children[i].getAttribute("bottom"));
         if(viewsNode.children[i].children.length!=3)
-        this.onXMLError("Perspective declaration has a invalid nunmber of children");
+        this.onXMLError("Perspective declaration has a invalid number of children");
         
         for (var j = 0; j < viewsNode.children[i].children.length; j++) {
           
@@ -317,7 +317,7 @@ class MySceneGraph {
           }
           else this.onXMLMinorError("Unknown ortho child "+ viewsNode.children[i].children[j].nodeName+".Skipping");
         }
-
+        //console.log(left,right,top,bottom,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
         var camera = new CGFcameraOrtho(left,right,top,bottom,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
         if(cameraID==this.defaultCamera)
         def_set=true;

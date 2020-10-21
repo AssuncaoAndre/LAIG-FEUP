@@ -8,7 +8,7 @@
       <!-- must be defined in one of the following NODE declarations -->
     </initials>
 
-    <views default="demoOrtho">
+    <views default="alpha_camera">
 
       <!-- at least one of the following type of cameras must be declared -->
 
@@ -20,11 +20,17 @@
 
       </perspective>
 
-      <ortho id="demoOrtho" near="20" far="0.2" left="-10" right="10" top="10" bottom="-10">
-        <from x="5.1" y="10" z="5.1" />
-        <to x="5" y="0" z="5" />
-        <up x="0" y="1" z="0" /><!-- optional, default 0,1,0 -->
-    </ortho>
+<!--       <ortho id="demoOrtho" near="500" far="0" left="-10" right="10" top="10" bottom="-10">
+        <from x="10" y="10" z="10" />
+        <to x="0" y="0" z="0" />
+        <up x="0" y="1" z="0" />
+    </ortho> -->
+
+    <ortho id="demoOrtho" near="30" far="0.2" left="-50" right="50" top="20" bottom="-20">
+      <up x="2.1" y="-10" z="2.1" />
+      <to x="5" y="3" z="5" />
+      <from x="0" y="1" z="0" /><!-- optional, default 0,1,0 -->
+  </ortho>
 
     </views>
 
@@ -61,7 +67,7 @@
     <textures>
       <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
 
-      <texture id="erva_texture" path="./scenes/images/leaves.jpg" />
+      <texture id="erva_texture" path="./scenes/images/erva.jpeg" />
       <texture id="water_texture" path="./scenes/images/water_texture.jpg" />
       <texture id="madeira_texture" path="./scenes/images/madeira_texture.jpg" />
       <texture id="toalha_texture" path="./scenes/images/toalha_texture.jpg" />
@@ -78,7 +84,7 @@
           requires a distinct "id". At least one material should be present. -->
       <material id="alpha_material">
         <shininess value="0.5" />
-        <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
         <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
         <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -86,7 +92,7 @@
 
       <material id="shiny_material">
         <shininess value="0.8" />
-        <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
         <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
         <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -94,7 +100,7 @@
 
       <material id="not_shiny_material">
         <shininess value="0.2" />
-        <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
         <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
         <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -156,7 +162,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="7.75" y="0" z="3.0" />
+          <translation x="7.75" y="0.1" z="3.0" />
           <rotation axis="x" angle="-90" />
         </transformations>
         <descendants>
