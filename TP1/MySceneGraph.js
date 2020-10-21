@@ -318,7 +318,7 @@ class MySceneGraph {
           else this.onXMLMinorError("Unknown ortho child "+ viewsNode.children[i].children[j].nodeName+".Skipping");
         }
         //console.log(left,right,top,bottom,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
-        var camera = new CGFcameraOrtho(left,right,top,bottom,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
+        var camera = new CGFcameraOrtho(left,right,bottom,top,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
         if(cameraID==this.defaultCamera)
         def_set=true;
         this.camerasName[camerasNo]=cameraID;

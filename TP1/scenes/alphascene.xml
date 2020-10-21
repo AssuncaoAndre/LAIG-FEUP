@@ -8,11 +8,11 @@
       <!-- must be defined in one of the following NODE declarations -->
     </initials>
 
-    <views default="alpha_camera">
+    <views default="main_camera">
 
       <!-- at least one of the following type of cameras must be declared -->
 
-      <perspective id="alpha_camera" near="0.1" far="500" angle="45">
+      <perspective id="main_camera" near="0.1" far="500" angle="45">
 
         <from x="30" y="15" z="30" />
 
@@ -26,11 +26,19 @@
         <up x="0" y="1" z="0" />
     </ortho> -->
 
-    <ortho id="demoOrtho" near="30" far="0.2" left="-50" right="50" top="20" bottom="-20">
+    <ortho id="general_ortho" near="30" far="0.2" left="-50" right="50" top="20" bottom="-20">
       <up x="2.1" y="-10" z="2.1" />
       <to x="5" y="3" z="5" />
       <from x="0" y="1" z="0" /><!-- optional, default 0,1,0 -->
   </ortho>
+
+  <perspective id="texture_inheritance_camera" near="0.1" far="500" angle="45">
+
+    <from x="3" y="2" z="3" />
+
+    <to x="0" y="0" z="0" />
+
+  </perspective>
 
     </views>
 
@@ -44,7 +52,7 @@
     <lights>
       <!-- NOTE: this block "light" must be repeated as necessary with different "id". At least one light should be present, and a maximum of eight lights is accepted. -->
 
-       <light id="demoLight">            <!-- light identifier -->
+       <light id="main_light">            <!-- light identifier -->
           <enable value="1" />
           <!-- enable/disable -->
           <position x="10" y="12" z="9.5" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
@@ -53,11 +61,11 @@
           <specular r="1.0" g="1.0" b="1.0" a="1.0" />            <!-- specular component -->
       </light> 
 
-      <light id="Light2">            <!-- light identifier -->
+      <light id="red_light">            <!-- light identifier -->
         <enable value="1" />
         <!-- enable/disable -->
         <position x="5" y="5" z="5" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
-        <ambient r="1.0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
+        <ambient r="0.0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
         <diffuse r="1.0" g="0.0" b="0.0" a="1.0" />             <!-- diffuse component -->
         <specular r="1.0" g="0.0" b="0.0" a="0.0" />            <!-- specular component -->
       </light>
