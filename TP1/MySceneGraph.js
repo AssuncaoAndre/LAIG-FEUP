@@ -1170,8 +1170,11 @@ class MySceneGraph {
       } 
       else  if (this.textures[parentTex] != null ) 
         this.textures[parentTex].bind(0);
-      //}
+  
+      
+      if(currNode.textureAFS!=null && currNode.textureAFT!=null)
       currNode.leaves[i].updateTexCoords(currNode.textureAFS,currNode.textureAFT);
+
       currNode.leaves[i].display();
 
       this.scene.popMatrix();

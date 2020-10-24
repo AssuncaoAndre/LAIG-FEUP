@@ -17,7 +17,7 @@ class MySphere extends CGFobject {
     /**
      * @method initBuffers
      * Initializes the sphere buffers
-     * TODO: DEFINE TEXTURE COORDINATES
+     * 
      */
     initBuffers() {
         this.vertices = [];
@@ -66,14 +66,7 @@ class MySphere extends CGFobject {
                 theta += thetaInc;
 
                 //--- Texture Coordinates
-                // To be done... 
-                // May need some additional code also in the beginning of the function.
-                //s->0-1 t->incrementa
                 this.texCoords.push(longitude / this.longDivs, latitude / this.latDivs);
-                //this.texCoords.push(((2 * Math.PI) / this.slices) * longitude, (Math.PI / (2 * this.stacks)) * latitude);
-                //this.texCoords.push(((2 * Math.PI) / this.slices) * (longitude + 1), (Math.PI / (2 * this.stacks)) * (latitude + 1));
-                //this.texCoords.push(((2 * Math.PI) / this.slices) * longitude, (Math.PI / (2 * this.stacks)) * (latitude + 1));
-
 
 
 

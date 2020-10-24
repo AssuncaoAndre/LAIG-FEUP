@@ -315,7 +315,7 @@
       <node id="piscina">
         <material id="shiny_material" />
         <texture id="water_texture">
-          <amplification afs="1.0" aft="1.0" />
+          <amplification afs="10.0" aft="10.0" />
         </texture>
         <transformations>
           <translation x="10.0" y="0.1" z="10.0" />
@@ -338,7 +338,7 @@
           <translation x="-2.0" y="-2.0" z="0.0" />
         </transformations>
         <descendants>
-          <leaf type="sphere" radius="1" slices="10" stacks="10" />
+          <leaf type="sphere" radius="1" slices="20" stacks="20" />
         </descendants>
       </node>
 
@@ -442,7 +442,7 @@
       <node id="chao">
         <material id="null" />
         <texture id="erva_texture">
-          <amplification afs="1.0" aft="1.0" />
+          <amplification afs="20.0" aft="20.0" />
         </texture>
         <transformations>
           <translation x="0.0" y="0.0" z="20.0" />

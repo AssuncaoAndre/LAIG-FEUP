@@ -78,17 +78,24 @@ class MyTriangle extends CGFobject {
         //The defined indices (and corresponding vertices)
         //will be read in groups of three to draw triangles
         this.primitiveType = this.scene.gl.TRIANGLES;
-
+        
         this.initGLBuffers();
     }
-
     updateTexCoords(afs,aft) {
-/* 		this.texCoords = [
+        var a=[this.vertices[0],this.vertices[1]];
+        var b=[this.vertices[3],this.vertices[4]];
+        var c=[this.vertices[6],this.vertices[7]];
+/*         var distab=Math.sqrt((a[0]-b[0])*(a[0]-b[0])+(a[1]-b[1])*(a[1]-b[1]));
+        var distac=Math.sqrt((a[0]-c[0])*(a[0]-c[0])+(a[1]-c[1])*(a[1]-c[1]));
+        var distbc=Math.sqrt((c[0]-b[0])*(c[0]-b[0])+(c[1]-b[1])*(c[1]-b[1]));
+         */
+        
+        this.texCoords = [
             0,0,
-            afs/Math.abs((this.vertices[3]-this.vertices[0])),0,
-            afs/Math.abs((this.vertices[6]-this.vertices[0])),aft/Math.abs((this.vertices[7]-this.vertices[1])),
+            (a[1]-b[1])/afs,0,
+            (c[0]-a[0])/afs,(c[1]-b[1])/aft,
 
-        ]; */
+        ]; 
 		this.updateTexCoordsGLBuffers();
 	}
 }
