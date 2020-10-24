@@ -12,15 +12,54 @@ class MyTriangle extends CGFobject {
         this.initBuffers();
     }
     initBuffers() {
-        this.vertices = [
-            this.x1,this.y1,0, //0
-            this.x2,this.y2,0, //1
-            this.x3,this.y3,0, //2
+        this.vertices=[];
+        if(this.x1<=this.x2 && this.x1<=this.x3)
+        {
+            this.vertices.push(this.x1,this.y1,0);
+            if(this.x2<this.x3 || (this.x2==this.x3 && (this.y1-this.y2)<(this.y1-this.y3)))
+            {
+                this.vertices.push(this.x2,this.y2,0);
+                this.vertices.push(this.x3,this.y3,0);
+            }
+            else{
+                this.vertices.push(this.x3,this.y3,0);                
+                this.vertices.push(this.x2,this.y2,0);
+            }
+        }
 
-        ];
+        else if(this.x2<=this.x1 && this.x2<=this.x3)
+        {
+            this.vertices.push(this.x2,this.y2,0);
+            if(this.x1<this.x3 || (this.x1==this.x3 && (this.y2-this.y1)<(this.y2-this.y3)))
+            {
+                this.vertices.push(this.x1,this.y1,0);
+                this.vertices.push(this.x3,this.y3,0);
+            }
+            else{
+                this.vertices.push(this.x3,this.y3,0);                
+                this.vertices.push(this.x1,this.y1,0);
+            }
+        }
+
+        else if(this.x3<=this.x2 && this.x3<=this.x1)
+        {
+            this.vertices.push(this.x3,this.y3,0);
+            if(this.x1<this.x2 || (this.x1==this.x2 && (this.y3-this.y1)<(this.y3-this.y2)))
+            {
+                this.vertices.push(this.x1,this.y1,0);
+                this.vertices.push(this.x2,this.y2,0);
+            }
+            else{
+                this.vertices.push(this.x2,this.y2,0);
+                this.vertices.push(this.x1,this.y1,0);                
+            }
+        }
+        
+
+        console.log(this.vertices);
 
         //Counter-clockwise reference of vertices
-        this.indices = [0, 1, 2];
+        this.indices = [2, 1, 0];
 
 
 
@@ -32,9 +71,9 @@ class MyTriangle extends CGFobject {
 
 
         this.texCoords = [
-			0, 1,
-			1, 1,
 			0, 0,
+			1, 0,
+			0, 1,
 		]
         //The defined indices (and corresponding vertices)
         //will be read in groups of three to draw triangles
@@ -42,4 +81,14 @@ class MyTriangle extends CGFobject {
 
         this.initGLBuffers();
     }
+
+    updateTexCoords(afs,aft) {
+/* 		this.texCoords = [
+            0,0,
+            afs/Math.abs((this.vertices[3]-this.vertices[0])),0,
+            afs/Math.abs((this.vertices[6]-this.vertices[0])),aft/Math.abs((this.vertices[7]-this.vertices[1])),
+
+        ]; */
+		this.updateTexCoordsGLBuffers();
+	}
 }

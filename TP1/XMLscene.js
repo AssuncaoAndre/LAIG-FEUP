@@ -41,7 +41,7 @@ class XMLscene extends CGFscene {
         this.cylinder1 = new MyCylinder(this, 2,1,1,10,10);
         this.sphere = new MySphere(this,1,30,30);
         this.triangle = new MyTriangle(this,0,0,0,0,0,1,0,1,1);
-        this.torus = new MyTorus(this, 0.5, 2, 20, 20);
+        this.torus = new MyTorus(this, 0.5, 2, 8, 8);
 
         //Objects connected to MyInterface
         
@@ -155,7 +155,7 @@ class XMLscene extends CGFscene {
             this.Camerasupdate();
             
             // Displays the scene (MySceneGraph function).
-            //this.graph.displayScene();
+            this.graph.displayScene();
             
         }
         else
@@ -174,8 +174,8 @@ class XMLscene extends CGFscene {
         //this.triangle.display();
 
         //this.sphere.display();
-        this.cylinder.enableNormalViz();
-        this.cylinder.display();
+        //this.cylinder.enableNormalViz();
+       // this.cylinder.display();
     
         //this.torus.enableNormalViz();
         //this.torus.display();

@@ -30,12 +30,13 @@ class MyTorus extends CGFobject {
             var x = sliceRadius * cos_loops;
             var y = sliceRadius * sin_loops;
             var z = this.innerRadius * sin_slices;
-
+            
             this.vertices.push(x, y, z);
             this.normals.push(
-              cos_loops * sin_slices, 
-              sin_loops * sin_slices, 
-              cos_slices);
+              cos_loops * cos_slices, 
+              cos_slices*sin_loops,
+              sin_slices
+              );
 
 
             this.texCoords.push(u);
@@ -62,8 +63,12 @@ class MyTorus extends CGFobject {
             v2 += 1;
           }
         }
-
+        //console.log(v)
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+    updateTexCoords(afs,aft) {
+      /* 		this.texCoords = [...coords];
+          this.updateTexCoordsGLBuffers(); */
+        } 
 }

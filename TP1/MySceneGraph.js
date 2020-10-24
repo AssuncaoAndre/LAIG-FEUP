@@ -1129,19 +1129,28 @@ class MySceneGraph {
    * Displays the scene, processing each node, starting in the root node.
    */
   displayScene() {
-    this.displayScene_aux(this.idRoot, this.nodes[this.idRoot].textureID);
+    if(this.textures[this.idRoot]!="clear")
+    this.displayScene_aux(this.idRoot, this.nodes[this.idRoot].textureID,0);
+    else this.displayScene_aux(this.idRoot, this.nodes[this.idRoot].textureID,1);
   }
 
-  displayScene_aux(idNode, parentTex) {
+  displayScene_aux(idNode, parentTex,parentTex_clear) {
+  
     var currNode = this.nodes[idNode];
 
     if (this.materials[currNode.materialID] != null) {
       this.materials[currNode.materialID].apply();
     }
 
-    if (this.textures[currNode.textureID] != null) {
+    if (currNode.textureID == "clear") {
+      this.textures[parentTex].unbind(0);
+      parentTex_clear = 1;
+    }
+
+    else if (this.textures[currNode.textureID] != null) {
       this.textures[currNode.textureID].bind(0);
       parentTex = currNode.textureID;
+      parentTex_clear=0;
     }
 
     //To do: Create display loop for transversing the scene graph, calling the root node's display function
@@ -1149,18 +1158,20 @@ class MySceneGraph {
 
     for (var i = 0; i < currNode.children.length; i++) {
       this.scene.pushMatrix();
-      this.displayScene_aux(currNode.children[i], parentTex);
+      this.displayScene_aux(currNode.children[i], parentTex,parentTex_clear);
       this.scene.popMatrix();
     }
 
     for (var i = 0; i < currNode.leaves.length; i++) {
       this.scene.pushMatrix();
 
-      if (currNode.textureID == "clear") {
-      } else {
-        if (this.textures[parentTex] != null) this.textures[parentTex].bind(0);
-      }
-
+       if (parentTex_clear == 1) {
+        ;
+      } 
+      else  if (this.textures[parentTex] != null ) 
+        this.textures[parentTex].bind(0);
+      //}
+      currNode.leaves[i].updateTexCoords(currNode.textureAFS,currNode.textureAFT);
       currNode.leaves[i].display();
 
       this.scene.popMatrix();

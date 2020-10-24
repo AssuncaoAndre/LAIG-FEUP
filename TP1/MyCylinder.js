@@ -38,20 +38,20 @@ class MyCylinder extends CGFobject {
             var caa = Math.cos(ang + alphaAng);
             
 
-            this.vertices.push(ca*current_radius, current_height , -sa*current_radius );
-            this.vertices.push(caa*current_radius , current_height , -saa*current_radius );
-            this.vertices.push(ca*next_radius , current_height+height_increment, -sa*next_radius );
-            this.vertices.push(caa*next_radius, current_height+height_increment, -saa*next_radius );
-             console.log(current_height+height_increment);
+            this.vertices.push(ca*current_radius , -sa*current_radius, current_height );
+            this.vertices.push(caa*current_radius, -saa*current_radius , current_height  );
+            this.vertices.push(ca*next_radius, -sa*next_radius  , current_height+height_increment);
+            this.vertices.push(caa*next_radius, -saa*next_radius, current_height+height_increment );
+//             console.log(current_height+height_increment);
 
-            this.normals.push(ca*current_radius , 0, -sa*current_radius);
-            this.normals.push(caa*current_radius , 0, -saa*current_radius );
-            this.normals.push(ca*next_radius , 0, -sa*next_radius);
-            this.normals.push(caa*next_radius, 0, -saa*next_radius );
+            this.normals.push(ca*current_radius , -sa*current_radius, 0);
+            this.normals.push(caa*current_radius , -saa*current_radius, 0 );
+            this.normals.push(ca*next_radius , -sa*next_radius, 0);
+            this.normals.push(caa*next_radius, -saa*next_radius, 0 );
 
 
-            this.indices.push(4 * (i+(j*this.slices)), (4 * (i+(j*this.slices)) + 1), (4 * (i+(j*this.slices)) + 2));
-            this.indices.push((4 * (i+(j*this.slices)) + 3), (4 * (i+(j*this.slices)) + 2), (4 * (i+(j*this.slices)) + 1)); 
+            this.indices.push(4 * (i+(j*this.slices)), (4 * (i+(j*this.slices)) + 2), (4 * (i+(j*this.slices)) + 1));
+            this.indices.push((4 * (i+(j*this.slices)) + 3), (4 * (i+(j*this.slices)) + 1), (4 * (i+(j*this.slices)) + 2)); 
            
             this.texCoords.push(1 / this.slices * i, 1);
             this.texCoords.push(1 / this.slices * (i + 1), 1);
@@ -67,17 +67,21 @@ class MyCylinder extends CGFobject {
         this.vertices.push(0 , 0, 0);
         this.normals.push(0 , 0, -1 );
 
-        this.vertices.push(0 , this.height, 0);
+        this.vertices.push(0 , 0, this.height);
         this.normals.push(0 , 0, 1 );
 
         for(var i=0;i<this.slices*4;i=i+4)
         {
-            this.indices.push(i+1,i,this.stacks*this.slices*4);
-            this.indices.push(this.stacks*this.slices*4-i+2,this.stacks*this.slices*4-i+3,this.stacks*this.slices*4+1);
+            this.indices.push(i+1,this.stacks*this.slices*4,i);
+            this.indices.push(this.stacks*this.slices*4-i+2,this.stacks*this.slices*4+1,this.stacks*this.slices*4-i+3);
         }
-        this.indices.push(this.stacks*this.slices*4-this.slices*4+2,this.stacks*this.slices*4-this.slices*4+3,this.stacks*this.slices*4+1);
+        this.indices.push(this.stacks*this.slices*4-this.slices*4+2,this.stacks*this.slices*4+1,this.stacks*this.slices*4-this.slices*4+3);
  
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+    updateTexCoords(afs,aft) {
+        /* 		this.texCoords = [...coords];
+            this.updateTexCoordsGLBuffers(); */
+          } 
 }
