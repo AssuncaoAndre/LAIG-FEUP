@@ -864,8 +864,8 @@ class MySceneGraph {
         this.nodes[nodeID].textureID == "clear"
       );
       else if(this.textures[this.nodes[nodeID].textureID] == null) {
-        this.onXMLMinorError("Texture ID = " + this.nodes[nodeID].textureID + " doesn't exist. Assuming texture null");
-        this.nodes[nodeID].textureID = "null";
+        this.onXMLMinorError("Texture ID = " + this.nodes[nodeID].textureID + " doesn't exist. Assuming texture clear");
+        this.nodes[nodeID].textureID = "clear";
       }
       else if (
         (this.nodes[nodeID].textureAFS =
