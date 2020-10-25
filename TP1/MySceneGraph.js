@@ -245,25 +245,25 @@ class MySceneGraph {
     var def_set=false;
     this.defaultCamera = viewsNode.getAttribute("default");
     for (var i = 0; i < viewsNode.children.length; i++) {
-      
+
       if (viewsNode.children[i].nodeName == "perspective") {
-        
+
         var cameraID = viewsNode.children[i].getAttribute("id");
         var near = parseFloat(viewsNode.children[i].getAttribute("near"));
         var far = parseFloat(viewsNode.children[i].getAttribute("far"));
         var angle = parseFloat(viewsNode.children[i].getAttribute("angle"));
         if(viewsNode.children[i].children.length!=2)
         this.onXMLError("Perspective declaration has a invalid nunmber of children");
-        
+
         for (var j = 0; j < viewsNode.children[i].children.length; j++) {
-          
+
           if (viewsNode.children[i].children[j].nodeName == "from")
           {
-            
+
             var from_x = parseFloat(viewsNode.children[i].children[j].getAttribute("x"));
             var from_y = parseFloat(viewsNode.children[i].children[j].getAttribute("y"));
             var from_z = parseFloat(viewsNode.children[i].children[j].getAttribute("z"));
-            
+
           }
           else if (viewsNode.children[i].children[j].nodeName == "to")
           {
@@ -273,7 +273,7 @@ class MySceneGraph {
           }
           else this.onXMLMinorError("Unknown perspective child "+viewsNode.children[i].children[j].nodeName+".Skipping");
         }
-       
+
         var camera = new CGFcamera(angle,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z]);
         if(cameraID==this.defaultCamera)
         def_set=true;
@@ -282,7 +282,7 @@ class MySceneGraph {
         camerasNo++;
       }
       if (viewsNode.children[i].nodeName == "ortho") {
-        
+
         var cameraID = viewsNode.children[i].getAttribute("id");
         var near = parseFloat(viewsNode.children[i].getAttribute("near"));
         var far = parseFloat(viewsNode.children[i].getAttribute("far"));
@@ -292,16 +292,16 @@ class MySceneGraph {
         var bottom = parseFloat(viewsNode.children[i].getAttribute("bottom"));
         if(viewsNode.children[i].children.length!=3)
         this.onXMLError("Perspective declaration has a invalid number of children");
-        
+
         for (var j = 0; j < viewsNode.children[i].children.length; j++) {
-          
+
           if (viewsNode.children[i].children[j].nodeName == "from")
           {
-            
+
             var from_x = parseFloat(viewsNode.children[i].children[j].getAttribute("x"));
             var from_y = parseFloat(viewsNode.children[i].children[j].getAttribute("y"));
             var from_z = parseFloat(viewsNode.children[i].children[j].getAttribute("z"));
-            
+
           }
           else if (viewsNode.children[i].children[j].nodeName == "to")
           {
@@ -331,9 +331,9 @@ class MySceneGraph {
       this.onXMLMinorError("Default view not defined. Assuming first instance of camera");
       this.defaultCamera=viewsNode.children[0].cameraID;
     }
-    
 
-    
+
+
     //this.onXMLMinorError("To do: Parse views and create cameras.");
     //console.log(this.defaultCamera);
     return null;
@@ -451,7 +451,7 @@ class MySceneGraph {
           );
       }
       this.lights[lightId] = global;
-      
+
       numLights++;
     }
 
@@ -463,6 +463,17 @@ class MySceneGraph {
 
     this.log("Parsed lights");
     return null;
+  }
+
+  fileExists(url) {
+    if(url){
+        var request = new XMLHttpRequest();
+        request.open('GET', url, false);
+        request.send();
+        return request.status==200;
+    } else {
+        return false;
+    }
   }
 
   /**
@@ -498,6 +509,10 @@ class MySceneGraph {
       // Checks path od the current texture.
       var path = children[i].getAttribute("path");
       if (path == null) return "no Path defined for texture";
+
+      // check if directory exists
+      if(!this.fileExists(path))
+        this.onXMLMinorError(path + " file doesn't exist");
 
       var texture = new CGFtexture(this.scene, path);
       this.textures[textureID] = texture;
@@ -848,10 +863,15 @@ class MySceneGraph {
         this.nodes[nodeID].textureID == "null" ||
         this.nodes[nodeID].textureID == "clear"
       );
+      else if(this.textures[this.nodes[nodeID].textureID] == null) {
+        this.onXMLMinorError("Texture ID = " + this.nodes[nodeID].textureID + " doesn't exist. Assuming texture null");
+        this.nodes[nodeID].textureID = "null";
+      }
       else if (
         (this.nodes[nodeID].textureAFS =
           grandChildren[textureIndex].children[0].nodeName == "amplification")
       ) {
+
         this.nodes[nodeID].textureAFS = parseFloat(
           grandChildren[textureIndex].children[0].getAttribute("afs")
         );
@@ -886,6 +906,7 @@ class MySceneGraph {
         this.nodes[nodeID].textureAFS = 1.0;
         this.nodes[nodeID].textureAFT = 1.0;
       }
+
       // Descendants
       var descendantsNode = grandChildren[descendantsIndex].children;
       for (var j = 0; j < descendantsNode.length; j++) {
@@ -906,9 +927,15 @@ class MySceneGraph {
             var y2 = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("y2")
             );
-            this.nodes[nodeID].leaves.push(
-              new MyRectangle(this.scene, x1, y1, x2, y2)
-            );
+
+            if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) {
+              this.onXMLMinorError("invalid values of rectangle");
+            } else {
+              this.nodes[nodeID].leaves.push(
+                new MyRectangle(this.scene, x1, y1, x2, y2)
+              );
+            }
+
           } else if (type == "cylinder") {
             var height = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("height")
@@ -929,16 +956,22 @@ class MySceneGraph {
             var slices = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("slices")
             );
-            this.nodes[nodeID].leaves.push(
-              new MyCylinder(
-                this.scene,
-                height,
-                bottomRadius,
-                topRadius,
-                slices,
-                stacks
-              )
-            );
+
+            if (isNaN(height) || isNaN(topRadius) || isNaN(bottomRadius) || isNaN(stacks) || isNaN(slices)) {
+              this.onXMLMinorError("invalid values of cylinder");
+            } else {
+              this.nodes[nodeID].leaves.push(
+                new MyCylinder(
+                  this.scene,
+                  height,
+                  bottomRadius,
+                  topRadius,
+                  slices,
+                  stacks
+                )
+              );
+            }
+
           } else if (type == "triangle") {
             var x1 = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("x1")
@@ -961,9 +994,14 @@ class MySceneGraph {
               grandChildren[descendantsIndex].children[j].getAttribute("y3")
             );
 
-            this.nodes[nodeID].leaves.push(
-              new MyTriangle(this.scene, x1, y1, x2, y2, x3, y3)
-            );
+            if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2) || isNaN(x3) || isNaN(y3)) {
+              this.onXMLMinorError("invalid values of triangle");
+            } else {
+              this.nodes[nodeID].leaves.push(
+                new MyTriangle(this.scene, x1, y1, x2, y2, x3, y3)
+              );
+            }
+
           } else if (type == "sphere") {
             var radius_sphere = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("radius")
@@ -974,14 +1012,20 @@ class MySceneGraph {
             var stacks_sphere = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("stacks")
             );
-            this.nodes[nodeID].leaves.push(
-              new MySphere(
-                this.scene,
-                radius_sphere,
-                slices_sphere,
-                stacks_sphere
-              )
-            );
+
+            if (isNaN(radius_sphere) || isNaN(slices_sphere) || isNaN(stacks_sphere)) {
+              this.onXMLMinorError("invalid values of sphere");
+            } else {
+              this.nodes[nodeID].leaves.push(
+                new MySphere(
+                  this.scene,
+                  radius_sphere,
+                  slices_sphere,
+                  stacks_sphere
+                )
+              );
+            }
+
           } else if (type == "torus") {
             var innerRadious_torus = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("inner")
@@ -995,15 +1039,21 @@ class MySceneGraph {
             var loops_torus = parseFloat(
               grandChildren[descendantsIndex].children[j].getAttribute("loops")
             );
-            this.nodes[nodeID].leaves.push(
-              new MyTorus(
-                this.scene,
-                innerRadious_torus,
-                outerRadious_torus,
-                slices_torus,
-                loops_torus
-              )
-            );
+
+            if (isNaN(innerRadious_torus) || isNaN(outerRadious_torus) || isNaN(slices_torus) || isNaN(loops_torus)) {
+              this.onXMLMinorError("invalid values of torus");
+            } else {
+              this.nodes[nodeID].leaves.push(
+                new MyTorus(
+                  this.scene,
+                  innerRadious_torus,
+                  outerRadious_torus,
+                  slices_torus,
+                  loops_torus
+                )
+              );
+            }
+
           } else {
             this.onXMLMinorError(
               "Unknown leaf type " + type + ". Skipping leaf"
@@ -1122,9 +1172,6 @@ class MySceneGraph {
     return color;
   }
 
-
-
-
   /**
    * Displays the scene, processing each node, starting in the root node.
    */
@@ -1135,7 +1182,7 @@ class MySceneGraph {
   }
 
   displayScene_aux(idNode, parentTex,parentTex_clear) {
-  
+
     var currNode = this.nodes[idNode];
 
     if (this.materials[currNode.materialID] != null) {
@@ -1167,11 +1214,11 @@ class MySceneGraph {
 
        if (parentTex_clear == 1) {
         ;
-      } 
-      else  if (this.textures[parentTex] != null ) 
+      }
+      else  if (this.textures[parentTex] != null )
         this.textures[parentTex].bind(0);
-  
-      
+
+
       if(currNode.textureAFS!=null && currNode.textureAFT!=null)
       currNode.leaves[i].updateTexCoords(currNode.textureAFS,currNode.textureAFT);
 

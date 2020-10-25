@@ -60,7 +60,7 @@
           <ambient r="0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
           <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />             <!-- diffuse component -->
           <specular r="1.0" g="1.0" b="1.0" a="1.0" />            <!-- specular component -->
-      </light> 
+      </light>
 
       <light id="red_light">            <!-- light identifier -->
         <enable value="1" />
@@ -86,7 +86,7 @@
       <texture id="map_1" path="./scenes/images/map.jpg"/>
       <texture id="flag" path="./scenes/images/uporto.png"/>
 
-      
+
     </textures>
 
 
@@ -147,23 +147,23 @@
         <!-- declaring descendants, at least one node or one leaf must be present
         descendants may be mixed, nodes and leafs -->
         <descendants>
-          
+
           <noderef id="caixa_cena" />
           <noderef id="cadeira" /> <!-- "ss" is the identifier of a node or of leaf; -->
           <!-- may be repeated as necessary. It can refer an -->
           <!-- identifier of another node, before or later defined in the file. -->
-          
+
           <noderef id="toalha" />
-          
+
           <noderef id="piscina" />
-          
+
           <noderef id="chuveiro" />
 
           <noderef id="bandeira1" />
 
           <noderef id="bandeira2" />
-          
-          
+
+
 
           <!-- <leaf type="triangle" x1="0.0" y1="0" x2="0.0" y2="4.0" x3="4.0" y3="0.0" />
  -->
@@ -193,7 +193,7 @@
         </texture>
         <transformations>
           <translation x="11.5" y="0" z="4.0" />
-          
+
         </transformations>
         <descendants>
           <noderef id="bandeira_pano1" />
@@ -208,7 +208,7 @@
         </texture>
         <transformations>
           <translation x="9.5" y="0" z="4" />
-         
+
         </transformations>
         <descendants>
           <noderef id="bandeira_pano2" />
@@ -222,7 +222,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          
+
           <rotation axis="x" angle="-90" />
         </transformations>
         <descendants>
@@ -250,7 +250,7 @@
           <amplification afs="0.2" aft="0.2" />
         </texture>
         <transformations>
-          <translation x="0" y="2" z="0" />    
+          <translation x="0" y="2" z="0" />
         </transformations>
         <descendants>
           <leaf type="triangle" x1="0.0" y1="0" x2="0.0" y2="1.0" x3="1.0" y3="0.0" />
