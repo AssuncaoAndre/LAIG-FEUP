@@ -9,11 +9,11 @@
 ----
 ## Project information
 
-- (items describing main strong points)
+- Todo o trabalho foi realizado de acordo com enunciado. A cena contém todos os obejtos de avaliação pedidos (herança de texturas e materiais, texturas clear, amplificações em retângulos e triângulos, câmaras, luzes, interface, primitvas)
 - Scene
-  - (Brief description of the created scene)
-  - (relative link to the scene)
+  - Área de piscina com uma cadeira, uma bola, uma bóia, duas bandeiras, 4 paredes, uma prancha e um chuveiro
+  - ./scenes/alphascene.xml
 ----
 ## Issues/Problems
 
-- (items describing unimplemented features, bugs, problems, etc.)
+- No know issue

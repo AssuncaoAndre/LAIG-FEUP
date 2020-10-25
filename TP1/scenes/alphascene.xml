@@ -8,13 +8,13 @@
       <!-- must be defined in one of the following NODE declarations -->
     </initials>
 
-    <views default="texture_inheritance_camera">
+    <views default="main_camera">
 
       <!-- at least one of the following type of cameras must be declared -->
 
       <perspective id="main_camera" near="0.1" far="500" angle="45">
 
-        <from x="30" y="15" z="30" />
+        <from x="20" y="10" z="20" />
 
         <to x="0" y="-2" z="0" />
 
@@ -83,7 +83,6 @@
       <texture id="paredes_texture" path="./scenes/images/bank.jpg" />
       <texture id="metal_texture" path="./scenes/images/metal_texture.png" />
       <texture id="bola_texture" path="./scenes/images/bola_texture.jpg"/>
-      <texture id="map_1" path="./scenes/images/map.jpg"/>
       <texture id="flag" path="./scenes/images/uporto.png"/>
 
 
@@ -129,7 +128,7 @@
         <!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
 
 
-        <texture id="map_1">
+        <texture id="clear">
           <!-- declared texture superimposes the texture received from parent node
             id="null" maintains texture from parent node
             id="clear" clears texture declaration received from parent node -->
@@ -446,7 +445,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.0" y="5.0" z="0.3" />
+          <translation x="0" y="5.0" z="0.3" />
           <rotation axis="z" angle="-90.0" />
         </transformations>
         <descendants>
@@ -461,7 +460,7 @@
           <amplification afs="1.0" aft="1.0" />
         </texture>
         <transformations>
-          <translation x="0.0" y="0.3" z="-0.3" />
+          <translation x="0.0" y="0.5" z="-0.31" />
           <rotation axis="z" angle="-90.0" />
         </transformations>
         <descendants>

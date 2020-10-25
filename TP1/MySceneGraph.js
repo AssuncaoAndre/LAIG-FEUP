@@ -1190,6 +1190,7 @@ class MySceneGraph {
     }
 
     if (currNode.textureID == "clear") {
+      if(this.textures[parentTex]!=null)
       this.textures[parentTex].unbind(0);
       parentTex_clear = 1;
     }
