@@ -13,6 +13,8 @@ class MyTriangle extends CGFobject {
     }
     initBuffers() {
         this.vertices=[];
+
+        //organizes the vertices so they are always in the same order
         if(this.x1<=this.x2 && this.x1<=this.x3)
         {
             this.vertices.push(this.x1,this.y1,0);
@@ -56,9 +58,6 @@ class MyTriangle extends CGFobject {
         }
         
 
-        //console.log(this.vertices);
-
-        //Counter-clockwise reference of vertices
         this.indices = [2, 1, 0];
 
 
@@ -75,8 +74,7 @@ class MyTriangle extends CGFobject {
 			1, 1,
 			0, 0,
 		]
-        //The defined indices (and corresponding vertices)
-        //will be read in groups of three to draw triangles
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         
         this.initGLBuffers();
@@ -85,11 +83,7 @@ class MyTriangle extends CGFobject {
         var a=[this.vertices[0],this.vertices[1]];
         var b=[this.vertices[3],this.vertices[4]];
         var c=[this.vertices[6],this.vertices[7]];
-/*         var distab=Math.sqrt((a[0]-b[0])*(a[0]-b[0])+(a[1]-b[1])*(a[1]-b[1]));
-        var distac=Math.sqrt((a[0]-c[0])*(a[0]-c[0])+(a[1]-c[1])*(a[1]-c[1]));
-        var distbc=Math.sqrt((c[0]-b[0])*(c[0]-b[0])+(c[1]-b[1])*(c[1]-b[1]));
-         */
-        
+
         this.texCoords = [
             0,Math.abs((a[1]-b[1]))/afs,
             0,0,

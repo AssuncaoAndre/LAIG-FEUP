@@ -1,6 +1,7 @@
 /**
  * MyGraphNode class, representing an intermediate node in the scene graph.
- * @constructor
+ * @method constructor
+ * @param {string} nodeID
  **/
 
 function MyNode(nodeID) {

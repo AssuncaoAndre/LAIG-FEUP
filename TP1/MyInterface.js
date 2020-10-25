@@ -26,19 +26,24 @@ class MyInterface extends CGFinterface {
         return true;
     }
 
+    //creates lights and camera interface after the scene graph is created
+    /**
+     * @method interface_create
+     * @param  {Graph} graph - Scene Graph
+     */
     create(graph)
     { 
         var i=0;
         var light=this.gui.addFolder('lights');
         
-        //console.log(this.scene.lights);
+        
         for (var key in graph.lights) {
             light.add(this.scene.lights[i], 'enabled').name(key);
             i++;
         }
-        //console.log(graph.cameras);
+        
         this.gui.add(graph,'defaultCamera',graph.camerasName).name('Cameras');
-        //this.gui.add(this.scene, 'selectedTexture', this.scene.textures).name('Textures').onChange(this.scene.onSelectedTextureChanged.bind(this.scene));
+        
         
     }
 

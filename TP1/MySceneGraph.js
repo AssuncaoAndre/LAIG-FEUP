@@ -253,7 +253,7 @@ class MySceneGraph {
         var far = parseFloat(viewsNode.children[i].getAttribute("far"));
         var angle = parseFloat(viewsNode.children[i].getAttribute("angle"));
         if(viewsNode.children[i].children.length!=2)
-        this.onXMLError("Perspective declaration has a invalid nunmber of children");
+        this.onXMLError("Perspective declaration has a invalid number of children");
 
         for (var j = 0; j < viewsNode.children[i].children.length; j++) {
 
@@ -317,7 +317,7 @@ class MySceneGraph {
           }
           else this.onXMLMinorError("Unknown ortho child "+ viewsNode.children[i].children[j].nodeName+".Skipping");
         }
-        //console.log(left,right,top,bottom,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
+        
         var camera = new CGFcameraOrtho(left,right,bottom,top,near,far,[from_x,from_y,from_z],[to_x,to_y,to_z],[up_x,up_y,up_z]);
         if(cameraID==this.defaultCamera)
         def_set=true;
@@ -333,9 +333,6 @@ class MySceneGraph {
     }
 
 
-
-    //this.onXMLMinorError("To do: Parse views and create cameras.");
-    //console.log(this.defaultCamera);
     return null;
   }
 
@@ -538,7 +535,7 @@ class MySceneGraph {
     this.materials = [];
 
     var grandChildren = [];
-    var nodeNames = [];
+    
 
     var materialsNo = 0;
 
@@ -714,7 +711,7 @@ class MySceneGraph {
     this.nodes = [];
 
     var grandChildren = [];
-    var grandgrandChildren = [];
+    
     var nodeNames = [];
 
     // Any number of nodes.
@@ -752,8 +749,7 @@ class MySceneGraph {
 
       // Transformations
 
-      //this.onXMLMinorError("To do: Parse nodes.");
-
+  
       var transformationsNode = grandChildren[transformationsIndex].children;
 
       for (var j = 0; j < transformationsNode.length; j++) {
@@ -838,7 +834,7 @@ class MySceneGraph {
           );
         }
       }
-      // Material (not now)
+      // Material 
       this.nodes[nodeID].materialID = grandChildren[materialIndex].getAttribute(
         "id"
       );
@@ -855,7 +851,7 @@ class MySceneGraph {
         else this.onXMLError("Root node: Can't assume null. Terminating");
       }
 
-      // Texture (not now)
+      // Texture 
       this.nodes[nodeID].textureID = grandChildren[textureIndex].getAttribute(
         "id"
       );
@@ -1172,44 +1168,49 @@ class MySceneGraph {
     return color;
   }
 
-  /**
-   * Displays the scene, processing each node, starting in the root node.
-   */
+  //calls displayScene_aux() the first node (root) and sets the parent parameters
   displayScene() {
+    
     if(this.textures[this.idRoot]!="clear")
     this.displayScene_aux(this.idRoot, this.nodes[this.idRoot].textureID,0);
     else this.displayScene_aux(this.idRoot, this.nodes[this.idRoot].textureID,1);
   }
 
+  //function to recursively display the nodes, transversing the graph
   displayScene_aux(idNode, parentTex,parentTex_clear) {
 
     var currNode = this.nodes[idNode];
 
+    //applies material of current node
     if (this.materials[currNode.materialID] != null) {
       this.materials[currNode.materialID].apply();
     }
 
+    //if the texture is clear unbinds current texture
     if (currNode.textureID == "clear") {
       if(this.textures[parentTex]!=null)
       this.textures[parentTex].unbind(0);
       parentTex_clear = 1;
     }
-
+    //binds the texture
+    //if texture is nul doesn't bind ot unbind, the previous texture keeps binded
     else if (this.textures[currNode.textureID] != null) {
       this.textures[currNode.textureID].bind(0);
       parentTex = currNode.textureID;
       parentTex_clear=0;
     }
 
-    //To do: Create display loop for transversing the scene graph, calling the root node's display function
+    //updates the transform matrix 
     this.scene.multMatrix(currNode.transformMatrix);
 
+    //recursive function call for the child nodes using push and pop 
     for (var i = 0; i < currNode.children.length; i++) {
       this.scene.pushMatrix();
       this.displayScene_aux(currNode.children[i], parentTex,parentTex_clear);
       this.scene.popMatrix();
     }
 
+    //displays leaves
     for (var i = 0; i < currNode.leaves.length; i++) {
       this.scene.pushMatrix();
 
@@ -1219,10 +1220,11 @@ class MySceneGraph {
       else  if (this.textures[parentTex] != null )
         this.textures[parentTex].bind(0);
 
-
+      //updates texture coords
       if(currNode.textureAFS!=null && currNode.textureAFT!=null)
       currNode.leaves[i].updateTexCoords(currNode.textureAFS,currNode.textureAFT);
 
+      
       currNode.leaves[i].display();
 
       this.scene.popMatrix();

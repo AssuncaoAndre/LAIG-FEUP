@@ -1,4 +1,12 @@
 class MyTorus extends CGFobject {
+    /**
+     * @method constructor
+     * @param  {CGFscene} scene - MyScene object
+     * @param  {float} innerRadius - Rdius of the centre circle
+     * @param  {float} outerRadius - Radius of the tube
+     * @param  {integer} slices - number of slices around Y axis
+     * @param  {integer} loops - number of stacks along Y axis, from the center to the poles (half of sphere)
+     */
     constructor(scene, innerRadius, outerRadius, slices, loops) {
         super(scene);
         this.innerRadius = innerRadius;
@@ -63,7 +71,7 @@ class MyTorus extends CGFobject {
             v2 += 1;
           }
         }
-        //console.log(v)
+       
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }

@@ -37,15 +37,6 @@ class XMLscene extends CGFscene {
         this.loadingProgress=0;
 
         this.defaultAppearance=new CGFappearance(this);
-        this.cylinder = new MyCylinder(this, 2,1,1,10,10);
-        this.cylinder1 = new MyCylinder(this, 2,1,1,10,10);
-        this.sphere = new MySphere(this,1,30,30);
-        this.triangle = new MyTriangle(this,0,0,0,0,0,1,0,1,1);
-        this.torus = new MyTorus(this, 0.5, 2, 8, 8);
-
-        //Objects connected to MyInterface
-        
-
 
 
     }
@@ -57,6 +48,7 @@ class XMLscene extends CGFscene {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
 
+    //connect to the interface. updates the cameras when the dropdonw menu is changed
     Camerasupdate()
     {
         
@@ -171,14 +163,6 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
 
-        //this.triangle.display();
-
-        //this.sphere.display();
-        //this.cylinder.enableNormalViz();
-       // this.cylinder.display();
-    
-        //this.torus.enableNormalViz();
-        //this.torus.display();
-        // ---- END Background, camera and axis setup
+     
     }
 }
