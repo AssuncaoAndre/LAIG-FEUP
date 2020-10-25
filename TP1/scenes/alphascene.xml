@@ -26,6 +26,12 @@
         <up x="0" y="1" z="1" />
     </ortho>
 
+    <ortho id="Ortho_Amplifications" near="-1" far="10" left="-2" right="2" top="2" bottom="-1">
+      <from x="11" y="2" z="5" />
+      <to x="11" y="2" z="0" />
+      <up x="0" y="1" z="0" />
+  </ortho>
+
 
   <perspective id="texture_inheritance_camera" near="0.1" far="500" angle="45">
 
@@ -78,6 +84,9 @@
       <texture id="metal_texture" path="./scenes/images/metal_texture.png" />
       <texture id="bola_texture" path="./scenes/images/bola_texture.jpg"/>
       <texture id="map_1" path="./scenes/images/map.jpg"/>
+      <texture id="flag" path="./scenes/images/uporto.png"/>
+
+      
     </textures>
 
 
@@ -149,11 +158,15 @@
           <noderef id="piscina" />
           
           <noderef id="chuveiro" />
+
+          <noderef id="bandeira1" />
+
+          <noderef id="bandeira2" />
           
           
 
-          <leaf type="triangle" x1="0.0" y1="0" x2="0.0" y2="4.0" x3="4.0" y3="0.0" />
-
+          <!-- <leaf type="triangle" x1="0.0" y1="0" x2="0.0" y2="4.0" x3="4.0" y3="0.0" />
+ -->
         </descendants>
 
       </node>
@@ -172,6 +185,78 @@
           <leaf type="rectangle" x1="0" y1="0" x2="4.0" y2="2.0" />
         </descendants>
       </node>
+
+      <node id="bandeira1">
+        <material id="not_shiny_material" />
+        <texture id="clear">
+          <amplification afs="1.0" aft="1.0" />
+        </texture>
+        <transformations>
+          <translation x="11.5" y="0" z="4.0" />
+          
+        </transformations>
+        <descendants>
+          <noderef id="bandeira_pano1" />
+          <noderef id="bandeira_sup" />
+        </descendants>
+      </node>
+
+      <node id="bandeira2">
+        <material id="not_shiny_material" />
+        <texture id="clear">
+          <amplification afs="1.0" aft="1.0" />
+        </texture>
+        <transformations>
+          <translation x="9.5" y="0" z="4" />
+         
+        </transformations>
+        <descendants>
+          <noderef id="bandeira_pano2" />
+          <noderef id="bandeira_sup" />
+        </descendants>
+      </node>
+
+      <node id="bandeira_sup">
+        <material id="not_shiny_material" />
+        <texture id="null">
+          <amplification afs="1.0" aft="1.0" />
+        </texture>
+        <transformations>
+          
+          <rotation axis="x" angle="-90" />
+        </transformations>
+        <descendants>
+          <leaf type="cylinder" height="2.0" topRadius="0.1" bottomRadius="0.1" stacks="5" slices="10" />
+        </descendants>
+      </node>
+
+
+      <node id="bandeira_pano1">
+        <material id="null" />
+        <texture id="flag">
+          <amplification afs="1.0" aft="1.0" />
+        </texture>
+        <transformations>
+          <translation x="0" y="2" z="0" />
+        </transformations>
+        <descendants>
+          <leaf type="triangle" x1="0.0" y1="0" x2="0.0" y2="1.0" x3="1.0" y3="0.0" />
+        </descendants>
+      </node>
+
+      <node id="bandeira_pano2">
+        <material id="null" />
+        <texture id="flag">
+          <amplification afs="0.2" aft="0.2" />
+        </texture>
+        <transformations>
+          <translation x="0" y="2" z="0" />    
+        </transformations>
+        <descendants>
+          <leaf type="triangle" x1="0.0" y1="0" x2="0.0" y2="1.0" x3="1.0" y3="0.0" />
+        </descendants>
+      </node>
+
 
 
       <!--********

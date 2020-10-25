@@ -75,7 +75,7 @@ class MyRectangle extends CGFobject {
             0,Math.abs(this.y2-this.y1)/aft,
 			Math.abs(this.x2-this.x1)/afs,Math.abs(this.y2-this.y1)/aft
 		];
-		console.log(this.texCoords);
+		//console.log(this.texCoords);
 			
 		this.updateTexCoordsGLBuffers(); 
 	} 
