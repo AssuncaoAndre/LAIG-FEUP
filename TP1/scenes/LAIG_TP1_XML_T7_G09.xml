@@ -116,6 +116,14 @@
         <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
       </material>
+
+      <material id="red_material">
+        <shininess value="0.5" />
+        <ambient r="0.2" g="0.0" b="0.0" a="1.0" />
+        <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
+        <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
+      </material>
     </materials>
 
     <nodes>
@@ -161,6 +169,8 @@
           <noderef id="bandeira1" />
 
           <noderef id="bandeira2" />
+
+          <noderef id="cadeira_mat" />
 
 
 
@@ -264,6 +274,22 @@
       CADEIRA
       *************
       **********-->
+
+      <node id="cadeira_mat">
+        <material id="red_material" />
+        <texture id="clear">
+          <amplification afs="1.0" aft="1.0" />
+        </texture>
+        <transformations>
+          <translation x="5.0" y="0" z="2.0" />
+          <rotation axis="y" angle="90" />
+        </transformations>
+        <descendants>
+          <noderef id="pernas" />
+          <noderef id="assento" />
+          <noderef id="encosto" />
+        </descendants>
+      </node>
 
       <node id="cadeira">
         <material id="not_shiny_material" />
