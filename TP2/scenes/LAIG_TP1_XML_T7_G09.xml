@@ -126,6 +126,57 @@
       </material>
     </materials>
 
+
+<animations>
+  <animation id="test">
+    
+    <keyframe instant="5">
+
+  
+      <translation x="0" y="0" z="0" />
+  
+      <rotation axis="x" angle="0" />
+      <rotation axis="y" angle="0" />
+      <rotation axis="z" angle="0" />
+  
+      <scale sx="1" sy="1" sz="1" />
+  
+    </keyframe>
+
+    <keyframe instant="10">
+
+  
+      <translation x="0" y="5" z="0" />
+    
+               <rotation axis="x" angle="0" />
+    
+               <rotation axis="y" angle="360" />
+    
+               <rotation axis="z" angle="0" />
+    
+      <scale sx="1.2" sy="1.2" sz="1.2" />
+    
+      </keyframe>
+
+      <keyframe instant="20">
+
+  
+        <translation x="0" y="0" z="0" />
+      
+                 <rotation axis="x" angle="0" />
+      
+                 <rotation axis="y" angle="0" />
+      
+                 <rotation axis="z" angle="0" />
+      
+        <scale sx="1" sy="1" sz="1" />
+      
+        </keyframe>
+  
+  </animation>
+  
+</animations>
+
     <nodes>
 
       <node id="root">
@@ -300,6 +351,7 @@
           <translation x="1.0" y="0" z="2.0" />
           <rotation axis="y" angle="90" />
         </transformations>
+        <animationref id="test" />
         <descendants>
           <noderef id="pernas" />
           <noderef id="assento" />
