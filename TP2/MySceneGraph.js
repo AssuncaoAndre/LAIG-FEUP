@@ -6,10 +6,11 @@ var VIEWS_INDEX = 1;
 var ILLUMINATION_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
-var MATERIALS_INDEX = 5;
-var ANIMATIONS_INDEX = 6;
-var NODES_INDEX = 6;
-var NODES_INDEX_ANIMATIONS = 7;
+var SPRITESHEETS_INDEX = 5;
+var MATERIALS_INDEX = 6;
+var ANIMATIONS_INDEX = 7;
+var NODES_INDEX = 7;
+var NODES_INDEX_ANIMATIONS = 8;
 
 
 /**
@@ -168,6 +169,16 @@ class MySceneGraph {
 
       //Parse textures block
       if ((error = this.parseTextures(nodes[index])) != null) return error;
+    }
+
+    if ((index = nodeNames.indexOf("spritesheets")) == -1)
+      return "tag <spritesheets> missing";
+    else {
+      if (index != SPRITESHEETS_INDEX)
+        this.onXMLMinorError("tag <spritesheets> out of order");
+
+      //Parse textures block
+      if ((error = this.parseSpritesheets(nodes[index])) != null) return error;
     }
 
     // <materials>
@@ -542,6 +553,65 @@ class MySceneGraph {
 
     return null;
   }
+
+/**
+   * Parses the <spritesheets> block.
+   * @param {spritesheets block element} spritesheetsNode
+   */
+  parseSpritesheets(spritesheetsNode) {
+    var children = spritesheetsNode.children;
+
+    this.spritesheets = [];
+
+    var spritesheetsNo = 0;
+
+    for (var i = 0; i < children.length; i++) {
+      if (children[i].nodeName != "spritesheet") {
+        this.onXMLMinorError("unknwon tag <" + children[i].nodeName + ">");
+        continue;
+      }
+
+      var spritesheetID = this.reader.getString(children[i], "id");
+
+      // Get id of the current spritesheet.
+      if (spritesheetID == null) return "no ID defined for spritesheet";
+
+      // Checks for repeated IDs.
+      if (this.spritesheets[spritesheetID] != null)
+        return (
+          "ID must be unique for each spritesheet (conflict: ID = " +
+          spritesheetID +
+          ")"
+        );
+
+      // Checks path od the current spritesheet.
+      var path = children[i].getAttribute("path");
+      if (path == null) return "no Path defined for spritesheet";
+
+      // check if directory exists
+      if(!this.fileExists(path))
+        this.onXMLMinorError(path + " file doesn't exist");
+
+        var sizeM = parseFloat(this.reader.getString(children[i], "sizeM"));
+        var sizeN = parseFloat(this.reader.getString(children[i], "sizeN"));
+
+      var spritesheet = new MySpritesheet(this.scene, path,sizeM,sizeN);
+     
+      
+      this.spritesheets[spritesheetID] = spritesheet;
+
+      spritesheetsNo++;
+    }
+
+    // Checks if there is at least one texture block
+    if (spritesheetsNo <= 0) return "at least one texture block must be defined";
+
+    this.log("Parsed textures");
+
+    return null;
+  }
+
+
 
   /**
    * Parses the <materials> node.
@@ -1185,7 +1255,25 @@ class MySceneGraph {
               );
             }
 
-          } else {
+          }
+          else if(type=="spritetext")
+          {
+            var text=grandChildren[descendantsIndex].children[j].getAttribute("text");
+            this.nodes[nodeID].leaves.push( new MySpriteText(this.scene,text));
+          }
+          else if(type=="spriteanim")
+          {
+            var ssid=grandChildren[descendantsIndex].children[j].getAttribute("ssid");
+            var duration=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("duration"));
+            var startCell=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("startCell"));
+            var endCell=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("endCell"));
+            var spriteanimation=new MySpriteAnimation(this.scene,this.spritesheets[ssid],duration,startCell,endCell);
+            this.nodes[nodeID].leaves.push(spriteanimation );
+            this.scene.spriteanimations.push(spriteanimation);
+            
+          }
+          
+          else {
             this.onXMLMinorError(
               "Unknown leaf type " + type + ". Skipping leaf"
             );
@@ -1357,7 +1445,10 @@ class MySceneGraph {
 
       //updates texture coords
       if(currNode.textureAFS!=null && currNode.textureAFT!=null)
-      currNode.leaves[i].updateTexCoords(currNode.textureAFS,currNode.textureAFT);
+      {
+       if(typeof currNode.leaves[i].updateTexCoords==="function")
+        currNode.leaves[i].updateTexCoords(currNode.textureAFS,currNode.textureAFT);
+      }
 
       
       currNode.leaves[i].display();
@@ -1397,6 +1488,7 @@ class MySceneGraph {
     }
    
   }
+
   update_aux(idNode,difference,total_time)
   {
     var current_instant;
@@ -1504,7 +1596,7 @@ class MySceneGraph {
           Math.pow(currNode.animation.scale_vec[current_instant][0],1/div_factor),
           Math.pow(currNode.animation.scale_vec[current_instant][1],1/div_factor),
           Math.pow(currNode.animation.scale_vec[current_instant][2],1/div_factor)];
-
+          console.log(currNode.animation.current_scale_vec);
           currNode.animation.current_scale_vec[current_instant][0]=currNode.animation.current_scale_vec[current_instant][0]*scale_vec[0];
           currNode.animation.current_scale_vec[current_instant][1]=currNode.animation.current_scale_vec[current_instant][1]*scale_vec[1];
           currNode.animation.current_scale_vec[current_instant][2]=currNode.animation.current_scale_vec[current_instant][2]*scale_vec[2];
@@ -1518,10 +1610,11 @@ class MySceneGraph {
               currNode.animation.current_scale_vec[current_instant][2]=currNode.animation.current_scale_vec[current_instant][2]/(currNode.animation.trans_vec[current_instant][2]/div_factor);
 
               scale_vec=[
-                currNode.animation.scale_vec[current_instant][0]/currNode.animation.current_scale_vec[current_instant][0],
-                currNode.animation.scale_vec[current_instant][1]/currNode.animation.current_scale_vec[current_instant][1],
-                currNode.animation.scale_vec[current_instant][2]/currNode.animation.current_scale_vec[current_instant][2],
+                currNode.animation.current_scale_vec[current_instant][0]=currNode.animation.scale_vec[current_instant][0]/currNode.animation.current_scale_vec[current_instant][0],
+                currNode.animation.current_scale_vec[current_instant][1]=currNode.animation.scale_vec[current_instant][1]/currNode.animation.current_scale_vec[current_instant][1],
+                currNode.animation.current_scale_vec[current_instant][2]=currNode.animation.scale_vec[current_instant][2]/currNode.animation.current_scale_vec[current_instant][2]
               ];
+              console.log(scale_vec[1]);
             }        
 
         //console.log(scale_vec);

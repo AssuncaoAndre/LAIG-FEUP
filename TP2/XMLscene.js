@@ -42,6 +42,9 @@ class XMLscene extends CGFscene {
         this.first=0;
         this.first_time=0;
         this.difference=0;
+        this.sprite_shader=new CGFshader(this.gl,"shaders/sprite_shader.vert","shaders/sprite_shader.frag");
+        this.spriteanimations=[];
+
         
 
     }
@@ -134,6 +137,7 @@ class XMLscene extends CGFscene {
         this.updateProjectionMatrix();
         this.loadIdentity();
 
+        //this.setActiveShader(shader);
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
 
@@ -185,6 +189,10 @@ class XMLscene extends CGFscene {
         
         this.previous_time=t;
         this.graph.update(this.difference,this.total_time/1000);
+        for (var i=0;i<this.spriteanimations.length;i++)
+        {
+            this.spriteanimations[i].update(t);
+        }
         
     }
 }

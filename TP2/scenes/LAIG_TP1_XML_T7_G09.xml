@@ -88,6 +88,13 @@
 
     </textures>
 
+    <spritesheets>
+      
+      <spritesheet id="explosion" path="./scenes/images/explosion.png" sizeM="4" sizeN="4" />
+    </spritesheets>
+
+
+
 
     <materials>
       <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
@@ -222,7 +229,7 @@
           <noderef id="bandeira2" />
 
           <noderef id="cadeira_mat" />
-
+         
 
 
           <!-- <leaf type="triangle" x1="0.0" y1="0" x2="0.0" y2="4.0" x3="4.0" y3="0.0" />
@@ -242,7 +249,9 @@
           <rotation axis="x" angle="-90" />
         </transformations>
         <descendants>
+          
           <leaf type="rectangle" x1="0" y1="0" x2="4.0" y2="2.0" />
+          
         </descendants>
       </node>
 
@@ -258,6 +267,7 @@
         <descendants>
           <noderef id="bandeira_pano1" />
           <noderef id="bandeira_sup" />
+          <leaf type="spritetext" text="welele" />
         </descendants>
       </node>
 
@@ -273,6 +283,7 @@
         <descendants>
           <noderef id="bandeira_pano2" />
           <noderef id="bandeira_sup" />
+         <leaf type="spriteanim" ssid="explosion" duration="2" startCell="0" endCell="15" />
         </descendants>
       </node>
 
@@ -351,11 +362,13 @@
           <translation x="1.0" y="0" z="2.0" />
           <rotation axis="y" angle="90" />
         </transformations>
-        <animationref id="test" />
+        <!--<animationref id="test" />-->
         <descendants>
           <noderef id="pernas" />
           <noderef id="assento" />
           <noderef id="encosto" />
+         
+          
         </descendants>
       </node>
 

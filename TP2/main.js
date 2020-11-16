@@ -62,6 +62,10 @@ serialInclude([
   "MyTorus.js",
   "MyTriangle.js",
   "MyAnimation.js",
+  "MySpriteAnimation.js",
+  "MySpritesheet.js",
+  "MySpriteText.js",
+  
 
   (main = function () {
     // Standard application, scene and interface setup
