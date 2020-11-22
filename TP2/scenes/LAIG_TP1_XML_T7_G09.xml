@@ -84,13 +84,13 @@
       <texture id="metal_texture" path="./scenes/images/metal_texture.png" />
       <texture id="bola_texture" path="./scenes/images/bola_texture.jpg"/>
       <texture id="flag" path="./scenes/images/uporto.png"/>
-
-
+      <texture id="espreguicadeira_texture" path="./scenes/images/padrao.jpg"/>
+      <texture id="vidral" path="./scenes/images/vidral.jpg"/>
     </textures>
 
     <spritesheets>
       
-      <spritesheet id="explosion" path="./scenes/images/explosion.png" sizeM="4" sizeN="4" />
+      <spritesheet id="fire" path="./scenes/images/fire.png" sizeM="5" sizeN="2" />
     </spritesheets>
 
 
@@ -229,6 +229,9 @@
           <noderef id="bandeira2" />
 
           <noderef id="cadeira_mat" />
+          <noderef id="barril"/>
+          <noderef id="espreguicadeira"/>
+          <!-- <leaf type="plane" npartsU="5" npartsV="8"/> -->
          
 
 
@@ -238,6 +241,67 @@
 
       </node>
 
+      <node id="espreguicadeira">
+        <material id="not_shiny_material"/>
+        <texture id="espreguicadeira_texture">
+          <amplification afs="1.0" aft="1.0"/>
+        </texture>
+        <transformations>
+          <translation x="2" y="0" z="13"/>
+          <rotation axis="x" angle="-90" />
+          
+        </transformations>
+        <descendants>
+          <leaf type="patch" npointsU="4" npointsV="2" npartsU="10" npartsV="10">
+            <controlpoint x="-1" y="0" z="2"/>
+            <controlpoint x="-1" y="1" z="2"/>
+
+            <controlpoint x="0" y="0" z="-0.75"/>
+            <controlpoint x="0" y="1" z="-0.75"/>
+
+            <controlpoint x="1" y="0" z="1"/>
+            <controlpoint x="1" y="1" z="1"/>
+
+            <controlpoint x="2" y="0" z="0"/>
+            <controlpoint x="2" y="1" z="0"/>
+
+          </leaf>
+        </descendants>
+
+      </node>
+
+
+      <node id="barril">
+        <material id="not_shiny_material"/>
+        <texture id="madeira_texture">
+          <amplification afs="1.0" aft="1.0"/>
+        </texture>
+        <transformations>
+          <translation x="3" y="0" z="11"/>
+          <rotation axis="x" angle="-90" />
+          <rotation axis="z" angle="-90" />
+        </transformations>
+        <descendants>
+          <noderef id="tampa"/>
+          <leaf type="defbarrel" base="1.0" middle="1.5" height="1.0" slices="10" stacks="10"/>
+        </descendants>
+
+      </node>
+
+      <node id="tampa">
+        <material id="shiny_material"/>
+        <texture id="vidral">
+          <amplification afs="1.0" aft="1.0"/>
+        </texture>
+        <transformations>
+          <translation x="0" y="0" z="1"/>
+
+        </transformations>
+        <descendants>
+          <leaf type="plane" npartsU="2" npartsV="2"/>
+        </descendants>
+
+      </node>
 
       <node id="toalha">
         <material id="not_shiny_material" />
@@ -267,7 +331,8 @@
         <descendants>
           <noderef id="bandeira_pano1" />
           <noderef id="bandeira_sup" />
-          <leaf type="spritetext" text="welele" />
+          <leaf type="spritetext" text="LAIG 2020" />
+
         </descendants>
       </node>
 
@@ -282,8 +347,8 @@
         </transformations>
         <descendants>
           <noderef id="bandeira_pano2" />
-          <noderef id="bandeira_sup" />
-         <leaf type="spriteanim" ssid="explosion" duration="2" startCell="0" endCell="15" />
+         <noderef id="bandeira_sup" />
+         
         </descendants>
       </node>
 
@@ -362,7 +427,7 @@
           <translation x="1.0" y="0" z="2.0" />
           <rotation axis="y" angle="90" />
         </transformations>
-        <!--<animationref id="test" />-->
+        <animationref id="test" />
         <descendants>
           <noderef id="pernas" />
           <noderef id="assento" />
@@ -420,6 +485,36 @@
         </descendants>
       </node>
 
+      <node id="fire_frente">
+        
+          <material id="null" />
+          <texture id="null">
+            <amplification afs="1.0" aft="1.0" />
+          </texture>
+          <transformations>
+            <translation x="-0.25" y="0" z="1.5"/>
+            <rotation axis="x" angle="-90.0" />
+          </transformations>
+          <descendants>
+            <leaf type="spriteanim" ssid="fire" duration="1" startCell="7" endCell="9" />
+           </descendants>
+      </node>
+
+      <node id="fire_tras">
+        <material id="null" />
+        <texture id="null">
+          <amplification afs="1.0" aft="1.0" />
+        </texture>
+        <transformations>
+          <translation x="0.25" y="0" z="1.5"/>
+          <rotation axis="x" angle="-90.0" />
+          <rotation axis="y" angle="180.0" />
+        </transformations>
+        <descendants>
+          <leaf type="spriteanim" ssid="fire" duration="0.5" startCell="7" endCell="9" />
+         </descendants>
+    </node>
+
       <node id="perna1">
         <material id="null" />
         <texture id="null">
@@ -430,6 +525,8 @@
 
         </transformations>
         <descendants>
+          <noderef id="fire_frente"/>
+          <noderef id="fire_tras"/>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
         </descendants>
       </node>
@@ -445,6 +542,8 @@
 
         </transformations>
         <descendants>
+          <noderef id="fire_frente"/>
+          <noderef id="fire_tras"/>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
         </descendants>
       </node>
@@ -460,6 +559,8 @@
 
         </transformations>
         <descendants>
+          <noderef id="fire_frente"/>
+          <noderef id="fire_tras"/>
           <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
         </descendants>
       </node>
@@ -474,6 +575,8 @@
 
         </transformations>
         <descendants>
+          <noderef id="fire_frente"/>
+          <noderef id="fire_tras"/>
           <leaf type="cylinder" height="1" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
         </descendants>
       </node>

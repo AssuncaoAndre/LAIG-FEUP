@@ -30,6 +30,8 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 
         this.axis = new CGFaxis(this);
         this.loadingProgressObject=new MyRectangle(this, -1, -.1, 1, .1);
@@ -44,6 +46,9 @@ class XMLscene extends CGFscene {
         this.difference=0;
         this.sprite_shader=new CGFshader(this.gl,"shaders/sprite_shader.vert","shaders/sprite_shader.frag");
         this.spriteanimations=[];
+        
+        
+       
 
         
 
@@ -117,7 +122,7 @@ class XMLscene extends CGFscene {
         this.interface.create(this.graph);
         
         this.sceneInited = true;
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(25);
         
 
 
@@ -173,7 +178,7 @@ class XMLscene extends CGFscene {
         }
 
         this.popMatrix();
-
+       
      
     }
     update(t)

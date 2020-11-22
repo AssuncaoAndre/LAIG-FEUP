@@ -9,30 +9,32 @@ class MySpritesheet extends CGFobject {
     constructor(scene, texture, sizeM, sizeN) {
         super(scene);
         this.texture = new CGFtexture(this.scene,texture);
-        this. sizeM =  sizeM;
-        this.sizeN = sizeN;
+        
+        this.sizeC =  sizeM;
+        this.sizeL = sizeN;
         this.shader=new CGFshader(this.scene.gl,"shaders/sprite_shader.vert","shaders/sprite_shader.frag");
         
 
 
         this.shader.setUniformsValues({ uSampler2: 1 });
-        this.shader.setUniformsValues({ sizeM: this.sizeM});
-        this.shader.setUniformsValues({ sizeN: this.sizeN});
-        this.shader.setUniformsValues({ n: 0});
-        this.shader.setUniformsValues({ m: 0}); 
+        this.shader.setUniformsValues({ sizeC: this.sizeC});
+        this.shader.setUniformsValues({ sizeL: this.sizeL});
+        this.shader.setUniformsValues({ linha: 0});
+        this.shader.setUniformsValues({ coluna: 0}); 
 
         
 
     }
 
-    activateCellMN(m, n) 
+    activateCellMN(coluna, linha) 
     {
-        
+        if(this.sizeC==8)
+        console.log(coluna,linha);
         
 
-        this.shader.setUniformsValues({ n: n});
+        this.shader.setUniformsValues({ coluna: coluna});
         
-        this.shader.setUniformsValues({ m: m});
+        this.shader.setUniformsValues({ linha: linha});
       
         this.texture.bind(0);
         
@@ -42,7 +44,7 @@ class MySpritesheet extends CGFobject {
     activateCellP(p)
     {
         
-        this.activateCellMN(p%this.sizeN, Math.floor(p/this.sizeN)); 
+        this.activateCellMN(p%this.sizeC, Math.floor(p/this.sizeC)); 
     }
 
     unbind()

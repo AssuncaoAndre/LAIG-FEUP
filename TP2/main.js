@@ -65,7 +65,9 @@ serialInclude([
   "MySpriteAnimation.js",
   "MySpritesheet.js",
   "MySpriteText.js",
-  
+  "MyPlane.js",
+  "MyPatch.js",
+  "MyBarrel.js",
 
   (main = function () {
     // Standard application, scene and interface setup

@@ -1103,10 +1103,12 @@ class MySceneGraph {
       var animationsIndex;
         if(nodeNames.indexOf("animationref")!=-1)
         {
+
           animationsIndex=nodeNames.indexOf("animationref");
           var animationref=grandChildren[animationsIndex].getAttribute("id");
          
           this.nodes[nodeID].animation=this.animations[animationref];
+          this.nodes[nodeID].display=0;
         }
       // Descendants
       var descendantsNode = grandChildren[descendantsIndex].children;
@@ -1272,6 +1274,41 @@ class MySceneGraph {
             this.scene.spriteanimations.push(spriteanimation);
             
           }
+          else if(type=="plane")
+          {
+            var npartsU=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("npartsU"));
+            var npartsV=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("npartsV"));
+            this.nodes[nodeID].leaves.push(new MyPlane(this.scene,npartsU,npartsV));
+          }
+
+          else if(type=="patch")
+          {
+            
+            var npointsU=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("npointsU"));
+            var npointsV=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("npointsV"));
+            var npartsU=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("npartsU"));
+            var npartsV=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("npartsV"));
+            var controlpoints=[];
+            for (var k=0;k<npointsV*npointsU;k++)
+            {
+              var x=parseFloat(grandChildren[descendantsIndex].children[j].children[k].getAttribute("x"));
+              var y=parseFloat(grandChildren[descendantsIndex].children[j].children[k].getAttribute("y"));
+              var z=parseFloat(grandChildren[descendantsIndex].children[j].children[k].getAttribute("z"));
+              controlpoints.push([x,y,z]);
+            }
+            this.nodes[nodeID].leaves.push(new MyPatch(this.scene, npointsU, npointsV, npartsU, npartsV, controlpoints));
+            //console.log(this.nodes[nodeID].leaves);
+          }
+          else if(type=="defbarrel")
+          {
+            var base=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("base"));
+            var middle=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("middle"));
+            var height=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("height"));
+            var slices=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("slices"));
+            var stacks=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("stacks"));
+            this.nodes[nodeID].leaves.push(new MyBarrel(this.scene,base,middle,height,slices,stacks));
+          
+          }
           
           else {
             this.onXMLMinorError(
@@ -1403,6 +1440,8 @@ class MySceneGraph {
   displayScene_aux(idNode, parentTex,parentTex_clear) {
 
     var currNode = this.nodes[idNode];
+    if(currNode.display)
+    {
 
     //applies material of current node
     if (this.materials[currNode.materialID] != null) {
@@ -1455,7 +1494,8 @@ class MySceneGraph {
 
       this.scene.popMatrix();
     }
-  }
+  }}
+
   update(difference,total_time)
   {
     var current_instant;
@@ -1475,6 +1515,7 @@ class MySceneGraph {
       
       if(current_instant>0)
       {
+        this.currNode.display=1;
         this.scene.multMatrix(currNode.animation.transformMatrix[current_instant]/((currNode.animation.instants[current_instant+1]-currNode.animation.instants[current_instant]))/(difference/1000));
       }
     
@@ -1497,26 +1538,30 @@ class MySceneGraph {
 
     if(currNode.animation!=null)
     {
+      var check=0;
 
       for(var i=0;i<currNode.animation.instants.length;i++)
       {
         
         if(total_time<currNode.animation.instants[i])
         {
-          current_instant=i;
+          current_instant=i-1;
+          check=1;
           break;
         }
       }
-       // console.log(currNode.animation.instants);
-      if(current_instant>0)
+      if(check==0)
+      current_instant=-1;
+      if(current_instant>-1)
       {
+        currNode.display=1;
         
-         if(current_instant>=1)
+          if(current_instant>0)
         {
        
-          if( currNode.animation.current_trans_vec[current_instant-1][0]<currNode.animation.trans_vec[current_instant-1][0]
-            ||currNode.animation.current_trans_vec[current_instant-1][1]<currNode.animation.trans_vec[current_instant-1][1]
-            ||currNode.animation.current_trans_vec[current_instant-1][2]<currNode.animation.trans_vec[current_instant-1][2])
+          if( Math.abs(currNode.animation.current_trans_vec[current_instant-1][0])<Math.abs(currNode.animation.trans_vec[current_instant-1][0])
+            ||Math.abs(currNode.animation.current_trans_vec[current_instant-1][1])<Math.abs(currNode.animation.trans_vec[current_instant-1][1])
+            ||Math.abs(currNode.animation.current_trans_vec[current_instant-1][2])<Math.abs(currNode.animation.trans_vec[current_instant-1][2]))
           {
             var aux_trans_vec=[
               currNode.animation.trans_vec[current_instant-1][0]-currNode.animation.current_trans_vec[current_instant-1][0],
@@ -1524,23 +1569,11 @@ class MySceneGraph {
               currNode.animation.trans_vec[current_instant-1][2]-currNode.animation.current_trans_vec[current_instant-1][2],
             ]
             currNode.animation.current_trans_vec[current_instant-1]=currNode.animation.trans_vec[current_instant-1];
-            
+            console.log(aux_trans_vec);
             mat4.translate(currNode.transformMatrix,currNode.transformMatrix, aux_trans_vec);
+            
           }
 
-          if( currNode.animation.current_scale_vec[current_instant-1][0]<currNode.animation.scale_vec[current_instant-1][0]
-            ||currNode.animation.current_scale_vec[current_instant-1][1]<currNode.animation.scale_vec[current_instant-1][1]
-            ||currNode.animation.current_scale_vec[current_instant-1][2]<currNode.animation.scale_vec[current_instant-1][2])
-          {
-            var aux_scale_vec=[
-              currNode.animation.scale_vec[current_instant-1][0]/currNode.animation.current_scale_vec[current_instant-1][0],
-              currNode.animation.scale_vec[current_instant-1][1]/currNode.animation.current_scale_vec[current_instant-1][1],
-              currNode.animation.scale_vec[current_instant-1][2]/currNode.animation.current_scale_vec[current_instant-1][2],
-            ]
-            currNode.animation.current_trans_vec[current_instant-1]=currNode.animation.trans_vec[current_instant-1];
-            
-            mat4.scale(currNode.transformMatrix,currNode.transformMatrix, aux_scale_vec);
-          }
 
           if(currNode.animation.current_angles[(current_instant-1)*3]<currNode.animation.angles[(current_instant-1)*3]
             ||currNode.animation.current_angles[(current_instant-1)*3+1]<currNode.animation.angles[(current_instant-1)*3+1]
@@ -1553,18 +1586,18 @@ class MySceneGraph {
             currNode.animation.current_angles[(current_instant-1)*3]=currNode.animation.angles[(current_instant-1)*3];
             currNode.animation.current_angles[(current_instant-1)*3+1]=currNode.animation.angles[(current_instant-1)*3+1];
             currNode.animation.current_angles[(current_instant-1)*3+2]=currNode.animation.angles[(current_instant-1)*3+2];
-            //console.log("hello");
+            
             mat4.rotate(currNode.transformMatrix,currNode.transformMatrix,aux_rot1,currNode.animation.rot_vec[(current_instant-1)*3]);
             mat4.rotate(currNode.transformMatrix,currNode.transformMatrix,aux_rot2,currNode.animation.rot_vec[(current_instant-1)*3+1]);
             mat4.rotate(currNode.transformMatrix,currNode.transformMatrix,aux_rot3,currNode.animation.rot_vec[(current_instant-1)*3+2]);
-            
+
           }
         } 
 
 
         if(current_instant<currNode.animation.instants.length-1)
         {
-        var div_factor=(currNode.animation.instants[current_instant+1]-currNode.animation.instants[current_instant])/(difference/1000)/2;
+        var div_factor=(currNode.animation.instants[current_instant+1]-currNode.animation.instants[current_instant])/(difference/1000);
         var trans_vec= [currNode.animation.trans_vec[current_instant][0]/div_factor,
           currNode.animation.trans_vec[current_instant][1]/div_factor,
           currNode.animation.trans_vec[current_instant][2]/div_factor];
@@ -1573,9 +1606,9 @@ class MySceneGraph {
           currNode.animation.current_trans_vec[current_instant][1]=currNode.animation.current_trans_vec[current_instant][1]+currNode.animation.trans_vec[current_instant][1]/div_factor;
           currNode.animation.current_trans_vec[current_instant][2]=currNode.animation.current_trans_vec[current_instant][2]+currNode.animation.trans_vec[current_instant][2]/div_factor;
           
-          if(currNode.animation.current_trans_vec[current_instant][0]>currNode.animation.trans_vec[current_instant][0]
-            ||currNode.animation.current_trans_vec[current_instant][1]>currNode.animation.trans_vec[current_instant][1]
-            ||currNode.animation.current_trans_vec[current_instant][2]>currNode.animation.trans_vec[current_instant][2])
+          if((Math.abs(currNode.animation.current_trans_vec[current_instant][0])>Math.abs(currNode.animation.trans_vec[current_instant][0]))
+            ||(Math.abs(currNode.animation.current_trans_vec[current_instant][1]))>Math.abs(currNode.animation.trans_vec[current_instant][1])
+            ||(Math.abs(currNode.animation.current_trans_vec[current_instant][2]))>Math.abs(currNode.animation.trans_vec[current_instant][2]))
             {
               currNode.animation.current_trans_vec[current_instant][0]=currNode.animation.current_trans_vec[current_instant][0]-currNode.animation.trans_vec[current_instant][0]/div_factor;
               currNode.animation.current_trans_vec[current_instant][1]=currNode.animation.current_trans_vec[current_instant][1]-currNode.animation.trans_vec[current_instant][1]/div_factor;
@@ -1586,41 +1619,25 @@ class MySceneGraph {
                 currNode.animation.trans_vec[current_instant][1]-currNode.animation.current_trans_vec[current_instant][1],
                 currNode.animation.trans_vec[current_instant][2]-currNode.animation.current_trans_vec[current_instant][2],
               ];
-            }        
+            }
+            
+            
         mat4.translate(currNode.transformMatrix,currNode.transformMatrix, trans_vec);
        
         
 
-        var div_factor=(currNode.animation.instants[current_instant+1]-currNode.animation.instants[current_instant])/(difference/1000)/2;
+        var div_factor=(currNode.animation.instants[current_instant+1]-currNode.animation.instants[current_instant])/(difference/1000);
         var scale_vec= [
           Math.pow(currNode.animation.scale_vec[current_instant][0],1/div_factor),
           Math.pow(currNode.animation.scale_vec[current_instant][1],1/div_factor),
           Math.pow(currNode.animation.scale_vec[current_instant][2],1/div_factor)];
-          console.log(currNode.animation.current_scale_vec);
+        
           currNode.animation.current_scale_vec[current_instant][0]=currNode.animation.current_scale_vec[current_instant][0]*scale_vec[0];
           currNode.animation.current_scale_vec[current_instant][1]=currNode.animation.current_scale_vec[current_instant][1]*scale_vec[1];
           currNode.animation.current_scale_vec[current_instant][2]=currNode.animation.current_scale_vec[current_instant][2]*scale_vec[2];
-          
-          if(currNode.animation.current_scale_vec[current_instant][0]>currNode.animation.scale_vec[current_instant][0]
-            ||currNode.animation.current_scale_vec[current_instant][1]>currNode.animation.scale_vec[current_instant][1]
-            ||currNode.animation.current_scale_vec[current_instant][2]>currNode.animation.scale_vec[current_instant][2])
-            {
-              currNode.animation.current_scale_vec[current_instant][0]=currNode.animation.current_scale_vec[current_instant][0]/(currNode.animation.trans_vec[current_instant][0]/div_factor);
-              currNode.animation.current_scale_vec[current_instant][1]=currNode.animation.current_scale_vec[current_instant][1]/(currNode.animation.trans_vec[current_instant][1]/div_factor);
-              currNode.animation.current_scale_vec[current_instant][2]=currNode.animation.current_scale_vec[current_instant][2]/(currNode.animation.trans_vec[current_instant][2]/div_factor);
 
-              scale_vec=[
-                currNode.animation.current_scale_vec[current_instant][0]=currNode.animation.scale_vec[current_instant][0]/currNode.animation.current_scale_vec[current_instant][0],
-                currNode.animation.current_scale_vec[current_instant][1]=currNode.animation.scale_vec[current_instant][1]/currNode.animation.current_scale_vec[current_instant][1],
-                currNode.animation.current_scale_vec[current_instant][2]=currNode.animation.scale_vec[current_instant][2]/currNode.animation.current_scale_vec[current_instant][2]
-              ];
-              console.log(scale_vec[1]);
-            }        
-
-        //console.log(scale_vec);
-        mat4.scale(currNode.transformMatrix,currNode.transformMatrix, scale_vec);
-       // console.log(currNode.animation.current_scale_vec[current_instant]);
-       
+            mat4.scale(currNode.transformMatrix,currNode.transformMatrix, scale_vec);
+ 
 
 
 
@@ -1633,9 +1650,9 @@ class MySceneGraph {
         var rot2=currNode.animation.angles[current_instant*3+1]/div_factor;
         var rot3=currNode.animation.angles[current_instant*3+2]/div_factor;
       
-        if(currNode.animation.current_angles[current_instant*3]>currNode.animation.angles[current_instant*3]
-          ||currNode.animation.current_angles[current_instant*3+1]>currNode.animation.angles[current_instant*3+1]
-          ||currNode.animation.current_angles[current_instant*3+2]>currNode.animation.angles[current_instant*3+2])
+        if(Math.abs(currNode.animation.current_angles[current_instant*3])>Math.abs(currNode.animation.angles[current_instant*3])
+          ||Math.abs(currNode.animation.current_angles[current_instant*3+1])>Math.abs(currNode.animation.angles[current_instant*3+1])
+          ||Math.abs(currNode.animation.current_angles[current_instant*3+2])>Math.abs(currNode.animation.angles[current_instant*3+2]))
           {
             currNode.animation.current_angles[current_instant*3]=currNode.animation.current_angles[current_instant*3]-currNode.animation.angles[current_instant*3]/div_factor;
             currNode.animation.current_angles[current_instant*3+1]=currNode.animation.current_angles[current_instant*3+1]-currNode.animation.angles[current_instant*3+1]/div_factor;
@@ -1653,9 +1670,7 @@ class MySceneGraph {
         mat4.rotate(currNode.transformMatrix,currNode.transformMatrix,rot3,currNode.animation.rot_vec[current_instant*3+2]);
         
 
-        //console.log(currNode.animation.angles[current_instant*3+1]/div_factor,currNode.animation.rot_vec[current_instant*3+1]);
-        
-      
+
     
       //updates the transform matrix 
         }
@@ -1669,3 +1684,4 @@ class MySceneGraph {
     }
   }
 }
+

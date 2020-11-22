@@ -14,42 +14,30 @@ constructor(scene, sprite, duration, startCell, endCell) {
     this.startCell=startCell;
     this.endCell=endCell;
     this.currentCell=startCell;
-    this.startTime=0;
-    this.begin=0;
-    this.cycles=0;
+    this.previous=0;
     
     
     this.rectangle= new MyRectangle (scene,0,0,0.5,0.5);
-    //this.scene.setUpdatePeriod(50);
+   
 
 }
 
   update(t)
 {
-    if(this.begin==0)
+
+    if(((t-this.previous)/1000)>=this.duration/(this.endCell-this.startCell+1))
     {
-        this.startTime=t;
-        this.begin=1;
-    }
+        this.previous=t;
+        this.currentCell=this.currentCell+1;
+        if(this.currentCell>this.endCell)
+        {
 
-    this.currentCell=this.currentCell+1;
-    if(this.currentCell>this.endCell)
-    {
-        this.cycles++;
-        this.currentCell=this.startCell;
-    }
-
-
-
-/*     if(((this.startTime-t)/1000)*(this.endCell-this.endCell+1)>=this.duration*this.cycles)
-    {
-
-
-    }
- */
-
+            this.currentCell=this.startCell;
+        }
     
-    
+
+    }
+   
 } 
 
 display(){

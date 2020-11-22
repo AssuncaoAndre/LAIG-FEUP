@@ -16,7 +16,18 @@ constructor(scene, text) {
 
 getCharacterPosition(character)
 {
-    return((character<='Z' && character>='A')?4*16+1+character.charCodeAt(0)-65:((character<='z' && character>='a')?6*16+1+character.charCodeAt(0)-97:0));
+    return(
+        (character<='Z' && character>='A')?
+        4*16+1+character.charCodeAt(0)-65:
+        (character<='z' && character>='a')?
+        6*16+1+character.charCodeAt(0)-97:
+        character==' '? 
+        9:
+        character<='9' && character>='0'?
+        character.charCodeAt(0)-48+48: //- codigo ascii do 0 + posição do 0 na sprite
+        0
+  
+        );
 }
 
 display(){
@@ -27,8 +38,8 @@ display(){
         { 
             this.font_sprite.activateCellP(this.getCharacterPosition( this.text[i]));
     
-            this.scene.translate(0.5,0,0);
             this.rectangle.display();
+            this.scene.translate(0.5,0,0);
         } 
         this.font_sprite.unbind();
         this.scene.setActiveShaderSimple(this.scene.defaultShader);

@@ -7,7 +7,7 @@
 function MyNode(nodeID) {
 
     this.nodeID = nodeID;
-
+    this.display=1;
     // IDs of child nodes.
     this.children = [];
 
