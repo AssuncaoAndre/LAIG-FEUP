@@ -1,0 +1,80 @@
+{
+  "_args": [
+    [
+      "chess.js",
+      "/home/andre/Documents/LAIG/lib/chess"
+    ]
+  ],
+  "_from": "chess.js@latest",
+  "_hasShrinkwrap": false,
+  "_id": "chess.js@0.11.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/chess.js",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/chess.js_0.11.0_1592618011422_0.949220976029969"
+  },
+  "_npmUser": {
+    "email": "jhlywa@gmail.com",
+    "name": "jhlywa"
+  },
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "chess.js",
+    "raw": "chess.js",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/chess.js/-/chess.js-0.11.0.tgz",
+  "_shasum": "e1802179b944eab5daf11b5d4bce08cdcadbeffa",
+  "_shrinkwrap": null,
+  "_spec": "chess.js",
+  "_where": "/home/andre/Documents/LAIG/lib/chess",
+  "bugs": {
+    "url": "https://github.com/jhlywa/chess.js/issues"
+  },
+  "dependencies": {},
+  "description": "[![Build Status](https://travis-ci.org/jhlywa/chess.js.svg?branch=master)](https://travis-ci.org/jhlywa/chess.js)",
+  "devDependencies": {
+    "jest": "^25.1.0"
+  },
+  "directories": {},
+  "dist": {
+    "fileCount": 11,
+    "integrity": "sha512-yTpi6XbRMkBtnjSvbt6wEp9Y7JzhJl1MC3GNn67q5ClyccXxCRf5cMPSUg4OblrUapg1kLHm7WzxxEVp20NK1Q==",
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJe7WwcCRA9TVsSAnZWagAAhz0P/RFwQ6Hxm/NKc+0B1is+\nNuoPGf8gH5D9BxGE0VD6cNYEAQ01rznmrsnPpqh/SIYrb1kPuvGXpI0KuehU\n0eTfnJNJWjhlOUIYbX/Dnu/zKDBI9DJB1kFfnTosYqWwtbI5tjUdLtE088Tv\nnPlXmfyGNRK0PdNrjxuexJiazgkvO467EjgCP9zbA1PXy1X57D10NPB/5/u/\nRwmdptSCg0U9dXFS2F9xbsqW0BfbfemjUxs6BPp54mXV2UeJjC+c/xKTIh3Y\naWF2PZ3yiNxee0gfDlcepC7h5BDZdb1FaGZGutJlGUevAaU7Q1KC5EzLElDp\nZ+3UzAiMTKxpgaq2NvZb6NDp+gJY30Yc8YrclhUfMkadbPT7Me5ImyppCb3m\n8vUQsSJIjFQkKvG7AdRvhX8hYvs6JzpxeGgatllibDAbPi0gjE3eXyVJxovV\nd/fVfSpNw+k8Pfi4UQJL8x1wVs8LkNzFAm1HnSssmChRKUBtFCNBm5q5eRJo\nfA3w0rq/Opb61Blao2Qo8Ev+H5AK5M84DnKKGXrVIBgpzqxQHjbYvpZZb0xR\nRpCM37MPOP0+Y8Dtn15TLsQTdLYCi9sGOGvYntwxB78dRSbovbeowPscAocv\nG/geKjCqu65Pc9U3HPRGsT6+TE4eNBqXnkNE9Goh4DHoIkWDUFT0AID+Ud93\nVyOV\r\n=TmRe\r\n-----END PGP SIGNATURE-----\r\n",
+    "shasum": "e1802179b944eab5daf11b5d4bce08cdcadbeffa",
+    "tarball": "https://registry.npmjs.org/chess.js/-/chess.js-0.11.0.tgz",
+    "unpackedSize": 146578
+  },
+  "homepage": "https://github.com/jhlywa/chess.js",
+  "keywords": [
+    "chess"
+  ],
+  "license": "BSD-2-Clause",
+  "licenseText": "Copyright (c) 2020, Jeff Hlywa (jhlywa@gmail.com)\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice,\n   this list of conditions and the following disclaimer.\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE\nLIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\nINTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\nCONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\nARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\nPOSSIBILITY OF SUCH DAMAGE.\n",
+  "main": "chess.js",
+  "maintainers": [
+    {
+      "name": "jhlywa",
+      "email": "jhlywa@gmail.com"
+    }
+  ],
+  "name": "chess.js",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhlywa/chess.js.git"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "version": "0.11.0"
+}

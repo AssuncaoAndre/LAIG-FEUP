@@ -13,10 +13,13 @@ var NODES_INDEX = 7;
 var NODES_INDEX_ANIMATIONS = 8;
 
 
+
+
 /**
  * MySceneGraph class, representing the scene graph.
  */
 class MySceneGraph {
+
   /**
    * Constructor for MySceneGraph class.
    * Initializes necessary variables and starts the XML file reading process.
@@ -1100,6 +1103,9 @@ class MySceneGraph {
         this.nodes[nodeID].textureAFS = 1.0;
         this.nodes[nodeID].textureAFT = 1.0;
       }
+
+
+
       var animationsIndex;
         if(nodeNames.indexOf("animationref")!=-1)
         {
@@ -1309,6 +1315,15 @@ class MySceneGraph {
             this.nodes[nodeID].leaves.push(new MyBarrel(this.scene,base,middle,height,slices,stacks));
           
           }
+          else if(type=="gameboard")
+          {
+            
+            var x1=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("x1"));
+            var y1=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("y1"));
+            var x2=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("x2"));
+            var y2=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("y2"));
+            this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,x1,y1,x2,y2));
+          }
           
           else {
             this.onXMLMinorError(
@@ -1439,8 +1454,11 @@ class MySceneGraph {
   //function to recursively display the nodes, transversing the graph
   displayScene_aux(idNode, parentTex,parentTex_clear) {
 
+
+
     var currNode = this.nodes[idNode];
-    if(currNode.display)
+    
+
     {
 
     //applies material of current node
@@ -1501,6 +1519,7 @@ class MySceneGraph {
     var current_instant;
 
     var currNode = this.nodes[this.idRoot];
+    
     
     if(currNode.animation!=null)
     {
@@ -1570,7 +1589,7 @@ class MySceneGraph {
               currNode.animation.trans_vec[current_instant-1][2]-currNode.animation.current_trans_vec[current_instant-1][2],
             ]
             currNode.animation.current_trans_vec[current_instant-1]=currNode.animation.trans_vec[current_instant-1];
-            console.log(aux_trans_vec);
+            
             mat4.translate(currNode.transformMatrix,currNode.transformMatrix, aux_trans_vec);
             
           }

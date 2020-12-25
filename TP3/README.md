@@ -1,20 +1,19 @@
-# LAIG 2020/2021 - TP3
+# LAIG 2020/2021 - TP2
 
-## Group: T0xG0y
-
+## Group T07G09
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201801010 | ...                |
-| Jane Doe         | 201801011 | ...                |
+| Luís Assunção    | 201806140 |up201806140@fe.up.pt|
+| João Rocha       | 201806261 |up201806261@fe.up.pt|
 
 ----
 ## Project information
 
-- (items describing main strong points)
+- Todo o trabalho foi realizado de acordo com enunciado. A cena contém todos os obejtos de avaliação pedidos (animação por keyframes, sprite animations, sprite text, primitivas plano, patch e barrel constuídas em superfícies NURBS)
 - Scene
-  - (Brief description of the created scene)
-  - (relative link to the scene)
+  - Área de piscina com duas cadeiras, uma delas com uma animação por keyframes e uma propulsão animada com sprite animation, uma bola, uma bóia, duas bandeiras, 4 paredes, uma prancha e um chuveiro, uma espreguiçadeira, uma mesa de apoio à espreguiçadeira e um texto a dizer "LAIG 2020"
+  - ./scenes/LAIG_TP2_XML_T7_G09.xml
 ----
 ## Issues/Problems
 
-- (items describing unimplemented features, bugs, problems, etc.)
+- No know issue
