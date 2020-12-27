@@ -14,7 +14,7 @@ class MyGameBoard extends CGFobject {
 
         super(scene);
         this.auxiliar_board=new MyAuxiliarBoard(scene, x1, y1/2, x2, y2);
-        this.scene.gameboard=this;
+        this.scene.orchestrator.gameboard=this;
         this.x1 = x1;
         this.x2 = x2;
         this.y2 = y2;
@@ -105,8 +105,8 @@ class MyGameBoard extends CGFobject {
         
             this.auxiliar_board.display();
         
-        if(this.scene.is_moving==null)
-            this.scene.logPicking();
+        if(this.scene.orchestrator.is_moving==null)
+            this.scene.orchestrator.managePicking();
             this.scene.clearPickRegistration();
 
         
@@ -176,12 +176,12 @@ class MyGameBoard extends CGFobject {
     {
         
         var aux_to_coords=to_coords;
-        this.scene.is_moving=[from_coords[0],from_coords[1],to_coords[0],to_coords[1],null,null];
+        this.scene.orchestrator.is_moving=[from_coords[0],from_coords[1],to_coords[0],to_coords[1],null,null];
         
-        if(this.scene.move_flags.flags=="e")
+        if(this.scene.orchestrator.move_flags.flags=="e")
         {
             
-            if(this.scene.move_flags.color=="w")
+            if(this.scene.orchestrator.move_flags.color=="w")
             {
                 aux_to_coords[0]=aux_to_coords[0]-1;
                
@@ -192,8 +192,8 @@ class MyGameBoard extends CGFobject {
         if(this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece!=null )
         {
             var auxiliar_coords=this.get_empty_auxiliar();
-            this.scene.is_moving[4]=auxiliar_coords[0];
-            this.scene.is_moving[5]=auxiliar_coords[1];
+            this.scene.orchestrator.is_moving[4]=auxiliar_coords[0];
+            this.scene.orchestrator.is_moving[5]=auxiliar_coords[1];
             auxiliar_coords[0]=12-auxiliar_coords[0];
 
             var distance=this.get_distance(aux_to_coords,auxiliar_coords)/2;
@@ -204,8 +204,8 @@ class MyGameBoard extends CGFobject {
         }
         else
         {
-            aux_to_coords[0]=this.scene.is_moving[2];
-            aux_to_coords[1]=this.scene.is_moving[3];
+            aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
+            aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
             
             
             var distance=this.get_distance(from_coords,to_coords)/2;
@@ -293,23 +293,23 @@ class MyGameBoard extends CGFobject {
         var material=this.white_piece;
         else
         var material=this.black_piece; 
-        var piece_text=this.scene.promotion;
-        var piece=this.scene.promotions_map[piece_text];
+        var piece_text=this.scene.orchestrator.promotion;
+        var piece=this.scene.orchestrator.promotions_map[piece_text];
         
         this.matrix[to_coords[0]][to_coords[1]].piece= new MyPiece(this.scene,piece,material,color);
-        this.scene.is_promoting=null;
+        this.scene.orchestrator.is_promoting=null;
     }
 
     stop_move()
     {
         var aux_to_coords=[];
-        aux_to_coords[0]=this.scene.is_moving[2];
-        aux_to_coords[1]=this.scene.is_moving[3];
+        aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
+        aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
 
-        if(this.scene.move_flags.flags=="e")
+        if(this.scene.orchestrator.move_flags.flags=="e")
         {
             
-            if(this.scene.move_flags.color=="w")
+            if(this.scene.orchestrator.move_flags.color=="w")
             {
                 aux_to_coords[0]=aux_to_coords[0]-1;
                
@@ -317,51 +317,53 @@ class MyGameBoard extends CGFobject {
             else aux_to_coords[0]=aux_to_coords[0]+1;
         }
 
-        if(this.scene.is_moving[4]!=null)
+        if(this.scene.orchestrator.is_moving[4]!=null)
         {
-            console.log(this.scene.is_moving);
+            console.log(this.scene.orchestrator.is_moving);
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.animation=null;
-            this.auxiliar_board.matrix[this.scene.is_moving[4]][this.scene.is_moving[5]].piece=
+            this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[4]][this.scene.orchestrator.is_moving[5]].piece=
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece;
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece=null;
-            this.scene.is_moving[4]==null;
-            this.scene.is_moving[5]==null;
-            var from_coords=[this.scene.is_moving[0],this.scene.is_moving[1]];
-            var to_coords=[this.scene.is_moving[2],this.scene.is_moving[3]];
+            this.scene.orchestrator.is_moving[4]==null;
+            this.scene.orchestrator.is_moving[5]==null;
+            var from_coords=[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]];
+            var to_coords=[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]];
             this.effective_move(from_coords,to_coords);
         }
 
         else
         {
 
-            this.matrix[this.scene.is_moving[0]][this.scene.is_moving[1]].piece.animation=null;
-            this.matrix[this.scene.is_moving[2]][this.scene.is_moving[3]].piece=
-            this.matrix[this.scene.is_moving[0]][this.scene.is_moving[1]].piece;
-            this.matrix[this.scene.is_moving[0]][this.scene.is_moving[1]].piece=null;
-            if(this.scene.is_promoting!=null)
+            this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece.animation=null;
+            this.matrix[this.scene.orchestrator.is_moving[2]][this.scene.orchestrator.is_moving[3]].piece=
+            this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece;
+            this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece=null;
+            if(this.scene.orchestrator.is_promoting!=null)
             {
-                this.promote([this.scene.is_moving[2],this.scene.is_moving[3]],this.scene.is_promoting); 
+                this.promote([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]],this.scene.orchestrator.is_promoting); 
             }
             
-            if(this.scene.move_flags.flags=="k" && this.is_castling==0)
+            if(this.scene.orchestrator.move_flags.flags=="k" && this.is_castling==0)
             {
                 this.is_castling=1;
       
-                this.effective_move([this.scene.is_moving[0],this.scene.is_moving[1]+3],[this.scene.is_moving[2],this.scene.is_moving[3]-1]);
+                this.effective_move([this.scene.orchestrator.is_moving[0],this.scene.is_moving[1]+3],[this.scene.is_moving[2],this.scene.is_moving[3]-1]);
             }
-            else if(this.scene.move_flags.flags=="q" && this.is_castling==0)
+            else if(this.scene.orchestrator.move_flags.flags=="q" && this.is_castling==0)
             {
                 
                 this.is_castling=1;
-                console.log([this.scene.is_moving[0],this.scene.is_moving[1]-4],[this.scene.is_moving[2],this.scene.is_moving[3]+1]);
-                this.effective_move([this.scene.is_moving[0],this.scene.is_moving[1]-4],[this.scene.is_moving[2],this.scene.is_moving[3]+1]);
+                console.log([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-4],[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1]);
+                this.effective_move([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-4],[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1]);
             }
             else 
             {
-                this.scene.is_moving=null
+                this.scene.orchestrator.is_moving=null
                 this.is_castling=0;
             };
+            this.scene.orchestrator.check_end();
         }
+
     }
 
 

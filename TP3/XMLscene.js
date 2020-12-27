@@ -19,22 +19,9 @@ class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
-        this.chess=new Chess();
-        this.gameState=this.chess.board();
-        this.gameboard=null
-        this.sceneInited = false;
-        this.is_moving=null;
-        this.is_moving2=null;
-
-        this.is_promoting=null;
-        this.promotions=['Queen','Rook','Knight','Bishop'];
-        this.promotion='Queen';
-        this.promotions_map=[];
-        this.promotions_map['Queen']='q';
-        this.promotions_map['Rook']='r';
-        this.promotions_map['Knight']='n';
-        this.promotions_map['Bishop']='b';
-
+       
+        this.orchestrator=new MyGameOrchestrator(this);
+        
 
         this.initCameras();
 
@@ -61,6 +48,7 @@ class XMLscene extends CGFscene {
         this.sprite_shader=new CGFshader(this.gl,"shaders/sprite_shader.vert","shaders/sprite_shader.frag");
         this.spriteanimations=[];
         this.setPickEnabled(true);
+        
     }
 
     /**
@@ -138,58 +126,6 @@ class XMLscene extends CGFscene {
     }
 
 
-    logPicking() {
-		if (this.pickMode == false) {
-			if (this.pickResults != null && this.pickResults.length > 0) {
-				for (var i = 0; i < this.pickResults.length; i++) {
-					var obj = this.pickResults[i][0];
-					if (obj) {
-                        var customId = this.pickResults[i][1];
-                       
-                        
-                            var letra_n=Math.floor(customId%8);
-                            var numero=Math.floor(customId/8+1);
-                            var letra=String.fromCharCode("a".charCodeAt(0)+letra_n);
-                            var move=letra+numero;
-                            if(this.gameboard.is_tile_selected(move)==0)
-                            {
-                                this.gameboard.current_move=move;
-                                var possible_moves=this.chess.moves({square:move, verbose:true});
-                                
-                                this.gameboard.resetSelection();
-                                this.gameboard.selectPossibleMoves(possible_moves);					
-                            }
-                            else 
-                            {
-                                var prom=0;
-                                var turn=this.chess.turn();
-                                this.move_flags=this.chess.move({from: this.gameboard.current_move, to: move });
-                                console.log(this.move_flags);
-                                if(this.move_flags==null)
-                                {
-                                    prom=this.promotions_map[this.promotion];
-                                    this.chess.move({from: this.gameboard.current_move, to: move, promotion: prom });                              
-                                    
-                                }
-                                this.gameState=this.chess.board();
-                                this.gameboard.resetSelection();
-                                
-                                this.gameboard.move(this.gameboard.current_move, move);
-                                
-                                if(prom!=0)
-                                this.is_promoting=turn;
-                                
-                                if(this.chess.game_over())
-                                alert("game Over");
-                            }
-                        
-
-					}
-				}
-				this.pickResults.splice(0, this.pickResults.length);
-			}
-		}
-	}
 
     /**
      * Displays the scene.
@@ -266,34 +202,8 @@ class XMLscene extends CGFscene {
         {
             this.spriteanimations[i].update(t);
         }
-
-        if(this.is_moving!=null)
-        {
-            if(this.is_moving[4]==null)
-            {
-                if(this.gameboard.matrix[this.is_moving[0]][this.is_moving[1]].piece.update(t)==1)
-                this.gameboard.stop_move();
-
-            }
-            else{
-                var aux_to_coords=[this.is_moving[2],this.is_moving[3]];
-                if(this.move_flags.flags=="e")
-                {
-                    
-                    if(this.move_flags.color=="w")
-                    {
-                        aux_to_coords[0]=aux_to_coords[0]-1;                       
-                    }
-                    else aux_to_coords[0]=aux_to_coords[0]+1;
-                }
-
-                if(this.gameboard.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.update(t)==1)
-                this.gameboard.stop_move();
-            }
-        }
-        
+        this.orchestrator.update(t);
     }
 
-    
-}
 
+}

@@ -74,6 +74,7 @@ serialInclude([
   "MyPiece.js",
   "MyComputedAnimation.js",
   "MyAuxiliarBoard.js",
+  "MyGameOrchestrator.js",
   'CGFResourceReader.js',
 	'CGFOBJModel.js',
 
