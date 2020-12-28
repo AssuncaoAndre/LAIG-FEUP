@@ -60,4 +60,15 @@ class MyAuxiliarBoard extends CGFobject {
          }  
          this.scene.popMatrix();
     }
+
+    reset()
+    {
+        for (var i = 0; i < 4; i++) { 
+            var mat = []; 
+            for (var j = 0; j < 8; j++) {
+            mat.push(new MyTile(this.scene,this.tile,0,null));
+            }
+            this.matrix.push(mat);
+        }  
+    }
 }

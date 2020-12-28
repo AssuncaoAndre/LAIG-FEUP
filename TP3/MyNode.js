@@ -35,7 +35,7 @@ function MyNode(nodeID) {
     this.textureAFT4; */
 
     this.animation=null;
-
+    this.update=0;
     this.transformMatrix = mat4.create();
     mat4.identity(this.transformMatrix);
 }

@@ -25,13 +25,17 @@ getCharacterPosition(character)
         9:
         character<='9' && character>='0'?
         character.charCodeAt(0)-48+48: //- codigo ascii do 0 + posição do 0 na sprite
+        character==':'?58:
+        character=='#'?35:
+        character=='.'?46:
+        character=='-'?45:
         0
   
         );
 }
 
 display(){
-
+    this.scene.pushMatrix();
         //this.scene.setActiveShaderSimple(this.scene.sprite_shader);
         this.scene.setActiveShaderSimple(this.font_sprite.shader);
          for(var i=0;i<this.text.length;i++)
@@ -43,6 +47,7 @@ display(){
         } 
         this.font_sprite.unbind();
         this.scene.setActiveShaderSimple(this.scene.defaultShader);
+        this.scene.popMatrix();
     }
 
 

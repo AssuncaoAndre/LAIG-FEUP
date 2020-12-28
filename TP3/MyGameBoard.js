@@ -19,9 +19,8 @@ class MyGameBoard extends CGFobject {
         this.x2 = x2;
         this.y2 = y2;
         this.y1 = y1;
-        var sizex=Math.abs(x2-x1)/8;
-        var sizey=Math.abs(x2-x1)/8;
-
+        this.sizex=Math.abs(x2-x1)/8;
+        this.sizey=Math.abs(x2-x1)/8;
         this.shader= new CGFshader(this.scene.gl,"shaders/select_tile_shader.vert","shaders/select_tile_shader.frag");
         
         this.black_tile=new CGFtexture(this.scene, "./scenes/images/black.png");
@@ -42,10 +41,10 @@ class MyGameBoard extends CGFobject {
         this.default_material.setDiffuse(0.5, 0.5, 0.5, 1.0);
         this.default_material.setSpecular(0.5, 0.5, 0.5, 1.0);
 
-
-        this.is_castling=0;
         this.selected=new CGFtexture(this.scene, "./scenes/images/selected.png");
         this.selected.bind(1);
+
+        this.is_castling=0;
         this.current_move=null;
         this.matrix = [];
 
@@ -55,14 +54,14 @@ class MyGameBoard extends CGFobject {
         for (var i = 0; i < 4; i++) { 
             var mat = []; 
             for (var j = 0; j < 4; j++) {
-                mat.push(new MyTile(this.scene,sizex,sizey,this.black_tile,this.selected,this.shader));
-                mat.push(new MyTile(this.scene,sizex,sizey,this.white_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.black_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.white_tile,this.selected,this.shader));
             }
             this.matrix.push(mat);
             var mat = []; 
             for (var j = 0; j < 4; j++) {
-                mat.push(new MyTile(this.scene,sizex,sizey,this.white_tile,this.selected,this.shader));
-                mat.push(new MyTile(this.scene,sizex,sizey,this.black_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.white_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.black_tile,this.selected,this.shader));
             }
             this.matrix.push(mat);
          }  
@@ -103,13 +102,15 @@ class MyGameBoard extends CGFobject {
 
        
         
-            this.auxiliar_board.display();
+        this.auxiliar_board.display();
         
-        if(this.scene.orchestrator.is_moving==null)
+        if(this.scene.orchestrator.is_moving==null || this.scene.orchestrator.is_bot_playing
+            || this.scene.orchestrator.game_over==1)
             this.scene.orchestrator.managePicking();
-            this.scene.clearPickRegistration();
 
-        
+
+        this.scene.clearPickRegistration();
+
         this.scene.pushMatrix();
         this.scene.rotate(-Math.PI/2,1,0,0);
         for (var i = 0; i < 8; i++) {
@@ -168,7 +169,7 @@ class MyGameBoard extends CGFobject {
         var from_coords=this.moveToCoords(from_move);
         var to_coords=this.moveToCoords(to_move);
         this.effective_move(from_coords,to_coords);
-        
+       
         
     }
 
@@ -238,7 +239,6 @@ class MyGameBoard extends CGFobject {
 
         if(this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece!=null )
         {
-            console.log([aux_to_coords[0],aux_to_coords[1]]);
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.animation=animation;
         }
 
@@ -286,21 +286,31 @@ class MyGameBoard extends CGFobject {
         return(this.matrix[tile_coords[0]][tile_coords[1]].is_selected)
         
     }
-    promote(to_coords,color)
+    async promote(to_coords,color)
     {
         
         if(color=="w")
         var material=this.white_piece;
         else
         var material=this.black_piece; 
-        var piece_text=this.scene.orchestrator.promotion;
-        var piece=this.scene.orchestrator.promotions_map[piece_text];
+        if(this.scene.orchestrator.bot_promotion!=null)
+        {
+            var piece=this.scene.orchestrator.bot_promotion;
+            this.scene.orchestrator.bot_promotion=null;
+        }
+        else
+        {
+            var piece_text=this.scene.orchestrator.promotion;
+            var piece=this.scene.orchestrator.promotions_map[piece_text];
+        }
         
         this.matrix[to_coords[0]][to_coords[1]].piece= new MyPiece(this.scene,piece,material,color);
         this.scene.orchestrator.is_promoting=null;
+        
+        //this.is_promoted=1;
     }
 
-    stop_move()
+    async stop_move()
     {
         var aux_to_coords=[];
         aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
@@ -319,7 +329,6 @@ class MyGameBoard extends CGFobject {
 
         if(this.scene.orchestrator.is_moving[4]!=null)
         {
-            console.log(this.scene.orchestrator.is_moving);
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.animation=null;
             this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[4]][this.scene.orchestrator.is_moving[5]].piece=
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece;
@@ -340,32 +349,86 @@ class MyGameBoard extends CGFobject {
             this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece=null;
             if(this.scene.orchestrator.is_promoting!=null)
             {
-                this.promote([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]],this.scene.orchestrator.is_promoting); 
+                await this.promote([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]],this.scene.orchestrator.is_promoting); 
             }
             
             if(this.scene.orchestrator.move_flags.flags=="k" && this.is_castling==0)
             {
                 this.is_castling=1;
-      
-                this.effective_move([this.scene.orchestrator.is_moving[0],this.scene.is_moving[1]+3],[this.scene.is_moving[2],this.scene.is_moving[3]-1]);
+                
+                this.effective_move([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]+3],[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]-1]);
             }
             else if(this.scene.orchestrator.move_flags.flags=="q" && this.is_castling==0)
             {
                 
                 this.is_castling=1;
-                console.log([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-4],[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1]);
+               
                 this.effective_move([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-4],[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1]);
             }
             else 
             {
                 this.scene.orchestrator.is_moving=null
                 this.is_castling=0;
+                this.scene.orchestrator.check_end();
+
             };
-            this.scene.orchestrator.check_end();
         }
 
     }
 
+    reset()
+    {
+        this.auxiliar_board.reset();
+        this.is_castling=0;
+        this.current_move=null;
+        this.matrix = [];
 
+
+
+
+        for (var i = 0; i < 4; i++) { 
+            var mat = []; 
+            for (var j = 0; j < 4; j++) {
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.black_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.white_tile,this.selected,this.shader));
+            }
+            this.matrix.push(mat);
+            var mat = []; 
+            for (var j = 0; j < 4; j++) {
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.white_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.black_tile,this.selected,this.shader));
+            }
+            this.matrix.push(mat);
+         }  
+         
+
+        for (var i=0;i<8;i++)
+        {
+            this.matrix[1][i].piece=new MyPiece(this.scene,"p",this.white_piece,"w");
+        }
+
+        for (var i=0;i<8;i++)
+        {
+            this.matrix[6][i].piece=new MyPiece(this.scene,"p",this.black_piece,"b");
+        } 
+
+        this.matrix[0][1].piece=new MyPiece(this.scene,"n",this.white_piece,"w");
+        this.matrix[0][0].piece=new MyPiece(this.scene,"r",this.white_piece,"w");
+        this.matrix[0][2].piece=new MyPiece(this.scene,"b",this.white_piece,"w");
+        this.matrix[0][4].piece=new MyPiece(this.scene,"k",this.white_piece,"w");
+        this.matrix[0][3].piece=new MyPiece(this.scene,"q",this.white_piece,"w");
+        this.matrix[0][5].piece=new MyPiece(this.scene,"b",this.white_piece,"w");
+        this.matrix[0][6].piece=new MyPiece(this.scene,"n",this.white_piece,"w");
+        this.matrix[0][7].piece=new MyPiece(this.scene,"r",this.white_piece,"w");
+
+        this.matrix[7][0].piece=new MyPiece(this.scene,"r",this.black_piece,"b");
+        this.matrix[7][1].piece=new MyPiece(this.scene,"n",this.black_piece,"b");
+        this.matrix[7][2].piece=new MyPiece(this.scene,"b",this.black_piece,"b");
+        this.matrix[7][4].piece=new MyPiece(this.scene,"k",this.black_piece,"b");
+        this.matrix[7][3].piece=new MyPiece(this.scene,"q",this.black_piece,"b");
+        this.matrix[7][5].piece=new MyPiece(this.scene,"b",this.black_piece,"b");
+        this.matrix[7][6].piece=new MyPiece(this.scene,"n",this.black_piece,"b");
+        this.matrix[7][7].piece=new MyPiece(this.scene,"r",this.black_piece,"b"); 
+    }
 
 }

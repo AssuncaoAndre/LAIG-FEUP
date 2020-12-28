@@ -11,16 +11,13 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
     }
-
+    
     /**
      * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
      * @param {CGFApplication} application
      */
     init(application) {
         super.init(application);
-
-       
-        this.orchestrator=new MyGameOrchestrator(this);
         
 
         this.initCameras();
@@ -33,11 +30,13 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-
+        
         this.axis = new CGFaxis(this);
         this.loadingProgressObject=new MyRectangle(this, -1, -.1, 1, .1);
         this.loadingProgress=0;
 
+        this.orchestrator=new MyGameOrchestrator(this);
+        
         this.defaultAppearance=new CGFappearance(this);
         this.previous_time=0;
         this.previous_time_aux=0;
@@ -205,5 +204,17 @@ class XMLscene extends CGFscene {
         this.orchestrator.update(t);
     }
 
+    onWhitePlayerChanged(v) {
+        this.orchestrator.setWhitePlayer(v);
+    }
+
+    onBlackPlayerChanged(v) {
+        this.orchestrator.setBlackPlayer(v);
+    }
+
+    reset()
+    {
+        this.orchestrator.reset();
+    }
 
 }

@@ -14,7 +14,7 @@
 
       <perspective id="middle_camera" near="0.1" far="500" angle="45">
 
-        <from x="-2" y="5" z="-2" />
+        <from x="5.7" y="3" z="-2" />
 
         <to x="2" y="0" z="-2" />
 
@@ -135,6 +135,8 @@
         descendants may be mixed, nodes and leafs -->
         <descendants>
           <noderef id="main_board"/>
+          <noderef id="white_side_eval"/>
+          <noderef id="black_side_eval"/>
         </descendants>
 
       </node>
@@ -147,12 +149,57 @@
         </texture>
 
         <transformations>
-
+          
         </transformations>
         <descendants>
           <leaf type="gameboard" x1="-2" y1="-2" x2="2" y2="2"/>
         </descendants>
       </node>
+
+    <node id="white_side_eval">
+      <material id="not_shiny_material" />
+
+      <texture id="black_texture">
+        <amplification afs="0.5" aft="0.5" />
+      </texture>
+
+      <transformations>
+        <translation x="-1.8" y="0" z="-4" />
+  
+        
+        <rotation axis="y" angle="25" />
+        <rotation axis="z" angle="0" />
+    
+        <scale sx="1" sy="1" sz="1" />
+  
+      </transformations>
+      <descendants>
+        <leaf type="eval_board"/>
+      </descendants>
+    </node>
+
+    <node id="black_side_eval">
+      <material id="not_shiny_material" />
+
+      <texture id="black_texture">
+        <amplification afs="0.5" aft="0.5" />
+      </texture>
+
+      <transformations>
+        
+        <translation x="1.3" y="0" z="1.5" />
+        
+         
+        <rotation axis="y" angle="335" />
+        <rotation axis="z" angle="0" />
+        
+        <scale sx="-1" sy="1" sz="-1" />
+  
+      </transformations>
+      <descendants>
+        <leaf type="eval_board"/>
+      </descendants>
+    </node>
 
     </nodes>
 

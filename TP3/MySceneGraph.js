@@ -1324,6 +1324,12 @@ class MySceneGraph {
             var y2=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("y2"));
             this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,x1,y1,x2,y2));
           }
+
+          else if(type=="eval_board")
+          {
+            this.nodes[nodeID].leaves.push(new MyEvaluationBoard(this.scene));
+            this.nodes[nodeID].update=1;
+          }
           
           else {
             this.onXMLMinorError(
@@ -1458,8 +1464,8 @@ class MySceneGraph {
 
     var currNode = this.nodes[idNode];
     
-
-    {
+    
+    
 
     //applies material of current node
     if (this.materials[currNode.materialID] != null) {
@@ -1512,7 +1518,7 @@ class MySceneGraph {
 
       this.scene.popMatrix();
     }
-  }}
+  }
 
   update(difference,total_time)
   {
@@ -1520,6 +1526,7 @@ class MySceneGraph {
 
     var currNode = this.nodes[this.idRoot];
     
+
     
     if(currNode.animation!=null)
     {
@@ -1554,7 +1561,11 @@ class MySceneGraph {
     var current_instant;
 
     var currNode = this.nodes[idNode];
-
+    if(currNode.update==1)
+    {
+      for (var cycle=0;cycle<currNode.leaves.length;cycle++)
+      currNode.leaves[cycle].update(total_time);
+    }
     if(currNode.animation!=null)
     {
       var check=0;

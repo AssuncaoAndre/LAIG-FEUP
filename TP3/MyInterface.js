@@ -44,7 +44,12 @@ class MyInterface extends CGFinterface {
         
         this.gui.add(graph,'defaultCamera',graph.camerasName).name('Cameras');
         this.gui.add(this.scene.orchestrator,'promotion',this.scene.orchestrator.promotions).name('Promotion');
-        
+        this.gui.add(this.scene.orchestrator,'evaluation_on',this.scene.orchestrator.evaluation_on).name('Evaluation');
+
+        this.gui.add(this.scene,"reset").name("Reset");
+
+        this.gui.add(this.scene.orchestrator,'white_player',this.scene.orchestrator.players).name('White Player').onChange(this.scene.onWhitePlayerChanged.bind(this.scene));
+        this.gui.add(this.scene.orchestrator,'black_player',this.scene.orchestrator.players).name('Black Player').onChange(this.scene.onBlackPlayerChanged.bind(this.scene));
         
     }
 
