@@ -42,7 +42,7 @@ class MyInterface extends CGFinterface {
             i++;
         }
         
-        this.gui.add(graph,'defaultCamera',graph.camerasName).name('Cameras');
+        this.gui.add(this.scene,'defaultCamera',this.scene.cameras_name).name('Cameras');
         this.gui.add(this.scene.orchestrator,'promotion',this.scene.orchestrator.promotions).name('Promotion');
         this.gui.add(this.scene.orchestrator,'evaluation_on',this.scene.orchestrator.evaluation_on).name('Evaluation');
 

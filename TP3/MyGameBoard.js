@@ -10,7 +10,7 @@ class MyGameBoard extends CGFobject {
      * @param {Number} controlPoints number of divisions in V
      * 
      */
-    constructor(scene, x1, y1, x2, y2) {
+    constructor(scene, x1, y1, x2, y2,black_piece,white_piece,black_tile,white_tile,default_material) {
 
         super(scene);
         this.auxiliar_board=new MyAuxiliarBoard(scene, x1, y1/2, x2, y2);
@@ -23,7 +23,7 @@ class MyGameBoard extends CGFobject {
         this.sizey=Math.abs(x2-x1)/8;
         this.shader= new CGFshader(this.scene.gl,"shaders/select_tile_shader.vert","shaders/select_tile_shader.frag");
         
-        this.black_tile=new CGFtexture(this.scene, "./scenes/images/black.png");
+/*         this.black_tile=new CGFtexture(this.scene, "./scenes/images/black.png");
         this.white_tile=new CGFtexture(this.scene, "./scenes/images/white.jpeg");
         
         this.white_piece= new CGFappearance(scene);
@@ -40,7 +40,14 @@ class MyGameBoard extends CGFobject {
         this.default_material.setAmbient(0, 0, 0, 1.0);
         this.default_material.setDiffuse(0.5, 0.5, 0.5, 1.0);
         this.default_material.setSpecular(0.5, 0.5, 0.5, 1.0);
+  */
 
+        this.default_material=default_material;
+        this.black_piece=black_piece;
+        this.white_piece=white_piece;
+        this.black_tile=black_tile;
+        this.white_tile=white_tile;
+      
         this.selected=new CGFtexture(this.scene, "./scenes/images/selected.png");
         this.selected.bind(1);
 

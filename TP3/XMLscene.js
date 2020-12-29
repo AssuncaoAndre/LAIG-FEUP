@@ -18,9 +18,6 @@ class XMLscene extends CGFscene {
      */
     init(application) {
         super.init(application);
-        
-
-        this.initCameras();
 
         this.enableTextures(true);
 
@@ -35,8 +32,10 @@ class XMLscene extends CGFscene {
         this.loadingProgressObject=new MyRectangle(this, -1, -.1, 1, .1);
         this.loadingProgress=0;
 
+        this.are_cameras_inited=0;
+        this.prev_camera;
         this.orchestrator=new MyGameOrchestrator(this);
-        
+        this.is_camera_moving=0;
         this.defaultAppearance=new CGFappearance(this);
         this.previous_time=0;
         this.previous_time_aux=0;
@@ -46,6 +45,9 @@ class XMLscene extends CGFscene {
         this.difference=0;
         this.sprite_shader=new CGFshader(this.gl,"shaders/sprite_shader.vert","shaders/sprite_shader.frag");
         this.spriteanimations=[];
+        this.camera_animation=new MyComputedAnimation();
+        this.aux_camera=new CGFcamera(2,0.1,500,[0,0,0],[1,0,0]);
+        this.second_aux_camera=new CGFcamera(2,0.1,500,[0,0,0],[1,0,0]);
         this.setPickEnabled(true);
         
     }
@@ -53,18 +55,31 @@ class XMLscene extends CGFscene {
     /**
      * Initializes the scene cameras.
      */
-    initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-    }
+    
 
     //connect to the interface. updates the cameras when the dropdonw menu is changed
     Camerasupdate()
     {
-        
-        this.camera= this.graph.cameras[this.graph.defaultCamera];
-        this.interface.setActiveCamera( this.camera );
+
+        if(this.is_camera_moving==0)
+        {
+            this.camera = this.cameras[this.defaultCamera];
+            if(this.prev_camera!=this.cameras[this.defaultCamera] &&this.prev_camera!=null)
+            {
+                this.change_camera();
+            }
+        }
+        else 
+        {
+            this.update_moving_camera();
+            
+        }
+        this.interface.setActiveCamera(this.camera);
+
+        this.prev_camera=this.cameras[this.defaultCamera];
 
     }
+
 
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -105,23 +120,45 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
+
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
         this.gl.clearColor(...this.graph.background);
 
         this.setGlobalAmbientLight(...this.graph.ambient);
 
+        this.initCameras();
+
         this.initLights();
 
         this.Camerasupdate();
 
         this.interface.create(this.graph);
-        
+       
         this.sceneInited = true;
-        this.setUpdatePeriod(1);
+        this.setUpdatePeriod(16);
         
 
 
+    }
+    initCameras() {
+
+        this.cameras=[];
+        this.cameras_name=[];
+        this.defaultCamera=this.graph.defaultCamera;
+  
+        for (var key in this.graph.cameras) {
+ 
+
+            if (this.graph.cameras.hasOwnProperty(key)) {
+                var graphCamera = this.graph.cameras[key];
+                this.cameras_name.push(key);
+                this.cameras[key]=new CGFcamera(graphCamera.fov,graphCamera.near,graphCamera.far,graphCamera.position,graphCamera.target);
+                
+            }
+        }
+        console.log(this.cameras[this.defaultCamera]);
+        this.are_cameras_inited=1;
     }
 
 
@@ -137,55 +174,57 @@ class XMLscene extends CGFscene {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
         // Initialize Model-View matrix as identity (no transformation
-        this.updateProjectionMatrix();
-        this.loadIdentity();
-
-        //this.setActiveShader(shader);
-        // Apply transformations corresponding to the camera position relative to the origin
-        this.applyViewMatrix();
-
-        this.pushMatrix();
-
-        for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(false);
-            this.lights[i].update();
-        }
-        
-        
-        if (this.sceneInited) {
-            // Draw axis
-            this.axis.display();
-            
-            this.defaultAppearance.apply();
-            
-            this.Camerasupdate();
-            
-            // Displays the scene (MySceneGraph function).
-          /*   if(this.asking_promotion==1)
-            {
-            }
-            */
-           this.graph.displayScene();
-          
-            
-        }
-        else
+        if(this.are_cameras_inited==1)
         {
-            // Show some "loading" visuals
-            this.defaultAppearance.apply();
 
-            this.rotate(-this.loadingProgress/10.0,0,0,1);
-
-            this.loadingProgressObject.display();
-            this.loadingProgress++;
+            this.updateProjectionMatrix();
+            this.loadIdentity();
+    
+            //this.setActiveShader(shader);
+            // Apply transformations corresponding to the camera position relative to the origin
+            
+            this.applyViewMatrix();
+    
+            this.pushMatrix();
+    
+            for (var i = 0; i < this.lights.length; i++) {
+                this.lights[i].setVisible(false);
+                this.lights[i].update();
+            }
+            
+            
+            if (this.sceneInited) {
+                // Draw axis
+                //this.axis.display();
+                
+                this.defaultAppearance.apply();
+                
+                this.Camerasupdate();
+                
+                // Displays the scene (MySceneGraph function).
+               this.graph.displayScene();
+              
+                
+            }
+            else
+            {
+                // Show some "loading" visuals
+                this.defaultAppearance.apply();
+    
+                this.rotate(-this.loadingProgress/10.0,0,0,1);
+    
+                this.loadingProgressObject.display();
+                this.loadingProgress++;
+            }
+    
+            this.popMatrix();
         }
-
-        this.popMatrix();
        
      
     }
     update(t)
     {
+        
         if(this.first==0)
         {
             this.first=1;
@@ -215,6 +254,94 @@ class XMLscene extends CGFscene {
     reset()
     {
         this.orchestrator.reset();
+    }
+
+
+    change_camera()
+    {
+
+        this.aux_camera.position={...this.prev_camera.position};
+        this.aux_camera.far=this.prev_camera.far;
+        this.aux_camera.near=this.prev_camera.near;
+        this.aux_camera.fov=this.prev_camera.fov;
+        this.aux_camera.target={...this.prev_camera.target};
+
+        this.second_aux_camera.position={...this.prev_camera.position};
+        this.second_aux_camera.far=this.prev_camera.far;
+        this.second_aux_camera.near=this.prev_camera.near;
+        this.second_aux_camera.fov=this.prev_camera.fov;
+        this.second_aux_camera.target={...this.prev_camera.target};
+
+        //this.prev_camera=null;
+
+        this.is_camera_moving=1;
+
+        var max_height=2;
+
+        this.camera_animation=new MyComputedAnimation();
+
+        var distance=this.get_distance(this.camera.position,this.aux_camera.position);
+        var distance_x = this.camera.position[0]-this.aux_camera.position[0];
+        var distance_y = this.camera.position[1]-this.aux_camera.position[1];
+        var distance_z = this.camera.position[2]-this.aux_camera.position[2];
+        var divisions=distance*60;
+
+
+        //var increment=distance/divisions;
+       var increment_x=distance_x/divisions;
+        var increment_y=distance_y/divisions;
+        var increment_z=distance_z/divisions;
+
+/*         var total_increment=0;
+        var previous_height=0; */
+        
+        for(var i=0;i<divisions;i++)
+        {
+           // total_increment=total_increment+increment;
+            //this.quadratic(distance,total_increment)-previous_height
+            this.camera_animation.trans_vec.push([increment_x,increment_y,increment_z]); 
+            //previous_height=this.quadratic(distance,total_increment);
+        }
+        this.camera=this.second_aux_camera;
+    }
+
+    update_moving_camera()
+    {
+        if(this.camera_animation.current>=this.camera_animation.trans_vec.length-1)
+        {
+            this.is_camera_moving=0;
+            var sumx=0;
+            var sumy=0;
+            var sumz=0;
+            for(var i=0;i<this.camera_animation.trans_vec.length;i++)
+            {
+                sumx=sumx+this.camera_animation.trans_vec[i][0];
+                sumy=sumy+this.camera_animation.trans_vec[i][1];
+                sumz=sumz+this.camera_animation.trans_vec[i][2];
+            }
+            
+            this.prev_camera=this.cameras[this.defaultCamera];
+            this.interface.setActiveCamera(this.camera);
+        }
+        else{
+            this.camera.position[0]=this.camera.position[0]+this.camera_animation.trans_vec[this.camera_animation.current][0];
+            this.camera.position[1]=this.camera.position[1]+this.camera_animation.trans_vec[this.camera_animation.current][1];
+            this.camera.position[2]=this.camera.position[2]+this.camera_animation.trans_vec[this.camera_animation.current][2];
+            this.camera_animation.current++;
+            //this.interface.setActiveCamera(this.camera);
+        }
+    }
+
+    get_distance(from,to)
+    {
+        return Math.sqrt((from[0]-to[0])*(from[0]-to[0])+(from[1]-to[1])*(from[1]-to[1])+(from[2]-to[2])*(from[2]-to[2]))
+    }
+
+    quadratic(distance,x)
+    {
+        var f=(distance/2);
+        var d=1/(f*f); //altura/(f*f)
+        return (-d*(x-(distance/2))*(x-(distance/2))+1); // no fim é + altura
     }
 
 }

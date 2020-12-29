@@ -76,6 +76,7 @@ serialInclude([
   "MyAuxiliarBoard.js",
   "MyGameOrchestrator.js",
   "MyEvaluationBoard.js",
+  "MyTable.js",
   'CGFResourceReader.js',
 	'CGFOBJModel.js',
 

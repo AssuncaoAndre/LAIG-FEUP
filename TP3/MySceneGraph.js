@@ -28,10 +28,10 @@ class MySceneGraph {
    */
   constructor(filename, scene) {
     this.loadedOk = null;
-
+   
     // Establish bidirectional references between scene and graph.
     this.scene = scene;
-    scene.graph = this;
+    this.scene.graph = this;
 
     this.nodes = [];
 
@@ -72,6 +72,7 @@ class MySceneGraph {
 
     // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
     this.scene.onGraphLoaded();
+  
   }
 
   /*
@@ -1322,7 +1323,29 @@ class MySceneGraph {
             var y1=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("y1"));
             var x2=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("x2"));
             var y2=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("y2"));
-            this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,x1,y1,x2,y2));
+            var black_piece=grandChildren[descendantsIndex].children[j].getAttribute("black_piece");
+            var white_piece=grandChildren[descendantsIndex].children[j].getAttribute("white_piece");
+            var black_tile=grandChildren[descendantsIndex].children[j].getAttribute("black_tile");
+            var white_tile=grandChildren[descendantsIndex].children[j].getAttribute("white_tile");
+
+            console.log(this.materials[black_piece]);
+            if(this.scene.gameboard==null)
+            this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,x1,y1,x2,y2,this.materials[black_piece],
+              this.materials[white_piece],this.textures[black_tile],this.textures[white_tile],this.materials[this.nodes[nodeID].materialID]));
+            
+            else
+            {
+              this.scene.gameboard.black_piece=this.materials[black_piece];
+              this.scene.gameboard.white_piece=this.materials[white_piece];
+              this.scene.gameboard.black_tile=this.textures[black_tile];
+              this.scene.gameboard.white_tile=this.textures[white_tile];
+
+            }
+          }
+
+          else if(type=="table")
+          {
+            this.nodes[nodeID].leaves.push(new MyTable(this.scene));
           }
 
           else if(type=="eval_board")

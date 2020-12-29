@@ -39,10 +39,7 @@
 
     </views>
 
-<!--       <scenes>
-        <scene file="teste.xml"/>
-      </scenes>
- -->
+
     <illumination>
       <ambient r="0.2" g="0.2" b="0.2" a="1.0" /> <!-- global ambient -->
       <background r="0.55" g="0.17" b="0.1" a="1.0" /> <!-- background color -->

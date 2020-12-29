@@ -21,37 +21,37 @@ class MyPiece extends CGFobject
         this.shit=0;
         if(this.type=="r")
         {
-            this.piece= new CGFOBJModel(this.scene, 'pieces/Rook.obj');
+            this.piece= new CGFOBJModel(this.scene, 'OBJ/Rook.obj');
         }
 
         else if(this.type=="k")
         {
-            this.piece= new CGFOBJModel(this.scene, 'pieces/King.obj');
+            this.piece= new CGFOBJModel(this.scene, 'OBJ/King.obj');
         }
 
         else if(this.type=="b")
         {
-            this.piece= new CGFOBJModel(this.scene, 'pieces/Bishop.obj');
+            this.piece= new CGFOBJModel(this.scene, 'OBJ/Bishop.obj');
         }
 
         else if(this.type=="q")
         {
-            this.piece= new CGFOBJModel(this.scene, 'pieces/Queen.obj');
+            this.piece= new CGFOBJModel(this.scene, 'OBJ/Queen.obj');
         }
 
         else if(this.type=="k")
         {
-            this.piece= new CGFOBJModel(this.scene, 'pieces/King.obj');
+            this.piece= new CGFOBJModel(this.scene, 'OBJ/King.obj');
         }
         
         else if(this.type=="p")
         {
-            this.piece= new CGFOBJModel(this.scene, 'pieces/Pawn.obj');
+            this.piece= new CGFOBJModel(this.scene, 'OBJ/Pawn.obj');
         }
 
         else if(this.type=="n")
         {
-            this.piece= new CGFOBJModel(this.scene, 'pieces/Knight.obj');
+            this.piece= new CGFOBJModel(this.scene, 'OBJ/Knight.obj');
         }
     }
 
@@ -91,8 +91,7 @@ class MyPiece extends CGFobject
         this.animation.cumulative[2]=this.animation.cumulative[2]+this.animation.trans_vec[this.animation.current][2];
         this.animation.current++;
         if(this.animation.current>=this.animation.trans_vec.length)
-        {
-            
+        {    
             return 1;
         }
         return 0;
