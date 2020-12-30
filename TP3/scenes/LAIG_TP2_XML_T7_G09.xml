@@ -122,10 +122,16 @@
     </materials>
 
 
-<animations>
-  
-  
-</animations>
+    <scenes>
+      <scene name="Cena de teste" file="teste.xml"/>
+    </scenes>
+    
+
+    
+    <animations>
+      
+      
+    </animations>
 
     <nodes>
 

@@ -118,6 +118,9 @@
 
     </materials>
 
+    <scenes>
+
+    </scenes>
 
 <animations>
   
@@ -171,7 +174,7 @@
         <descendants>
           <leaf type="table"/>
           <noderef id="main_board"/>
-          <noderef id="white_side_eval"/>
+         <!--  <noderef id="white_side_eval"/> -->
           <noderef id="black_side_eval"/>
         </descendants>
       </node>
@@ -191,7 +194,7 @@
         </descendants>
       </node>
 
-    <node id="white_side_eval">
+    <!-- <node id="white_side_eval">
       <material id="not_shiny_material" />
 
       <texture id="black_texture">
@@ -211,7 +214,7 @@
       <descendants>
         <leaf type="eval_board"/>
       </descendants>
-    </node>
+    </node> -->
 
     <node id="black_side_eval">
       <material id="not_shiny_material" />

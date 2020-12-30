@@ -20,7 +20,8 @@ class MyInterface extends CGFinterface {
 
         this.gui = new dat.GUI();
 
-        
+        this.lights_interface=[];
+        this.first_graph=0
         this.initKeys();
 
         return true;
@@ -34,23 +35,33 @@ class MyInterface extends CGFinterface {
     create(graph)
     { 
         var i=0;
-        var light=this.gui.addFolder('lights');
-        
-        
+        if(this.first_graph==0)
+        {
+            this.first_graph=1;
+        }
+        else 
+        {
+            this.gui.destroy();
+            this.gui = new dat.GUI();
+        }
+
+        this.lights_folder=this.gui.addFolder('lights');
+
         for (var key in graph.lights) {
-            light.add(this.scene.lights[i], 'enabled').name(key);
+            this.lights_interface.push(this.lights_folder.add(this.scene.lights[i], 'enabled').name(key));
             i++;
         }
         
-        this.gui.add(this.scene,'defaultCamera',this.scene.cameras_name).name('Cameras');
-        this.gui.add(this.scene.orchestrator,'promotion',this.scene.orchestrator.promotions).name('Promotion');
-        this.gui.add(this.scene.orchestrator,'evaluation_on',this.scene.orchestrator.evaluation_on).name('Evaluation');
-
-        this.gui.add(this.scene,"reset").name("Reset");
-
-        this.gui.add(this.scene.orchestrator,'white_player',this.scene.orchestrator.players).name('White Player').onChange(this.scene.onWhitePlayerChanged.bind(this.scene));
-        this.gui.add(this.scene.orchestrator,'black_player',this.scene.orchestrator.players).name('Black Player').onChange(this.scene.onBlackPlayerChanged.bind(this.scene));
+        this.promotion_interface=this.gui.add(this.scene.orchestrator,'promotion',this.scene.orchestrator.promotions).name('Promotion');
+        this.evaluation_interface=this.gui.add(this.scene.orchestrator,'evaluation_on',this.scene.orchestrator.evaluation_on).name('Evaluation');
+        this.scenes_interface=this.gui.add(this.scene, "current_scene", this.scene.scene_names).name("Scene").onChange(this.scene.change_scene.bind(this.scene));
+        this.reset_interface=this.gui.add(this.scene,"reset").name("Reset");
+        this.movie_interface=this.gui.add(this.scene,"movie").name("Movie");
         
+        this.white_player_interface=this.gui.add(this.scene.orchestrator,'white_player',this.scene.orchestrator.players).name('White Player').onChange(this.scene.onWhitePlayerChanged.bind(this.scene));
+        this.black_player_interface=this.gui.add(this.scene.orchestrator,'black_player',this.scene.orchestrator.players).name('Black Player').onChange(this.scene.onBlackPlayerChanged.bind(this.scene));
+        this.cameras_controller=this.gui.add(this.scene,'defaultCamera',this.scene.cameras_name).name('Cameras');
+        this.scene.changing_scene=0;
     }
 
     /**

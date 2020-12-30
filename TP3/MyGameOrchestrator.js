@@ -39,6 +39,7 @@ class MyGameOrchestrator extends CGFobject {
         this.request=null;
         this.evaluation_on=true;
         this.evaluation=0;
+        this.movie=0;
 
         this.is_promoting=null;
         this.promotion='Queen';
@@ -53,6 +54,8 @@ class MyGameOrchestrator extends CGFobject {
         this.picking=true;
         this.stopped_moving=1;
         this.gameboard=null;
+
+        this.move_stack=[];
 
     }
 
@@ -171,6 +174,7 @@ class MyGameOrchestrator extends CGFobject {
                 this.move_flags=getRequest("promotion/"+this.gameboard.current_move+"/"+move+"/"+prom);                              
                 
             }
+            this.move_stack.push(this.move_flags);
             this.gameState=getRequest("board");
             this.gameboard.resetSelection();
             
@@ -203,6 +207,7 @@ class MyGameOrchestrator extends CGFobject {
         console.log(move_bot);
         this.move_flags=getRequest("move_bot/"+move_bot);
         console.log(this.move_flags);
+        this.move_stack.push(this.move_flags);
         this.gameboard.move(this.move_flags.from, this.move_flags.to);
         
 
@@ -232,19 +237,24 @@ class MyGameOrchestrator extends CGFobject {
 
     async manage_play()
     {
-        this.start_time=Date.now();
-        //await sleep(200);
-        this.is_managed=1;
-        this.turn=getRequest("turn");
-        if(this.turn=="b"&&this.black_player!="Human")
-        {
-            console.log(this.turn,this.black_player);
-            this.bot_play();
-        }
-        else if(this.turn=="w"&&this.white_player!="Human")
-        {
-            console.log(this.turn,this.white_player);
-            this.bot_play();
+        if(this.movie==1)
+        this.movie_loop();
+        else{
+
+            this.start_time=Date.now();
+            //await sleep(200);
+            this.is_managed=1;
+            this.turn=getRequest("turn");
+            if(this.turn=="b"&&this.black_player!="Human")
+            {
+                console.log(this.turn,this.black_player);
+                this.bot_play();
+            }
+            else if(this.turn=="w"&&this.white_player!="Human")
+            {
+                console.log(this.turn,this.white_player);
+                this.bot_play();
+            }
         }
     }
 
@@ -269,6 +279,8 @@ class MyGameOrchestrator extends CGFobject {
     reset()
     {
         getRequest("reset");
+        if(this.movie==0)
+        this.move_stack=[];
         this.gameState=getRequest("board");
         this.gameboard.reset();
 
@@ -296,6 +308,36 @@ class MyGameOrchestrator extends CGFobject {
         this.turn="w";
         this.picking=true;
         this.stopped_moving=1;
+    }
+
+    begin_movie()
+    {
+        this.movie=1;
+        this.reset();
+        this.current_movie_play=0;
+        this.cached_move_flags=this.move_flags;
+        this.movie_loop();
+    }
+
+    movie_loop()
+    {
+        if(this.current_movie_play>this.move_stack.length-1)
+        {
+            this.movie=0;
+            this.move_flags=this.cached_move_flags;
+            
+        }
+        else{this.move_flags=this.move_stack[this.current_movie_play];
+            console.log(this.current_movie_play)
+        getRequest("move/"+this.move_flags.from+"/"+this.move_flags.to);
+        this.current_movie_play++;
+        this.gameboard.move(this.move_flags.from, this.move_flags.to);}
+    }
+
+    on_scene_change()
+    {
+        this.matrix=this.gameboard.matrix;
+
     }
     
 }

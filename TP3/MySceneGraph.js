@@ -8,9 +8,10 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var SPRITESHEETS_INDEX = 5;
 var MATERIALS_INDEX = 6;
-var ANIMATIONS_INDEX = 7;
-var NODES_INDEX = 7;
-var NODES_INDEX_ANIMATIONS = 8;
+var SCENES_INDEX = 7;
+var ANIMATIONS_INDEX = 8;
+var NODES_INDEX = 8;
+var NODES_INDEX_ANIMATIONS = 9;
 
 
 
@@ -33,6 +34,8 @@ class MySceneGraph {
     this.scene = scene;
     this.scene.graph = this;
 
+    this.scenes=[];
+    this.scene_names=[]
     this.nodes = [];
 
     this.idRoot = null; // The id of the root element.
@@ -196,6 +199,16 @@ class MySceneGraph {
       if ((error = this.parseMaterials(nodes[index])) != null) return error;
     }
 
+    if (nodeNames.indexOf("scenes") != -1)
+    {
+      index=nodeNames.indexOf("scenes");
+      if (index != SCENES_INDEX)
+        this.onXMLMinorError("tag <scenes> out of order");
+
+        if ((error = this.parseScenes(nodes[index])) != null) return error;
+
+    }
+    
     var animations_enabled=0;
     //animations
     if (nodeNames.indexOf("animations") != -1)
@@ -794,6 +807,35 @@ class MySceneGraph {
   }
 
     /**
+   * Parses the <scenes> block.
+   * @param {scenes block element} nodesNode
+   */
+
+  parseScenes(scenesNode) {
+    var children = scenesNode.children;
+
+   // console.log(children)
+    for (var i = 0; i < children.length; i++) {
+
+
+    if (children[i].nodeName != "scene") {
+      this.onXMLMinorError("unknwon tag <" + children[i].nodeName + ">");
+      continue;
+    }
+
+      var name = children[i].getAttribute("name");
+      var file = children[i].getAttribute("file");
+      if(!this.fileExists("./scenes/"+file))
+      this.onXMLError("No such file " + scene);
+      this.scenes.push(file);
+      this.scene_names.push(name);
+
+    }
+    this.log("Parsed Scenes.");
+    return null;
+  } 
+
+    /**
    * Parses the <animations> block.
    * @param {animations block element} nodesNode
    */
@@ -1329,18 +1371,10 @@ class MySceneGraph {
             var white_tile=grandChildren[descendantsIndex].children[j].getAttribute("white_tile");
 
             console.log(this.materials[black_piece]);
-            if(this.scene.gameboard==null)
+ 
             this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,x1,y1,x2,y2,this.materials[black_piece],
               this.materials[white_piece],this.textures[black_tile],this.textures[white_tile],this.materials[this.nodes[nodeID].materialID]));
             
-            else
-            {
-              this.scene.gameboard.black_piece=this.materials[black_piece];
-              this.scene.gameboard.white_piece=this.materials[white_piece];
-              this.scene.gameboard.black_tile=this.textures[black_tile];
-              this.scene.gameboard.white_tile=this.textures[white_tile];
-
-            }
           }
 
           else if(type=="table")
@@ -1474,10 +1508,12 @@ class MySceneGraph {
 
   //calls displayScene_aux() the first node (root) and sets the parent parameters
   displayScene() {
-    
+    if(this.idRoot!=null)
+    {
     if(this.textures[this.idRoot]!="clear")
     this.displayScene_aux(this.idRoot, this.nodes[this.idRoot].textureID,0);
     else this.displayScene_aux(this.idRoot, this.nodes[this.idRoot].textureID,1);
+    }
   }
 
   //function to recursively display the nodes, transversing the graph
@@ -1546,9 +1582,11 @@ class MySceneGraph {
   update(difference,total_time)
   {
     var current_instant;
+  if(this.idRoot!=null)
+  {
 
     var currNode = this.nodes[this.idRoot];
-    
+   
 
     
     if(currNode.animation!=null)
@@ -1576,6 +1614,7 @@ class MySceneGraph {
       this.update_aux(currNode.children[i],difference,total_time);
       this.scene.popMatrix();
     }
+  }
    
   }
 
@@ -1739,3 +1778,9 @@ class MySceneGraph {
   }
 }
 
+
+
+
+
+/*    
+*/

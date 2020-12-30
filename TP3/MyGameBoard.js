@@ -14,6 +14,10 @@ class MyGameBoard extends CGFobject {
 
         super(scene);
         this.auxiliar_board=new MyAuxiliarBoard(scene, x1, y1/2, x2, y2);
+        if(this.scene.orchestrator.gameboard!=null)
+        {
+            this.not_first_gameboard=1;
+        }
         this.scene.orchestrator.gameboard=this;
         this.x1 = x1;
         this.x2 = x2;
@@ -22,25 +26,7 @@ class MyGameBoard extends CGFobject {
         this.sizex=Math.abs(x2-x1)/8;
         this.sizey=Math.abs(x2-x1)/8;
         this.shader= new CGFshader(this.scene.gl,"shaders/select_tile_shader.vert","shaders/select_tile_shader.frag");
-        
-/*         this.black_tile=new CGFtexture(this.scene, "./scenes/images/black.png");
-        this.white_tile=new CGFtexture(this.scene, "./scenes/images/white.jpeg");
-        
-        this.white_piece= new CGFappearance(scene);
-        this.white_piece.setAmbient(0.2, 0.2, 0.2, 1.0);
-        this.white_piece.setDiffuse(0.8, 0.8, 0.8, 1.0);
-        this.white_piece.setSpecular(0.8, 0.8, 0.8, 1.0);
 
-        this.black_piece=new CGFappearance(scene);
-        this.black_piece.setAmbient(0.2, 0.2, 0.2, 0.1);
-        this.black_piece.setDiffuse(0.2, 0.2, 0.2, 0.1);
-        this.black_piece.setSpecular(0.3, 0.3, 0.3, 1);
-
-        this.default_material=new CGFappearance(scene);
-        this.default_material.setAmbient(0, 0, 0, 1.0);
-        this.default_material.setDiffuse(0.5, 0.5, 0.5, 1.0);
-        this.default_material.setSpecular(0.5, 0.5, 0.5, 1.0);
-  */
 
         this.default_material=default_material;
         this.black_piece=black_piece;
@@ -73,34 +59,40 @@ class MyGameBoard extends CGFobject {
             this.matrix.push(mat);
          }  
          
-
-        for (var i=0;i<8;i++)
-        {
-            this.matrix[1][i].piece=new MyPiece(this.scene,"p",this.white_piece,"w");
+         if(!this.not_first_gameboard)
+         {
+            for (var i=0;i<8;i++)
+            {
+                this.matrix[1][i].piece=new MyPiece(this.scene,"p",this.white_piece,"w");
+            }
+    
+            for (var i=0;i<8;i++)
+            {
+                this.matrix[6][i].piece=new MyPiece(this.scene,"p",this.black_piece,"b");
+            } 
+    
+            this.matrix[0][1].piece=new MyPiece(this.scene,"n",this.white_piece,"w");
+            this.matrix[0][0].piece=new MyPiece(this.scene,"r",this.white_piece,"w");
+            this.matrix[0][2].piece=new MyPiece(this.scene,"b",this.white_piece,"w");
+            this.matrix[0][4].piece=new MyPiece(this.scene,"k",this.white_piece,"w");
+            this.matrix[0][3].piece=new MyPiece(this.scene,"q",this.white_piece,"w");
+            this.matrix[0][5].piece=new MyPiece(this.scene,"b",this.white_piece,"w");
+            this.matrix[0][6].piece=new MyPiece(this.scene,"n",this.white_piece,"w");
+            this.matrix[0][7].piece=new MyPiece(this.scene,"r",this.white_piece,"w");
+    
+            this.matrix[7][0].piece=new MyPiece(this.scene,"r",this.black_piece,"b");
+            this.matrix[7][1].piece=new MyPiece(this.scene,"n",this.black_piece,"b");
+            this.matrix[7][2].piece=new MyPiece(this.scene,"b",this.black_piece,"b");
+            this.matrix[7][4].piece=new MyPiece(this.scene,"k",this.black_piece,"b");
+            this.matrix[7][3].piece=new MyPiece(this.scene,"q",this.black_piece,"b");
+            this.matrix[7][5].piece=new MyPiece(this.scene,"b",this.black_piece,"b");
+            this.matrix[7][6].piece=new MyPiece(this.scene,"n",this.black_piece,"b");
+            this.matrix[7][7].piece=new MyPiece(this.scene,"r",this.black_piece,"b"); 
+         }
+        else {
+            this.matrix=this.scene.orchestrator.matrix;
         }
-
-        for (var i=0;i<8;i++)
-        {
-            this.matrix[6][i].piece=new MyPiece(this.scene,"p",this.black_piece,"b");
-        } 
-
-        this.matrix[0][1].piece=new MyPiece(this.scene,"n",this.white_piece,"w");
-        this.matrix[0][0].piece=new MyPiece(this.scene,"r",this.white_piece,"w");
-        this.matrix[0][2].piece=new MyPiece(this.scene,"b",this.white_piece,"w");
-        this.matrix[0][4].piece=new MyPiece(this.scene,"k",this.white_piece,"w");
-        this.matrix[0][3].piece=new MyPiece(this.scene,"q",this.white_piece,"w");
-        this.matrix[0][5].piece=new MyPiece(this.scene,"b",this.white_piece,"w");
-        this.matrix[0][6].piece=new MyPiece(this.scene,"n",this.white_piece,"w");
-        this.matrix[0][7].piece=new MyPiece(this.scene,"r",this.white_piece,"w");
-
-        this.matrix[7][0].piece=new MyPiece(this.scene,"r",this.black_piece,"b");
-        this.matrix[7][1].piece=new MyPiece(this.scene,"n",this.black_piece,"b");
-        this.matrix[7][2].piece=new MyPiece(this.scene,"b",this.black_piece,"b");
-        this.matrix[7][4].piece=new MyPiece(this.scene,"k",this.black_piece,"b");
-        this.matrix[7][3].piece=new MyPiece(this.scene,"q",this.black_piece,"b");
-        this.matrix[7][5].piece=new MyPiece(this.scene,"b",this.black_piece,"b");
-        this.matrix[7][6].piece=new MyPiece(this.scene,"n",this.black_piece,"b");
-        this.matrix[7][7].piece=new MyPiece(this.scene,"r",this.black_piece,"b"); 
+        
     }
 
 
@@ -111,9 +103,8 @@ class MyGameBoard extends CGFobject {
         
         this.auxiliar_board.display();
         
-        if(this.scene.orchestrator.is_moving==null || this.scene.orchestrator.is_bot_playing
-            || this.scene.orchestrator.game_over==1)
-            this.scene.orchestrator.managePicking();
+
+        this.scene.orchestrator.managePicking();
 
 
         this.scene.clearPickRegistration();
@@ -125,6 +116,8 @@ class MyGameBoard extends CGFobject {
             this.scene.pushMatrix();
             for (var j = 0; j < 8; j++) {
                
+                if(this.scene.orchestrator.is_moving==null && !this.scene.orchestrator.is_bot_playing
+                   && !this.scene.orchestrator.game_over==1 && !this.scene.orchestrator.movie==1)
                 this.scene.registerForPick(i*8+j, this.matrix[i][j]);
 
                 this.default_material.apply();
@@ -389,8 +382,6 @@ class MyGameBoard extends CGFobject {
         this.is_castling=0;
         this.current_move=null;
         this.matrix = [];
-
-
 
 
         for (var i = 0; i < 4; i++) { 

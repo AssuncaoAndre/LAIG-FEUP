@@ -28,6 +28,7 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         
+        this.first_graph=0;
         this.axis = new CGFaxis(this);
         this.loadingProgressObject=new MyRectangle(this, -1, -.1, 1, .1);
         this.loadingProgress=0;
@@ -49,7 +50,10 @@ class XMLscene extends CGFscene {
         this.aux_camera=new CGFcamera(2,0.1,500,[0,0,0],[1,0,0]);
         this.second_aux_camera=new CGFcamera(2,0.1,500,[0,0,0],[1,0,0]);
         this.setPickEnabled(true);
-        
+        this.scenes=[];
+        this.scene_names=[];
+        this.current_scene="default_scene";
+        this.changing_scene=0;
     }
 
     /**
@@ -133,6 +137,13 @@ class XMLscene extends CGFscene {
 
         this.Camerasupdate();
 
+        if(this.first_graph==0)
+        {
+            this.load_scenes();
+            this.first_graph=1;
+        }
+
+        
         this.interface.create(this.graph);
        
         this.sceneInited = true;
@@ -141,6 +152,28 @@ class XMLscene extends CGFscene {
 
 
     }
+
+    load_scenes()
+    {
+        this.scenes["default_scene"]=this.default_scene;
+        this.scene_names.push("default_scene");
+        for (var i=0;i<this.graph.scenes.length;i++)
+        {
+            this.scenes[this.graph.scene_names[i]]=this.graph.scenes[i];
+            this.scene_names.push(this.graph.scene_names[i]);
+        }
+        console.log(this.scene_names,this.scenes);
+
+    }
+
+    change_scene(scene)
+    {
+        this.changing_scene=1;
+        new MySceneGraph(this.scenes[scene],this);
+        this.current_scene=scene;
+        this.orchestrator.on_scene_change();
+    }
+
     initCameras() {
 
         this.cameras=[];
@@ -256,53 +289,63 @@ class XMLscene extends CGFscene {
         this.orchestrator.reset();
     }
 
+    movie()
+    {
+        if(this.orchestrator.move_stack.length==0)
+        return;
+        this.orchestrator.begin_movie();
+        
+    }
+
 
     change_camera()
     {
-
-        this.aux_camera.position={...this.prev_camera.position};
-        this.aux_camera.far=this.prev_camera.far;
-        this.aux_camera.near=this.prev_camera.near;
-        this.aux_camera.fov=this.prev_camera.fov;
-        this.aux_camera.target={...this.prev_camera.target};
-
-        this.second_aux_camera.position={...this.prev_camera.position};
-        this.second_aux_camera.far=this.prev_camera.far;
-        this.second_aux_camera.near=this.prev_camera.near;
-        this.second_aux_camera.fov=this.prev_camera.fov;
-        this.second_aux_camera.target={...this.prev_camera.target};
-
-        //this.prev_camera=null;
-
-        this.is_camera_moving=1;
-
-        var max_height=2;
-
-        this.camera_animation=new MyComputedAnimation();
-
-        var distance=this.get_distance(this.camera.position,this.aux_camera.position);
-        var distance_x = this.camera.position[0]-this.aux_camera.position[0];
-        var distance_y = this.camera.position[1]-this.aux_camera.position[1];
-        var distance_z = this.camera.position[2]-this.aux_camera.position[2];
-        var divisions=distance*60;
-
-
-        //var increment=distance/divisions;
-       var increment_x=distance_x/divisions;
-        var increment_y=distance_y/divisions;
-        var increment_z=distance_z/divisions;
-
-/*         var total_increment=0;
-        var previous_height=0; */
-        
-        for(var i=0;i<divisions;i++)
+        if(this.changing_scene==0)
         {
-           // total_increment=total_increment+increment;
-            //this.quadratic(distance,total_increment)-previous_height
-            this.camera_animation.trans_vec.push([increment_x,increment_y,increment_z]); 
-            //previous_height=this.quadratic(distance,total_increment);
+
+            this.interface.gui.remove(this.interface.cameras_controller)
+       
+            this.aux_camera.position={...this.prev_camera.position};
+            this.aux_camera.far=this.prev_camera.far;
+            this.aux_camera.near=this.prev_camera.near;
+            this.aux_camera.fov=this.prev_camera.fov;
+            this.aux_camera.target={...this.prev_camera.target};
+    
+            this.second_aux_camera.position={...this.prev_camera.position};
+            this.second_aux_camera.far=this.prev_camera.far;
+            this.second_aux_camera.near=this.prev_camera.near;
+            this.second_aux_camera.fov=this.prev_camera.fov;
+            this.second_aux_camera.target={...this.prev_camera.target};
+    
+            //this.prev_camera=null;
+    
+            this.is_camera_moving=1;
+    
+            var max_height=2;
+    
+            this.camera_animation=new MyComputedAnimation();
+    
+            var distance=this.get_distance(this.camera.position,this.aux_camera.position);
+            var distance_x = this.camera.position[0]-this.aux_camera.position[0];
+            var distance_y = this.camera.position[1]-this.aux_camera.position[1];
+            var distance_z = this.camera.position[2]-this.aux_camera.position[2];
+            var divisions=distance*60;
+    
+    
+            var increment_x=distance_x/divisions;
+            var increment_y=distance_y/divisions;
+            var increment_z=distance_z/divisions;
+    
+    
+            for(var i=0;i<divisions;i++)
+            {
+    
+                
+                this.camera_animation.trans_vec.push([increment_x,increment_y,increment_z]); 
+    
+            }
+            this.camera=this.second_aux_camera;
         }
-        this.camera=this.second_aux_camera;
     }
 
     update_moving_camera()
@@ -322,6 +365,8 @@ class XMLscene extends CGFscene {
             
             this.prev_camera=this.cameras[this.defaultCamera];
             this.interface.setActiveCamera(this.camera);
+
+           this.interface.cameras_controller= this.interface.gui.add(this,'defaultCamera',this.cameras_name).name('Cameras');
         }
         else{
             this.camera.position[0]=this.camera.position[0]+this.camera_animation.trans_vec[this.camera_animation.current][0];

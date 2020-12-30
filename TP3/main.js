@@ -97,7 +97,7 @@ serialInclude([
     // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor)
 
     var filename = getUrlVars()["file"] || "LAIG_TP2_XML_T7_G09.xml";
-
+    myScene.default_scene=filename;
     // create and load graph, and associate it to scene.
     // Check console for loading errors
     var myGraph = new MySceneGraph(filename, myScene);
