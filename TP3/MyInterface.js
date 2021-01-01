@@ -57,7 +57,8 @@ class MyInterface extends CGFinterface {
         this.scenes_interface=this.gui.add(this.scene, "current_scene", this.scene.scene_names).name("Scene").onChange(this.scene.change_scene.bind(this.scene));
         this.reset_interface=this.gui.add(this.scene,"reset").name("Reset");
         this.movie_interface=this.gui.add(this.scene,"movie").name("Movie");
-        
+        this.undo_interface=this.gui.add(this.scene,"undo").name("Undo");
+
         this.white_player_interface=this.gui.add(this.scene.orchestrator,'white_player',this.scene.orchestrator.players).name('White Player').onChange(this.scene.onWhitePlayerChanged.bind(this.scene));
         this.black_player_interface=this.gui.add(this.scene.orchestrator,'black_player',this.scene.orchestrator.players).name('Black Player').onChange(this.scene.onBlackPlayerChanged.bind(this.scene));
         this.cameras_controller=this.gui.add(this.scene,'defaultCamera',this.scene.cameras_name).name('Cameras');

@@ -56,6 +56,9 @@ class MyGameOrchestrator extends CGFobject {
         this.gameboard=null;
 
         this.move_stack=[];
+        this.is_undo=0;
+        this.undo_capture=0;
+        this.undo_move={flags:""};
 
     }
 
@@ -99,9 +102,17 @@ class MyGameOrchestrator extends CGFobject {
             {
                 if(this.is_moving[4]==null)
                 {
-     
-                        if(this.gameboard.matrix[this.is_moving[0]][this.is_moving[1]].piece.update(t)==1)
-                        this.gameboard.stop_move();
+                    if(this.undo_capture!=2)
+                    {
+
+                            if(this.gameboard.matrix[this.is_moving[0]][this.is_moving[1]].piece.update(t)==1)
+                            this.gameboard.stop_move();}
+                            else 
+                            {
+                             if(this.gameboard.auxiliar_board.matrix[this.is_moving[0]-12][this.is_moving[1]].piece.update(t)==1)
+                             this.gameboard.stop_move();
+                            
+                        }
                    
                 }
                 else{
@@ -116,8 +127,11 @@ class MyGameOrchestrator extends CGFobject {
                         else aux_to_coords[0]=aux_to_coords[0]+1;
                     }
         
-                    if(this.gameboard.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.update(t)==1)
-                    this.gameboard.stop_move();
+
+                       if(this.gameboard.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.update(t)==1)
+                        this.gameboard.stop_move();
+                   
+
                 }
             }
         }
@@ -239,8 +253,9 @@ class MyGameOrchestrator extends CGFobject {
     {
         if(this.movie==1)
         this.movie_loop();
+        else if(this.is_undo==1)
+        this.effective_undo();
         else{
-
             this.start_time=Date.now();
             //await sleep(200);
             this.is_managed=1;
@@ -338,6 +353,49 @@ class MyGameOrchestrator extends CGFobject {
     {
         this.matrix=this.gameboard.matrix;
 
+    }
+
+    undo()
+    {
+        if(this.move_stack.length==0)
+        return;
+        this.is_undo=1;
+        if(this.is_moving==null)
+        this.manage_play();
+    }
+
+    async effective_undo()
+    {
+        this.undo_move=this.move_stack.pop();
+
+        if(this.undo_move.flags=="p" ||this.undo_move.flags=="cp" || this.undo_move.flags=="np")
+        {
+            this.gameboard.undo_promotion(this.undo_move.to,this.undo_move.color);
+            await(sleep(50));
+        }
+        
+            
+        if(this.undo_move.flags=="c" || this.undo_move.flags=="cp")
+            this.undo_capture=1;    
+
+        this.gameboard.move(this.undo_move.to,this.undo_move.from);
+        
+        if(this.undo_move.flags=="e")
+        {
+            this.undo_capture=1; 
+            
+        }
+
+        if(this.undo_move.flags=="k")
+        {
+            
+        }
+
+        if(this.undo_move.flags=="q")
+        {
+            
+        }
+        getRequest("undo");
     }
     
 }

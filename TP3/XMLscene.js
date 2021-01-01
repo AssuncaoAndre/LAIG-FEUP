@@ -297,6 +297,10 @@ class XMLscene extends CGFscene {
         
     }
 
+    undo()
+    {
+        this.orchestrator.undo();
+    }
 
     change_camera()
     {

@@ -43,10 +43,7 @@ app.get('/move/:from/:to', (req,res)=>{
 
 app.get('/move_bot/:move', (req,res)=>{
     
-/*    var move =req.params.move;
-   console.log(move ); */
    ret=chess.move(req.params.move, { sloppy: true });
-   //console.log(ret)
    res.send(ret);
 });
 
@@ -68,12 +65,10 @@ app.get('/in_draw', (req,res)=>{
 });
 
 app.get('/reset', (req,res)=>{
-    console.log("RESET");
    res.send(chess.reset());
 });
 
 app.get('/eval', async (req,res)=>{
-
         var cached_flag=global.flag;
 		strength=20;
 		position="fen "+chess.fen();
@@ -81,13 +76,14 @@ app.get('/eval', async (req,res)=>{
         send_to_engine("uci");
         while(cached_flag==global.flag)
         {
-            //console.log(cached_flag);
             await sleep(30);
         }
-
-	//console.log(global.computer_eval);
    res.send(global.computer_eval);
  });
+
+ app.get('/undo', async (req,res)=>{
+    res.send(chess.undo());
+});
 
 app.get('/computer_play/:level', async (req,res)=>{
 	if(req.params.level>1)
@@ -95,11 +91,9 @@ app.get('/computer_play/:level', async (req,res)=>{
         var cached_flag=global.flag;
 		strength=strength_vec[req.params.level-2];
 		position="fen "+chess.fen();
-		//console.log(position);
         send_to_engine("uci");
         while(cached_flag==global.flag)
         {
-            //console.log(cached_flag);
             await sleep(30);
         }
 	}
@@ -107,7 +101,6 @@ app.get('/computer_play/:level', async (req,res)=>{
 		var random=Math.floor((Math.random() * chess.moves().length-1) + 0);
 		global.computer_play=chess.moves({ verbose: true })[random].san;
     }
-	//console.log(global.computer_play);
    res.send(global.computer_play);
 }); 
 
@@ -160,7 +153,7 @@ engine.onmessage = function (line)
         
         send_to_engine("go");
     } else if (!started_thinking && line.indexOf("info depth") > -1) {
-        console.log("Thinking...");
+        //console.log("Thinking...");
         started_thinking = true;
         setTimeout(function ()
         {

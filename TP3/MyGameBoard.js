@@ -47,14 +47,14 @@ class MyGameBoard extends CGFobject {
         for (var i = 0; i < 4; i++) { 
             var mat = []; 
             for (var j = 0; j < 4; j++) {
-                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.black_tile,this.selected,this.shader));
                 mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.white_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.black_tile,this.selected,this.shader));
             }
             this.matrix.push(mat);
             var mat = []; 
             for (var j = 0; j < 4; j++) {
-                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.white_tile,this.selected,this.shader));
                 mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.black_tile,this.selected,this.shader));
+                mat.push(new MyTile(this.scene,this.sizex,this.sizey,this.white_tile,this.selected,this.shader));
             }
             this.matrix.push(mat);
          }  
@@ -168,9 +168,7 @@ class MyGameBoard extends CGFobject {
     {
         var from_coords=this.moveToCoords(from_move);
         var to_coords=this.moveToCoords(to_move);
-        this.effective_move(from_coords,to_coords);
-       
-        
+        this.effective_move(from_coords,to_coords);  
     }
 
     effective_move(from_coords,to_coords)
@@ -179,9 +177,9 @@ class MyGameBoard extends CGFobject {
         var aux_to_coords=to_coords;
         this.scene.orchestrator.is_moving=[from_coords[0],from_coords[1],to_coords[0],to_coords[1],null,null];
         
-        if(this.scene.orchestrator.move_flags.flags=="e")
+        if(this.scene.orchestrator.move_flags.flags=="e" && this.scene.orchestrator.is_undo==0)
         {
-            
+            console.log("here")
             if(this.scene.orchestrator.move_flags.color=="w")
             {
                 aux_to_coords[0]=aux_to_coords[0]-1;
@@ -189,29 +187,48 @@ class MyGameBoard extends CGFobject {
             }
             else aux_to_coords[0]=aux_to_coords[0]+1;
         }
-
-        if(this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece!=null )
+        if(this.scene.orchestrator.undo_capture!=2)
         {
-            var auxiliar_coords=this.get_empty_auxiliar();
-            this.scene.orchestrator.is_moving[4]=auxiliar_coords[0];
-            this.scene.orchestrator.is_moving[5]=auxiliar_coords[1];
-            auxiliar_coords[0]=12-auxiliar_coords[0];
-
-            var distance=this.get_distance(aux_to_coords,auxiliar_coords)/2;
-            var distance_x = (auxiliar_coords[1]-aux_to_coords[0])/2;
-            var distance_y = (auxiliar_coords[0]-aux_to_coords[1])/2;
-            var divisions=30+distance*15;
-            
+            console.log("here")
+            if(this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece!=null )
+            {
+                console.log(aux_to_coords)
+                console.log("here")
+                var auxiliar_coords=this.get_empty_auxiliar();
+                this.scene.orchestrator.is_moving[4]=auxiliar_coords[0];
+                this.scene.orchestrator.is_moving[5]=auxiliar_coords[1];
+                auxiliar_coords[0]=12-auxiliar_coords[0];
+    
+                var distance=this.get_distance(aux_to_coords,auxiliar_coords)/2;
+                var distance_x = (auxiliar_coords[1]-aux_to_coords[0])/2;
+                var distance_y = (auxiliar_coords[0]-aux_to_coords[1])/2;
+                var divisions=30+distance*15;
+                
+            }
+            else
+            {
+                console.log("here")
+                aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
+                aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
+                
+                
+                var distance=this.get_distance(from_coords,aux_to_coords)/2;
+                var distance_x = (aux_to_coords[0]-from_coords[0])/2;
+                var distance_y = (aux_to_coords[1]-from_coords[1])/2;
+                var divisions=100+distance*50;
+                console.log(aux_to_coords)
+            }
         }
-        else
-        {
+        else{
+            console.log("POR FAVOR NÃO")
             aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
             aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
             
             
             var distance=this.get_distance(from_coords,to_coords)/2;
-            var distance_x = (aux_to_coords[0]-from_coords[0])/2;
-            var distance_y = (aux_to_coords[1]-from_coords[1])/2;
+            var distance_x = (aux_to_coords[0]-from_coords[1])/2;
+            var distance_y = (aux_to_coords[1]-from_coords[0])/2;
+            console.log(distance_x,distance_y);
             var divisions=100+distance*50;
         }
 
@@ -221,10 +238,9 @@ class MyGameBoard extends CGFobject {
         var max_height=2;
 
 
-
-        var increment=distance/divisions;
-        var increment_x=distance_x/divisions;
-        var increment_y=distance_y/divisions;
+            var increment=distance/divisions;
+            var increment_x=distance_x/divisions;
+            var increment_y=distance_y/divisions;
 
         var total_increment=0;
         var previous_height=0;
@@ -239,11 +255,24 @@ class MyGameBoard extends CGFobject {
 
         if(this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece!=null )
         {
+            console.log("here")
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.animation=animation;
         }
 
         else 
-        this.matrix[from_coords[0]][from_coords[1]].piece.animation=animation;
+        {
+            if(this.scene.orchestrator.undo_capture!=2)
+            {
+                console.log("here")
+                //console.log(from_coords[0],from_coords[1])
+                this.matrix[from_coords[0]][from_coords[1]].piece.animation=animation;
+            }
+            else 
+            {
+                console.log("here")
+                this.auxiliar_board.matrix[from_coords[0]-12][from_coords[1]].piece.animation=animation;
+            }
+            }
         
     }
 
@@ -312,11 +341,12 @@ class MyGameBoard extends CGFobject {
 
     async stop_move()
     {
+        console.log("at least here")
         var aux_to_coords=[];
         aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
         aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
 
-        if(this.scene.orchestrator.move_flags.flags=="e")
+        if(this.scene.orchestrator.move_flags.flags=="e" && this.scene.orchestrator.undo==0)
         {
             
             if(this.scene.orchestrator.move_flags.color=="w")
@@ -329,6 +359,7 @@ class MyGameBoard extends CGFobject {
 
         if(this.scene.orchestrator.is_moving[4]!=null)
         {
+            console.log("here")
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.animation=null;
             this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[4]][this.scene.orchestrator.is_moving[5]].piece=
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece;
@@ -342,31 +373,75 @@ class MyGameBoard extends CGFobject {
 
         else
         {
-
-            this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece.animation=null;
-            this.matrix[this.scene.orchestrator.is_moving[2]][this.scene.orchestrator.is_moving[3]].piece=
-            this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece;
-            this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece=null;
+            if(this.scene.orchestrator.undo_capture<2)
+            {
+                console.log("here")
+                this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece.animation=null;
+                this.matrix[this.scene.orchestrator.is_moving[2]][this.scene.orchestrator.is_moving[3]].piece=
+                this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece;
+                this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece=null;
+                if(this.scene.orchestrator.undo_capture==1)
+                this.scene.orchestrator.undo_capture=2;
+            }
+            else 
+            {
+                console.log("here");
+                this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[0]-12][this.scene.orchestrator.is_moving[1]].piece.animation=null;
+                this.matrix[this.scene.orchestrator.is_moving[2]][this.scene.orchestrator.is_moving[3]].piece=
+                this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[0]-12][this.scene.orchestrator.is_moving[1]].piece;
+                this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[0]-12][this.scene.orchestrator.is_moving[1]].piece=null;
+                this.scene.orchestrator.undo_capture=0;
+            }
             if(this.scene.orchestrator.is_promoting!=null)
             {
                 await this.promote([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]],this.scene.orchestrator.is_promoting); 
             }
-            
-            if(this.scene.orchestrator.move_flags.flags=="k" && this.is_castling==0)
+
+            if(this.scene.orchestrator.move_flags.flags=="k" && this.is_castling==0 && this.scene.orchestrator.is_undo==0)
             {
+                console.log("good castle")
+                
                 this.is_castling=1;
                 
-                this.effective_move([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]+3],[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]-1]);
+                this.effective_move([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1],[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]+1]);
             }
-            else if(this.scene.orchestrator.move_flags.flags=="q" && this.is_castling==0)
+            else if(this.scene.orchestrator.move_flags.flags=="q" && this.is_castling==0 && this.scene.orchestrator.is_undo==0)
             {
-                
+               
                 this.is_castling=1;
                
-                this.effective_move([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-4],[this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1]);
+                this.effective_move([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]-2],[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-1]);
             }
+
+            else if(this.scene.orchestrator.undo_move.flags=="k"&& this.is_castling==0)
+            {
+                console.log("bad castle")
+                this.is_castling=1;
+                this.effective_move([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1],[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]+1]);
+            }
+            else if(this.scene.orchestrator.undo_move.flags=="q"&& this.is_castling==0)
+            {
+                this.is_castling=1;
+                console.log(this.scene.orchestrator.is_moving);
+                this.effective_move([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]-1],[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-2]);
+            }
+
+            else if(this.scene.orchestrator.undo_capture==2)
+            {
+                if(this.scene.orchestrator.undo_move.flags=="e")
+                {
+                    if(this.scene.orchestrator.undo_move.color=="w")
+                    this.undo_capture([this.scene.orchestrator.is_moving[0]-1,this.scene.orchestrator.is_moving[1]]);
+                    else  
+                    this.undo_capture([this.scene.orchestrator.is_moving[0]+1,this.scene.orchestrator.is_moving[1]]);
+                }
+                else this.undo_capture([this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]]);
+            }
+
             else 
             {
+                this.scene.orchestrator.is_undo=0;
+                this.scene.orchestrator.undo_move.flags="";
                 this.scene.orchestrator.is_moving=null
                 this.is_castling=0;
                 this.scene.orchestrator.check_end();
@@ -374,6 +449,46 @@ class MyGameBoard extends CGFobject {
             };
         }
 
+    }
+     undo_promotion(move,color)
+    {
+        var coords=this.moveToCoords(move);
+
+        if(color=="w")
+        var material=this.white_piece;
+        else
+        var material=this.black_piece; 
+
+        this.matrix[coords[0]][coords[1]].piece=new MyPiece(this.scene,"p",material,color);
+        
+    }
+
+    undo_capture(to_coords)
+    {
+        
+        var auxiliar_coords=this.get_last_capture();
+        console.log(auxiliar_coords);
+        auxiliar_coords[0]=12-auxiliar_coords[0];
+        this.effective_move(auxiliar_coords,to_coords);
+    }
+
+    get_last_capture()
+    {
+        for (var i=3;i>=0;i--)
+        {
+            for (var j=7;j>=0;j--)
+            {
+                
+                if(this.auxiliar_board.matrix[i][j].piece!=null)
+                {
+                   
+                    var vex=[];
+                    vex.push(i);
+                    vex.push(j);
+                    return vex;
+                }
+            }
+        }
     }
 
     reset()
