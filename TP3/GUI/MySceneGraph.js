@@ -47,6 +47,7 @@ class MySceneGraph {
     this.defaultCamera;
     // File reading
     this.reader = new CGFXMLreader();
+    this.gameboard_count=0;
 
     /*
      * Read the contents of the xml file, and refer to this class for loading and error handlers.
@@ -1360,20 +1361,23 @@ class MySceneGraph {
           }
           else if(type=="gameboard")
           {
-            
-            var x1=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("x1"));
-            var y1=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("y1"));
-            var x2=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("x2"));
-            var y2=parseFloat(grandChildren[descendantsIndex].children[j].getAttribute("y2"));
-            var black_piece=grandChildren[descendantsIndex].children[j].getAttribute("black_piece");
-            var white_piece=grandChildren[descendantsIndex].children[j].getAttribute("white_piece");
-            var black_tile=grandChildren[descendantsIndex].children[j].getAttribute("black_tile");
-            var white_tile=grandChildren[descendantsIndex].children[j].getAttribute("white_tile");
-
-            console.log(this.materials[black_piece]);
- 
-            this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,x1,y1,x2,y2,this.materials[black_piece],
-              this.materials[white_piece],this.textures[black_tile],this.textures[white_tile],this.materials[this.nodes[nodeID].materialID]));
+            if(this.gameboard_count==0)
+            {
+              this.gameboard_count++;
+               var black_piece=grandChildren[descendantsIndex].children[j].getAttribute("black_piece");
+              var white_piece=grandChildren[descendantsIndex].children[j].getAttribute("white_piece");
+              var black_tile=grandChildren[descendantsIndex].children[j].getAttribute("black_tile");
+              var white_tile=grandChildren[descendantsIndex].children[j].getAttribute("white_tile");
+  
+              console.log(this.materials[black_piece]);
+   
+              this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,this.materials[black_piece],
+                this.materials[white_piece],this.textures[black_tile],this.textures[white_tile],this.materials[this.nodes[nodeID].materialID]));
+            }
+            else
+            {
+              this.onXMLMinorError("There can only be one gameboard per scene");
+            }
             
           }
 
@@ -1555,6 +1559,10 @@ class MySceneGraph {
       this.scene.popMatrix();
     }
 
+    if (this.materials[currNode.materialID] != null) {
+      this.materials[currNode.materialID].apply();
+    }
+
     //displays leaves
     for (var i = 0; i < currNode.leaves.length; i++) {
       this.scene.pushMatrix();
@@ -1621,6 +1629,7 @@ class MySceneGraph {
   update_aux(idNode,difference,total_time)
   {
     var current_instant;
+
 
     var currNode = this.nodes[idNode];
     if(currNode.update==1)

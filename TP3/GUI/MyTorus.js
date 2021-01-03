@@ -79,4 +79,5 @@ class MyTorus extends CGFobject {
       /* 		this.texCoords = [...coords];
           this.updateTexCoordsGLBuffers(); */
         } 
+        update(){}
 }

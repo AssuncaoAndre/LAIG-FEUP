@@ -10,21 +10,21 @@ class MyGameBoard extends CGFobject {
      * @param {Number} controlPoints number of divisions in V
      * 
      */
-    constructor(scene, x1, y1, x2, y2,black_piece,white_piece,black_tile,white_tile,default_material) {
+    constructor(scene,black_piece,white_piece,black_tile,white_tile,default_material) {
 
         super(scene);
-        this.auxiliar_board=new MyAuxiliarBoard(scene, x1, y1/2, x2, y2);
+        this.auxiliar_board=new MyAuxiliarBoard(scene, -2, -1, 2, 2);
         if(this.scene.orchestrator.gameboard!=null)
         {
             this.not_first_gameboard=1;
         }
         this.scene.orchestrator.gameboard=this;
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.y1 = y1;
-        this.sizex=Math.abs(x2-x1)/8;
-        this.sizey=Math.abs(x2-x1)/8;
+        this.x1 = -2;
+        this.x2 = 2;
+        this.y2 = 2;
+        this.y1 = -2;
+        this.sizex=Math.abs(this.x2-this.x1)/8;
+        this.sizey=Math.abs(this.x2-this.x1)/8;
         this.shader= new CGFshader(this.scene.gl,"shaders/select_tile_shader.vert","shaders/select_tile_shader.frag");
 
 
@@ -229,7 +229,7 @@ class MyGameBoard extends CGFobject {
             var distance_x = (aux_to_coords[0]-from_coords[1])/2;
             var distance_y = (aux_to_coords[1]-from_coords[0])/2;
             console.log(distance_x,distance_y);
-            var divisions=100+distance*50;
+            var divisions=60+distance*60;
         }
 
 

@@ -140,9 +140,10 @@ class MyGameOrchestrator extends CGFobject {
     async check_end()
     {
         await sleep(50);
-        if(this.time<=0)
+        if(this.time<=0 )
         {
             this.time=0;
+            if(yhis.game_over==0)
             alert(getRequest("turn")=="w"?"Black wins by time":"White wins by time");
             this.game_over=1;
         }
@@ -257,7 +258,7 @@ class MyGameOrchestrator extends CGFobject {
         this.effective_undo();
         else{
             this.start_time=Date.now();
-            //await sleep(200);
+            /* await sleep(50); */
             this.is_managed=1;
             this.turn=getRequest("turn");
             if(this.turn=="b"&&this.black_player!="Human")

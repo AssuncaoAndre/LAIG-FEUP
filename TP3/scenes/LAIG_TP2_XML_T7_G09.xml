@@ -1,204 +1,206 @@
 <lsf>
 
-    <initials>
-      <reference length="2" />
-      <!-- axis length; "0" means no axis displayed -->
-      <root id="root" />
-      <!-- identifier of root node of the scene graph; this node -->
-      <!-- must be defined in one of the following NODE declarations -->
-    </initials>
+  <initials>
+    <reference length="2" />
+    <!-- axis length; "0" means no axis displayed -->
+    <root id="root" />
+    <!-- identifier of root node of the scene graph; this node -->
+    <!-- must be defined in one of the following NODE declarations -->
+  </initials>
 
-    <views default="middle_camera">
+  <views default="middle_camera">
 
-      <!-- at least one of the following type of cameras must be declared -->
+    <!-- at least one of the following type of cameras must be declared -->
 
-      <perspective id="middle_camera" near="0.1" far="500" angle="45">
+    <perspective id="middle_camera" near="0.1" far="500" angle="45">
 
-        <from x="3.7" y="3" z="0" />
+      <from x="3.7" y="3" z="0" />
 
-        <to x="0" y="0" z="0" />
+      <to x="0" y="0" z="0" />
 
-      </perspective>
+    </perspective>
 
-      <perspective id="white_player_camera" near="0.1" far="500" angle="45">
+    <perspective id="white_player_camera" near="0.1" far="500" angle="45">
 
-        <from x="0" y="5" z="4" />
+      <from x="0" y="5" z="4" />
 
-        <to x="0" y="0" z="0" />
+      <to x="0" y="0" z="0" />
 
-      </perspective>
+    </perspective>
 
-      <perspective id="black_player_camera" near="0.1" far="500" angle="45">
+    <perspective id="black_player_camera" near="0.1" far="500" angle="45">
 
-        <from x="0" y="5" z="-4" />
+      <from x="0" y="5" z="-4" />
 
-        <to x="0" y="0" z="0" />
+      <to x="0" y="0" z="0" />
 
-      </perspective>
+    </perspective>
 
 
-    </views>
+  </views>
 
-<!--       <scenes>
+  <!--       <scenes>
         <scene file="teste.xml"/>
       </scenes>
  -->
-    <illumination>
-      <ambient r="0.2" g="0.2" b="0.2" a="1.0" /> <!-- global ambient -->
-      <background r="0.55" g="0.17" b="0.1" a="1.0" /> <!-- background color -->
-    </illumination>
+  <illumination>
+    <ambient r="0.2" g="0.2" b="0.2" a="1.0" /> <!-- global ambient -->
+    <background r="0.55" g="0.17" b="0.1" a="1.0" /> <!-- background color -->
+  </illumination>
 
 
-    <lights>
-      <!-- NOTE: this block "light" must be repeated as necessary with different "id". At least one light should be present, and a maximum of eight lights is accepted. -->
+  <lights>
+    <!-- NOTE: this block "light" must be repeated as necessary with different "id". At least one light should be present, and a maximum of eight lights is accepted. -->
 
 
-    <light id="west_light">            <!-- light identifier -->
+    <light id="west_light">
+      <!-- light identifier -->
       <enable value="1" />
       <!-- enable/disable -->
-      <position x="7" y="5" z="0" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
-      <ambient r="0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
-      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />             <!-- diffuse component -->
-      <specular r="1.0" g="1.0" b="1.0" a="1.0" />            <!-- specular component -->
-  </light>
+      <position x="7" y="5" z="0" w="1.0" /> <!-- light position; w=1: point light; w=0: directional light -->
+      <ambient r="0" g="0" b="0" a="1.0" /> <!-- ambient component -->
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- diffuse component -->
+      <specular r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- specular component -->
+    </light>
 
-  <light id="east_light">            <!-- light identifier -->
-    <enable value="1" />
-    <!-- enable/disable -->
-    <position x="-5" y="5" z="0" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
-    <ambient r="0" g="0" b="0" a="1.0" />                   <!-- ambient component -->
-    <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />             <!-- diffuse component -->
-    <specular r="1.0" g="1.0" b="1.0" a="1.0" />            <!-- specular component -->
-</light>
+    <light id="east_light">
+      <!-- light identifier -->
+      <enable value="1" />
+      <!-- enable/disable -->
+      <position x="-5" y="5" z="0" w="1.0" /> <!-- light position; w=1: point light; w=0: directional light -->
+      <ambient r="0" g="0" b="0" a="1.0" /> <!-- ambient component -->
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- diffuse component -->
+      <specular r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- specular component -->
+    </light>
 
-    </lights>
-
-
-    <textures>
-      
-      <texture id="white_tile" path="./scenes/images/black.png" />
-      <texture id="black_tile" path="./scenes/images/white.jpeg" /> 
-    </textures>
-
-    <spritesheets>
-      <spritesheet id="fire" path="./scenes/images/fire.png" sizeM="5" sizeN="2" />
-
-   </spritesheets>
+  </lights>
 
 
+  <textures>
+
+    <texture id="white_tile" path="./scenes/images/black.png" />
+    <texture id="black_tile" path="./scenes/images/white.jpeg" />
+    <texture id="madeira_texture" path="./scenes/images/madeira_texture.jpg" />
+  </textures>
+
+  <spritesheets>
+    <spritesheet id="fire" path="./scenes/images/fire.png" sizeM="5" sizeN="2" />
+
+  </spritesheets>
 
 
-    <materials>
-      <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
+  <materials>
+    <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
 
           requires a distinct "id". At least one material should be present. -->
-  
-      <material id="not_shiny_material">
-        <shininess value="10" />
-        <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-        <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-        <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-        <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
-      </material>
 
-      <material id="white_piece">
-        <shininess value="10" />
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-        <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
-        <specular r="0.3" g="0.3" b="0.3" a="1.0" />
-        <emissive r="0.0" g="0.0" b="0.0" a="0.0" />
-      </material>
+    <material id="not_shiny_material">
+      <shininess value="10" />
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+      <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+      <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
+    </material>
 
-      <material id="black_piece">
-        <shininess value="10" />
-        <ambient r="0.2" g="0.2" b="0.2" a="0.1" />
-        <diffuse r="0.2" g="0.2" b="0.2" a="0.1" />
-        <specular r="0.3" g="0.3" b="0.3" a="1.0" />
-        <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
-      </material>
+    <material id="white_piece">
+      <shininess value="10" />
+      <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+      <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
+      <specular r="0.3" g="0.3" b="0.3" a="1.0" />
+      <emissive r="0.0" g="0.0" b="0.0" a="0.0" />
+    </material>
 
+    <material id="black_piece">
+      <shininess value="10" />
+      <ambient r="0.2" g="0.2" b="0.2" a="0.1" />
+      <diffuse r="0.2" g="0.2" b="0.2" a="0.1" />
+      <specular r="0.3" g="0.3" b="0.3" a="1.0" />
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
+    </material>
 
-
-    </materials>
-
-
-    <scenes>
-      <scene name="Cena de teste" file="teste.xml"/>
-    </scenes>
-    
-
-    
-    <animations>
-      
-      
-    </animations>
-
-    <nodes>
-
-      <node id="root">
-        <!-- defines one intermediate node; may be repeated as necessary -->
-
-        <!-- next two lines are mandatory -->
-        <material id="not_shiny_material" />
-        <!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
+    <material id="wood_material">
+      <shininess value="10" />
+      <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+      <diffuse r="0.35" g="0.3" b="0.3" a="1.0" />
+      <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+      <emissive r="0.0" g="0.0" b="0.0" a="0.0" />
+    </material>
 
 
-        <texture id="clear">
-          <!-- declared texture superimposes the texture received from parent node
+  </materials>
+
+
+  <scenes>
+    <scene name="Cena de teste" file="teste.xml" />
+  </scenes>
+
+
+  <animations></animations>
+
+  <nodes>
+
+    <node id="root">
+      <!-- defines one intermediate node; may be repeated as necessary -->
+
+      <!-- next two lines are mandatory -->
+      <material id="not_shiny_material" />
+      <!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
+
+
+      <texture id="clear">
+        <!-- declared texture superimposes the texture received from parent node
             id="null" maintains texture from parent node
             id="clear" clears texture declaration received from parent node -->
 
 
-          <amplification afs="1.0" aft="1.0" /> <!-- for primitives = dx/afs, dy/aft -->
+        <amplification afs="1.0" aft="1.0" /> <!-- for primitives = dx/afs, dy/aft -->
 
-        </texture>
+      </texture>
 
-        <transformations>
-        </transformations>
+      <transformations></transformations>
 
-        <!-- geom. transf. are optional and may be repeated, in any order, as necessary: -->
+      <!-- geom. transf. are optional and may be repeated, in any order, as necessary: -->
 
-        <!-- declaring descendants, at least one node or one leaf must be present
+      <!-- declaring descendants, at least one node or one leaf must be present
         descendants may be mixed, nodes and leafs -->
-        <descendants>
-          <noderef id="table"/>
-        </descendants>
+      <descendants>
+        <noderef id="table" />
+      </descendants>
 
-      </node>
+    </node>
 
 
-      <node id="table">
-        <material id="not_shiny_material" />
+    <node id="table">
+      <material id="wood_material" />
 
-        <texture id="black_tile">
-          <amplification afs="0.5" aft="0.5" />
-        </texture>
+      <texture id="black_tile">
+        <amplification afs="0.5" aft="0.5" />
+      </texture>
 
-        <transformations>
-          
-        </transformations>
-        <descendants>
-          <leaf type="table"/>
-          <noderef id="main_board"/>
-          <noderef id="white_side_eval"/>
-          <noderef id="black_side_eval"/>
-        </descendants>
-      </node>
+      <transformations></transformations>
+      <descendants>
+        <leaf type="table" />
+        <noderef id="cadeira_black_side" />
+        <noderef id="main_board" />
+        <noderef id="white_side_eval" />
+        <noderef id="black_side_eval" />
+      </descendants>
+    </node>
 
     <node id="main_board">
-        <material id="not_shiny_material" />
+      <material id="not_shiny_material" />
 
-        <texture id="black_tile">
-          <amplification afs="0.5" aft="0.5" />
-        </texture>
+      <texture id="black_tile">
+        <amplification afs="0.5" aft="0.5" />
+      </texture>
 
-        <transformations>
-          <translation x="-2" y="0" z="2"/>
-        </transformations>
-        <descendants>
-          <leaf type="gameboard" x1="-2" y1="-2" x2="2" y2="2" black_piece="black_piece" black_tile="black_tile" white_piece="white_piece" white_tile="white_tile"/>
-        </descendants>
-      </node>
+      <transformations>
+        <translation x="-2" y="0" z="2" />
+      </transformations>
+      <descendants>
+        <leaf type="gameboard" black_piece="black_piece" black_tile="black_tile" white_piece="white_piece" white_tile="white_tile" />
+      </descendants>
+    </node>
 
     <node id="white_side_eval">
       <material id="not_shiny_material" />
@@ -209,16 +211,16 @@
 
       <transformations>
         <translation x="-3.8" y="0" z="-2" />
-  
-        
+
+
         <rotation axis="y" angle="25" />
         <rotation axis="z" angle="0" />
-    
+
         <scale sx="1" sy="1" sz="1" />
-  
+
       </transformations>
       <descendants>
-        <leaf type="eval_board"/>
+        <leaf type="eval_board" />
       </descendants>
     </node>
 
@@ -230,21 +232,143 @@
       </texture>
 
       <transformations>
-        
+
         <translation x="-0.5" y="0" z="3.5" />
-        
-         
+
+
         <rotation axis="y" angle="335" />
         <rotation axis="z" angle="0" />
-        
+
         <scale sx="-1" sy="1" sz="-1" />
-  
+
       </transformations>
       <descendants>
-        <leaf type="eval_board"/>
+        <leaf type="eval_board" />
       </descendants>
     </node>
 
-    </nodes>
 
+  <node id="cadeira_black_side">
+    <material id="not_shiny_material" />
+    <texture id="madeira_texture">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations>
+      <translation x="-3.0" y="-10.0" z="-9.0" />
+      <scale sx="5.0" sy="6.0" sz="5.0" />
+    </transformations>
+    <descendants>
+      <noderef id="pernas" />
+      <noderef id="assento" />
+      <noderef id="encosto" />
+
+    </descendants>
+  </node>
+
+
+  <node id="assento">
+    <material id="null" />
+    <texture id="null">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations>
+      <translation x="0" y="1.001" z="1" />
+      <rotation axis="x" angle="-90.0" />
+    </transformations>
+    <descendants>
+      <leaf type="rectangle" x1="0" y1="0" x2="1.0" y2="1.0" />
+    </descendants>
+  </node>
+
+
+  <node id="encosto">
+    <material id="null" />
+    <texture id="null">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations>
+      <translation x="0" y="1.0" z="0" />
+    </transformations>
+    <descendants>
+      <leaf type="rectangle" x1="0" y1="0" x2="1.0" y2="1.0" />
+    </descendants>
+  </node>
+
+  <node id="pernas">
+    <material id="null" />
+    <texture id="null">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations>
+      <translation x="0.2" y="1" z="0.2" />
+      <scale sx="0.5" sy="1" sz="0.5" />
+      <rotation axis="x" angle="90.0" />
+
+    </transformations>
+
+    <descendants>
+      <noderef id="perna1" />
+      <noderef id="perna2" />
+      <noderef id="perna3" />
+      <noderef id="perna4" />
+    </descendants>
+  </node>
+
+  <node id="perna1">
+    <material id="null" />
+    <texture id="null">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations>
+      <translation x="1.2" y="0" z="0" />
+
+    </transformations>
+    <descendants>
+      <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
+    </descendants>
+  </node>
+
+  <node id="perna2">
+    <material id="null" />
+    <texture id="null">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations>
+      <translation x="1.2" y="1.2" z="0" />
+
+
+    </transformations>
+    <descendants>
+      <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
+    </descendants>
+  </node>
+
+  <node id="perna3">
+    <material id="null" />
+    <texture id="null">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations>
+      <translation x="0" y="1.2" z="0" />
+
+
+    </transformations>
+    <descendants>
+      <leaf type="cylinder" height="1.0" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
+    </descendants>
+  </node>
+
+  <node id="perna4">
+    <material id="null" />
+    <texture id="null">
+      <amplification afs="1.0" aft="1.0" />
+    </texture>
+    <transformations></transformations>
+    <descendants>
+      <leaf type="cylinder" height="1" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="6" />
+    </descendants>
+  </node>
+
+
+</nodes>
 </lsf>

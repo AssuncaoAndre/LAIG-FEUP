@@ -65,4 +65,5 @@ display()
     this.patch2.display();
     
 }
+update(){}
 }

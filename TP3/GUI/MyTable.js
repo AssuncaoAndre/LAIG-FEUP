@@ -22,4 +22,5 @@ class MyTable extends CGFobject
         this.table.display();
         this.scene.popMatrix();
     }
+    update(){}
 }

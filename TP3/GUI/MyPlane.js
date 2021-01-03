@@ -37,4 +37,5 @@ class MyPlane extends CGFobject
     }
 
     display() { this.object.display(); }
+    update(){}
 }
