@@ -44,11 +44,15 @@ display(){
 
     this.scene.setActiveShaderSimple(this.sprite.shader);
     
+    
     this.sprite.activateCellP(this.currentCell);
+    
     this.rectangle.display();
     
+
     this.scene.setActiveShaderSimple(this.scene.defaultShader);   
     this.sprite.unbind();
+    
 } 
 
 }

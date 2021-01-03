@@ -279,7 +279,8 @@ class MyGameOrchestrator extends CGFobject {
         this.turn=getRequest("turn/");
         this.evaluation=getRequest("eval/");
         console.log("start evaluation: "+this.evaluation)
-        var split=this.evaluation.split("cp");
+        var aux=this.evaluation
+        var split=aux.split("cp");
         if(split[0]!=this.evaluation)
         {
             var split2=split[1].split(" ");
@@ -287,9 +288,23 @@ class MyGameOrchestrator extends CGFobject {
             if(this.turn=="b")
             var split2=split2*(-1);
             this.evaluation=split2;
+            return;
         }
        
-        console.log("final evaluation: "+this.evaluation)
+        split=this.evaluation.split("mate");
+        if(split[0]!=this.evaluation)
+        {
+            if(this.turn=="b")
+            {
+                console.log(split);
+                var split2=split[0].split("-");
+                if(split2[0]!=split[0])
+                this.evaluation="mate "+split2[0]+split2[1];
+                else this.evaluation="mate "+"-"+split[1][1];
+            }
+        }
+       
+        
     }
 
     reset()

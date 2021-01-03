@@ -52,7 +52,7 @@ class XMLscene extends CGFscene {
         this.setPickEnabled(true);
         this.scenes=[];
         this.scene_names=[];
-        this.current_scene="default_scene";
+        this.current_scene="Cena Default";
         this.changing_scene=0;
     }
 
@@ -155,8 +155,8 @@ class XMLscene extends CGFscene {
 
     load_scenes()
     {
-        this.scenes["default_scene"]=this.default_scene;
-        this.scene_names.push("default_scene");
+        this.scenes["Cena Default"]=this.default_scene;
+        this.scene_names.push("Cena Default");
         for (var i=0;i<this.graph.scenes.length;i++)
         {
             this.scenes[this.graph.scene_names[i]]=this.graph.scenes[i];

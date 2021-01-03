@@ -118,8 +118,9 @@
 
     </materials>
 
-    <scenes>
 
+    <scenes>
+      <scene name="Sala Cozy" file="sala_com_fogueira.xml" />
     </scenes>
 
 <animations>

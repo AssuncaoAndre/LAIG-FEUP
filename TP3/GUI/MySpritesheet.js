@@ -28,8 +28,6 @@ class MySpritesheet extends CGFobject {
 
     activateCellMN(coluna, linha) 
     {
-        if(this.sizeC==8)
-        console.log(coluna,linha);
         
 
         this.shader.setUniformsValues({ coluna: coluna});

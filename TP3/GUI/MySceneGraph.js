@@ -1579,9 +1579,9 @@ class MySceneGraph {
        if(typeof currNode.leaves[i].updateTexCoords==="function")
         currNode.leaves[i].updateTexCoords(currNode.textureAFS,currNode.textureAFT);
       }
-
       
       currNode.leaves[i].display();
+      
 
       this.scene.popMatrix();
     }
