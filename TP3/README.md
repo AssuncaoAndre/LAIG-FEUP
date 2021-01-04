@@ -16,25 +16,6 @@ Por uma questão de equidade para com os restantes colegas que estão a fazer o 
 
 Todos os objetivos propostos para o trabalho foram atingidos com sucesso.
 
-### Extensão à LSF
-
-----
-## Instalação
-
-Para correr o programa é necessário ter [node.js](https://nodejs.org/en/) instalado no computador, em conjunto com algumas packages, nomeadamente cors, express e stockfish.
-
-Num ambiente Debian/Ubuntu:
-```
-sudo apt-get install node
-npm i cors
-npm i express
-npm i stockfish
-```
-----
-## Como correr
-
-Começar por correr o servidor, abrindo o terminal na pasta server/ do trabalho e executar o comando ```node MyServer.js```.
-Estando o servidor a correr apenas é preciso abrir o proejto no browser e desfrutar da experiência.
 
 ## Issues/Problemas
 

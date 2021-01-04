@@ -4,15 +4,16 @@ class MyTable extends CGFobject
 	 * Builds a plane object 
 	 * 
 	 * @param {CGFscene} scene main scene
-	 * @param {Number} type type of the piece
-     * @param {Number} color color
+	 * @param {String} space space where the table is displayed (indoor or outdoor)
 
      * 
 	 */
-    constructor(scene)
+    constructor(scene,space)
     {
         super(scene);
+  
         this.table= new CGFOBJModel(this.scene, 'OBJ/Table.obj');
+
     }
 
     display()

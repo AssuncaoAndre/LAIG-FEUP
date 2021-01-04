@@ -49,22 +49,22 @@
   <lights>
     <!-- NOTE: this block "light" must be repeated as necessary with different "id". At least one light should be present, and a maximum of eight lights is accepted. -->
 
-<!-- 
+
    <light id="west_light">
       
       <enable value="1" />
       
-      <position x="7" y="5" z="0" w="1.0" /> 
+      <position x="7" y="20" z="0" w="1.0" /> 
       <ambient r="0" g="0" b="0" a="1.0" /> 
       <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
       <specular r="1.0" g="1.0" b="1.0" a="1.0" /> 
-    </light>  -->
+    </light>  
 
     <light id="east_light">
       <!-- light identifier -->
       <enable value="1" />
       <!-- enable/disable -->
-      <position x="-5" y="5" z="0" w="1.0" /> <!-- light position; w=1: point light; w=0: directional light -->
+      <position x="-5" y="20" z="0" w="1.0" /> <!-- light position; w=1: point light; w=0: directional light -->
       <ambient r="0" g="0" b="0" a="1.0" /> <!-- ambient component -->
       <diffuse r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- diffuse component -->
       <specular r="1.0" g="1.0" b="1.0" a="1.0" /> <!-- specular component -->
@@ -104,7 +104,7 @@
     <material id="white_piece">
       <shininess value="10" />
       <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-      <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
+      <diffuse r="0.2" g="0.8" b="0.8" a="1.0" />
       <specular r="0.3" g="0.3" b="0.3" a="1.0" />
       <emissive r="0.0" g="0.0" b="0.0" a="0.0" />
     </material>
@@ -112,7 +112,7 @@
     <material id="black_piece">
       <shininess value="10" />
       <ambient r="0.2" g="0.2" b="0.2" a="0.1" />
-      <diffuse r="0.2" g="0.2" b="0.2" a="0.1" />
+      <diffuse r="0.7" g="0.23" b="0.12" a="0.1" />
       <specular r="0.3" g="0.3" b="0.3" a="1.0" />
       <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
     </material>
@@ -136,7 +136,9 @@
 
   </materials>
 
-<scenes></scenes>
+  <scenes>
+    <scene file="sala_com_fogueira.xml" name="Sala Cozy"/>
+  </scenes>
 
 
   <animations></animations>
@@ -169,7 +171,7 @@
         descendants may be mixed, nodes and leafs -->
       <descendants>
         <noderef id="table" />
-        <noderef id="fireplace" />
+        <noderef id="wall" />
         <noderef id="floor" />
       </descendants>
 
@@ -212,22 +214,6 @@
       </descendants>
     </node>
 
-    <node id="fireplace">
-      <material id="emissive_material" />
-
-      <texture id="wall_texture">
-        <amplification afs="20" aft="20" />
-      </texture>
-
-      <transformations>
-        <translation x="-20" y="0" z="0"/> 
-        <rotation axis="y" angle="90"/>  
-      </transformations>
-      <descendants>
-        <noderef id="wall"/>
-        <noderef id="fireplace_sprite"/>
-      </descendants>
-    </node>
 
     <node id="wall">
       <material id="wood_material" />
@@ -237,6 +223,8 @@
       </texture>
 
       <transformations>
+        <translation x="-20" y="0" z="0"/> 
+        <rotation axis="y" angle="90"/>  
       </transformations>
       <descendants>
         <leaf type="rectangle" x1="-60" y1="-60" x2="60" y2="60"/>

@@ -153,6 +153,7 @@ class XMLscene extends CGFscene {
 
     }
 
+    //carrega as cenas todas e guarda-as para depois se poder mudar
     load_scenes()
     {
         this.scenes["Cena Default"]=this.default_scene;
@@ -162,10 +163,10 @@ class XMLscene extends CGFscene {
             this.scenes[this.graph.scene_names[i]]=this.graph.scenes[i];
             this.scene_names.push(this.graph.scene_names[i]);
         }
-        console.log(this.scene_names,this.scenes);
 
     }
 
+    //muda a cena, utilizando um novo scene graph
     change_scene(scene)
     {
         this.changing_scene=1;
@@ -174,6 +175,7 @@ class XMLscene extends CGFscene {
         this.orchestrator.on_scene_change();
     }
 
+    //inicializa as câmaras
     initCameras() {
 
         this.cameras=[];
@@ -190,7 +192,6 @@ class XMLscene extends CGFscene {
                 
             }
         }
-        console.log(this.cameras[this.defaultCamera]);
         this.are_cameras_inited=1;
     }
 
@@ -276,19 +277,23 @@ class XMLscene extends CGFscene {
         this.orchestrator.update(t);
     }
 
+    //inicia a troca de jogador
     onWhitePlayerChanged(v) {
         this.orchestrator.setWhitePlayer(v);
     }
 
+    //inicia a troca de jogador
     onBlackPlayerChanged(v) {
         this.orchestrator.setBlackPlayer(v);
     }
 
+    //chama o reset do orchestrator
     reset()
     {
         this.orchestrator.reset();
     }
 
+    //chama a função de filme do orchestrator se houver jogadas para mostrar
     movie()
     {
         if(this.orchestrator.move_stack.length==0)
@@ -297,11 +302,15 @@ class XMLscene extends CGFscene {
         
     }
 
+    //chama a função de undo do orchestrator
     undo()
     {
         this.orchestrator.undo();
     }
 
+    //inicia o processo de mudança de câmara. Código semelhante ao movimento de uma peça
+    //Utiliza a classe Computed Animation para guardar as transformações
+    //Utiliza uma câmara temporária que faz o percurso entre duas câmaras
     change_camera()
     {
         if(this.changing_scene==0)
@@ -352,6 +361,7 @@ class XMLscene extends CGFscene {
         }
     }
 
+    //dá update à câmara temporária em movimento par arealizar a próxima transformação
     update_moving_camera()
     {
         if(this.camera_animation.current>=this.camera_animation.trans_vec.length-1)
@@ -381,16 +391,11 @@ class XMLscene extends CGFscene {
         }
     }
 
+    //retorna a distância entre dois pontos tridimensionais
     get_distance(from,to)
     {
         return Math.sqrt((from[0]-to[0])*(from[0]-to[0])+(from[1]-to[1])*(from[1]-to[1])+(from[2]-to[2])*(from[2]-to[2]))
     }
 
-    quadratic(distance,x)
-    {
-        var f=(distance/2);
-        var d=1/(f*f); //altura/(f*f)
-        return (-d*(x-(distance/2))*(x-(distance/2))+1); // no fim é + altura
-    }
 
 }

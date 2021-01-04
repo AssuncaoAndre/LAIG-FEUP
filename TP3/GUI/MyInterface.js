@@ -52,16 +52,17 @@ class MyInterface extends CGFinterface {
             i++;
         }
         
-        this.promotion_interface=this.gui.add(this.scene.orchestrator,'promotion',this.scene.orchestrator.promotions).name('Promotion');
-        this.evaluation_interface=this.gui.add(this.scene.orchestrator,'evaluation_on',this.scene.orchestrator.evaluation_on).name('Evaluation');
+        this.cameras_controller=this.gui.add(this.scene,'defaultCamera',this.scene.cameras_name).name('Cameras');
         this.scenes_interface=this.gui.add(this.scene, "current_scene", this.scene.scene_names).name("Scene").onChange(this.scene.change_scene.bind(this.scene));
+        
+        this.white_player_interface=this.gui.add(this.scene.orchestrator,'white_player',this.scene.orchestrator.players).name('White Player').onChange(this.scene.onWhitePlayerChanged.bind(this.scene));
+        this.black_player_interface=this.gui.add(this.scene.orchestrator,'black_player',this.scene.orchestrator.players).name('Black Player').onChange(this.scene.onBlackPlayerChanged.bind(this.scene));
+        this.promotion_interface=this.gui.add(this.scene.orchestrator,'promotion',this.scene.orchestrator.promotions).name('Promotion');
+        this.time_interface=this.gui.add(this.scene.orchestrator,'time_per_play',10,600).name('Time Per Play').step(1);
+        
         this.reset_interface=this.gui.add(this.scene,"reset").name("Reset");
         this.movie_interface=this.gui.add(this.scene,"movie").name("Movie");
         this.undo_interface=this.gui.add(this.scene,"undo").name("Undo");
-
-        this.white_player_interface=this.gui.add(this.scene.orchestrator,'white_player',this.scene.orchestrator.players).name('White Player').onChange(this.scene.onWhitePlayerChanged.bind(this.scene));
-        this.black_player_interface=this.gui.add(this.scene.orchestrator,'black_player',this.scene.orchestrator.players).name('Black Player').onChange(this.scene.onBlackPlayerChanged.bind(this.scene));
-        this.cameras_controller=this.gui.add(this.scene,'defaultCamera',this.scene.cameras_name).name('Cameras');
         this.scene.changing_scene=0;
     }
 

@@ -143,7 +143,7 @@ class MyGameOrchestrator extends CGFobject {
         if(this.time<=0 )
         {
             this.time=0;
-            if(yhis.game_over==0)
+            if(this.game_over==0)
             alert(getRequest("turn")=="w"?"Black wins by time":"White wins by time");
             this.game_over=1;
         }
@@ -210,18 +210,14 @@ class MyGameOrchestrator extends CGFobject {
         {
             var level=this.white_player==this.bot1?'1':this.white_player==this.bot2?'2':this.white_player==this.bot3?'3':'1';
             var move_bot=getRequest("computer_play/"+level);
-            console.log("white bot");
 
         }
         else 
         {
             var level=this.black_player==this.bot1?'1':this.black_player==this.bot2?'2':this.black_player==this.bot3?'3':'1';
             var move_bot=getRequest("computer_play/"+level);
-            console.log("black bot");
         }
-        console.log(move_bot);
         this.move_flags=getRequest("move_bot/"+move_bot);
-        console.log(this.move_flags);
         this.move_stack.push(this.move_flags);
         this.gameboard.move(this.move_flags.from, this.move_flags.to);
         
@@ -263,12 +259,10 @@ class MyGameOrchestrator extends CGFobject {
             this.turn=getRequest("turn");
             if(this.turn=="b"&&this.black_player!="Human")
             {
-                console.log(this.turn,this.black_player);
                 this.bot_play();
             }
             else if(this.turn=="w"&&this.white_player!="Human")
             {
-                console.log(this.turn,this.white_player);
                 this.bot_play();
             }
         }
@@ -278,7 +272,6 @@ class MyGameOrchestrator extends CGFobject {
     {
         this.turn=getRequest("turn/");
         this.evaluation=getRequest("eval/");
-        console.log("start evaluation: "+this.evaluation)
         var aux=this.evaluation
         var split=aux.split("cp");
         if(split[0]!=this.evaluation)
@@ -296,7 +289,6 @@ class MyGameOrchestrator extends CGFobject {
         {
             if(this.turn=="b")
             {
-                console.log(split);
                 var split2=split[0].split("-");
                 if(split2[0]!=split[0])
                 this.evaluation="mate "+split2[0]+split2[1];
@@ -341,6 +333,7 @@ class MyGameOrchestrator extends CGFobject {
         this.stopped_moving=1;
     }
 
+    //prepara e inicia o filme
     begin_movie()
     {
         this.movie=1;
@@ -350,6 +343,7 @@ class MyGameOrchestrator extends CGFobject {
         this.movie_loop();
     }
 
+    //ciclo responsável pelo filme
     movie_loop()
     {
         if(this.current_movie_play>this.move_stack.length-1)
@@ -359,18 +353,19 @@ class MyGameOrchestrator extends CGFobject {
             
         }
         else{this.move_flags=this.move_stack[this.current_movie_play];
-            console.log(this.current_movie_play)
         getRequest("move/"+this.move_flags.from+"/"+this.move_flags.to);
         this.current_movie_play++;
         this.gameboard.move(this.move_flags.from, this.move_flags.to);}
     }
 
+    //quando muda de cena guarda o estado de jogo
     on_scene_change()
     {
         this.matrix=this.gameboard.matrix;
 
     }
 
+    //prepara e sinaliza o manage_play para realizar o undo quando for possível
     undo()
     {
         if(this.move_stack.length==0)
@@ -380,6 +375,7 @@ class MyGameOrchestrator extends CGFobject {
         this.manage_play();
     }
 
+    //efetua o undo
     async effective_undo()
     {
         this.undo_move=this.move_stack.pop();
@@ -416,13 +412,14 @@ class MyGameOrchestrator extends CGFobject {
     
 }
 
+//realiza um pedido HTTP ao servidor
 function getRequest(requestString, onSuccess, onError)
     {
         var requestPort =  8081;
         request = new XMLHttpRequest();
         request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, false);
 
-        request.onload = onSuccess || function(data){console.log("Request successful: "+requestString)};
+        request.onload = onSuccess || function(data){/* console.log("Request successful: "+requestString) */};
         request.onerror = onError || function(){console.log("Error waiting for response");};
         
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -435,7 +432,7 @@ function getRequest(requestString, onSuccess, onError)
     }
 
 
-
+    //função utilitária para dar saber se um dado objeto está no formato json
     function isJson(str) {
         try {
             JSON.parse(str);
@@ -445,6 +442,7 @@ function getRequest(requestString, onSuccess, onError)
         return true;
     }
 
+    //função utilitária de sleep
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
      }

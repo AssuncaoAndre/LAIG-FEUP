@@ -3,11 +3,11 @@ class MyGameBoard extends CGFobject {
      * Builds a plane object 
      * 
      * @param {CGFscene} scene main scene
-     * @param {Number} npointsU number of divisions in U
-     * @param {Number} npointsV number of divisions in V
-     * @param {Number} npartsU number of divisions in U
-     * @param {Number} npartsV number of divisions in V
-     * @param {Number} controlPoints number of divisions in V
+     * @param {CGFMaterial} black_piece material of black pieces
+     * @param {CGFMaterial} white_piece material of white pieces
+     * @param {CGFTexture} black_tile texture of black tiles
+     * @param {CGFTexture} white_tile texture of white tiles
+     * @param {CGFMaterial} default_material Board material
      * 
      */
     constructor(scene,black_piece,white_piece,black_tile,white_tile,default_material) {
@@ -37,12 +37,13 @@ class MyGameBoard extends CGFobject {
         this.selected=new CGFtexture(this.scene, "./scenes/images/selected.png");
         this.selected.bind(1);
 
-        this.is_castling=0;
+        this.is_castling=0; //variável para saber se está a ser feito roque
         this.current_move=null;
         this.matrix = [];
 
 
 
+        //forma o estado de jogo inicial
 
         for (var i = 0; i < 4; i++) { 
             var mat = []; 
@@ -90,7 +91,22 @@ class MyGameBoard extends CGFobject {
             this.matrix[7][7].piece=new MyPiece(this.scene,"r",this.black_piece,"b"); 
          }
         else {
+
             this.matrix=this.scene.orchestrator.matrix;
+
+            for(var i=0;i<8;i++)
+            {
+                for(var j=0;j<8;j++)
+                {
+                    if(this.matrix[i][j].piece!=null)
+                    {
+                        if(this.matrix[i][j].piece.color=="w")
+                        this.matrix[i][j].piece.material=this.white_piece;
+
+                        else this.matrix[i][j].piece.material=this.black_piece;
+                    }
+                }
+            }
         }
         
     }
@@ -116,6 +132,10 @@ class MyGameBoard extends CGFobject {
             this.scene.pushMatrix();
             for (var j = 0; j < 8; j++) {
                
+                //this.scene.orchestrator.is_moving==null-> nenhuma peça se está a mover
+                //!this.scene.orchestrator.is_bot_playing -> o bot não está a pensar (pode ser importante para bots com pesquisas mais profundas)
+                //!this.scene.orchestrator.game_over==1 -> jogo ainda não acabou
+                //!this.scene.orchestrator.movie==1 -> não está a ser executado o filme do jogo
                 if(this.scene.orchestrator.is_moving==null && !this.scene.orchestrator.is_bot_playing
                    && !this.scene.orchestrator.game_over==1 && !this.scene.orchestrator.movie==1)
                 this.scene.registerForPick(i*8+j, this.matrix[i][j]);
@@ -131,6 +151,7 @@ class MyGameBoard extends CGFobject {
 
     }
 
+    //muda a variável is_selected dos movimentos possíveis para mais tarde mudar as texturas
     selectPossibleMoves(possibleMoves){
          if(possibleMoves==null)
         return; 
@@ -142,6 +163,7 @@ class MyGameBoard extends CGFobject {
         } 
     }
 
+    //muda a variável is_selected dos movimentos possíveis para mais tarde mudar as texturas, tornando-as todas a 0
     resetSelection(){
 
        
@@ -154,16 +176,17 @@ class MyGameBoard extends CGFobject {
        } 
    }
 
+   //transforma jogadas (p.e "e4") em coordenadas do tabuleiro
     moveToCoords(move)
     {
 
-        //console.log(move);
         var coords=[];
             coords.push(move[1]-1);
             coords.push(move[0].charCodeAt(0)-"a".charCodeAt(0));
         return coords;
     }
 
+    //trata de traduzir os movimentos para coordenadas e chama a função de movimento
     move(from_move, to_move)
     {
         var from_coords=this.moveToCoords(from_move);
@@ -171,15 +194,17 @@ class MyGameBoard extends CGFobject {
         this.effective_move(from_coords,to_coords);  
     }
 
+    //preenche a classe Computed Animation com uma função quadrática para um movimento em arco
     effective_move(from_coords,to_coords)
     {
         
         var aux_to_coords=to_coords;
         this.scene.orchestrator.is_moving=[from_coords[0],from_coords[1],to_coords[0],to_coords[1],null,null];
         
+        //this.scene.orchestrator.move_flags.flags=="e" -> captura en passant. É uma regra especial
+        //this.scene.orchestrator.is_undo==0 -> não é uma jogada de undo, pois nesse caso específico a animação não segue um padrão
         if(this.scene.orchestrator.move_flags.flags=="e" && this.scene.orchestrator.is_undo==0)
         {
-            console.log("here")
             if(this.scene.orchestrator.move_flags.color=="w")
             {
                 aux_to_coords[0]=aux_to_coords[0]-1;
@@ -189,11 +214,9 @@ class MyGameBoard extends CGFobject {
         }
         if(this.scene.orchestrator.undo_capture!=2)
         {
-            console.log("here")
+
             if(this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece!=null )
             {
-                console.log(aux_to_coords)
-                console.log("here")
                 var auxiliar_coords=this.get_empty_auxiliar();
                 this.scene.orchestrator.is_moving[4]=auxiliar_coords[0];
                 this.scene.orchestrator.is_moving[5]=auxiliar_coords[1];
@@ -207,7 +230,6 @@ class MyGameBoard extends CGFobject {
             }
             else
             {
-                console.log("here")
                 aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
                 aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
                 
@@ -216,11 +238,9 @@ class MyGameBoard extends CGFobject {
                 var distance_x = (aux_to_coords[0]-from_coords[0])/2;
                 var distance_y = (aux_to_coords[1]-from_coords[1])/2;
                 var divisions=100+distance*50;
-                console.log(aux_to_coords)
             }
         }
         else{
-            console.log("POR FAVOR NÃO")
             aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
             aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
             
@@ -228,7 +248,6 @@ class MyGameBoard extends CGFobject {
             var distance=this.get_distance(from_coords,to_coords)/2;
             var distance_x = (aux_to_coords[0]-from_coords[1])/2;
             var distance_y = (aux_to_coords[1]-from_coords[0])/2;
-            console.log(distance_x,distance_y);
             var divisions=60+distance*60;
         }
 
@@ -244,7 +263,7 @@ class MyGameBoard extends CGFobject {
 
         var total_increment=0;
         var previous_height=0;
-        
+        //computa todas as translações e guarda na classe Computed Animation para depois serem mostradas em sequência
         for(var i=0;i<divisions;i++)
         {
             total_increment=total_increment+increment;
@@ -255,7 +274,6 @@ class MyGameBoard extends CGFobject {
 
         if(this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece!=null )
         {
-            console.log("here")
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.animation=animation;
         }
 
@@ -263,19 +281,17 @@ class MyGameBoard extends CGFobject {
         {
             if(this.scene.orchestrator.undo_capture!=2)
             {
-                console.log("here")
-                //console.log(from_coords[0],from_coords[1])
                 this.matrix[from_coords[0]][from_coords[1]].piece.animation=animation;
             }
             else 
             {
-                console.log("here")
                 this.auxiliar_board.matrix[from_coords[0]-12][from_coords[1]].piece.animation=animation;
             }
             }
         
     }
 
+    //retorna a primeira casa vazia do tabuleiro auxiliar
     get_empty_auxiliar()
     {
         for (var i=0;i<4;i++)
@@ -294,6 +310,7 @@ class MyGameBoard extends CGFobject {
         }
     }
 
+    //função quadrática. Dado um x e uma distância total calcula a altura
     quadratic(distance,x)
     {
         var f=(distance/2);
@@ -301,20 +318,22 @@ class MyGameBoard extends CGFobject {
         return (-d*(x-(distance/2))*(x-(distance/2))+1); // no fim é + altura
     }
 
+    //retorna a distância entre dois pontos
     get_distance(from,to)
     {
         return Math.sqrt((from[0]-to[0])*(from[0]-to[0])+(from[1]-to[1])*(from[1]-to[1]))
     }
 
 
+    //retorna 1 se o quadrado estiver selecionado e 0 se não estiver
     is_tile_selected(move)
     {
-        //console.log(move);
 
         var tile_coords=this.moveToCoords(move);
         return(this.matrix[tile_coords[0]][tile_coords[1]].is_selected)
         
     }
+    //promove uma peça
     async promote(to_coords,color)
     {
         
@@ -339,9 +358,9 @@ class MyGameBoard extends CGFobject {
         //this.is_promoted=1;
     }
 
+    //acaba o movimento da peça, alterando o lugar das peças, as nimações e chamando as funções de verificar o fim do jogo e coordenar o resto do jogo
     async stop_move()
     {
-        console.log("at least here")
         var aux_to_coords=[];
         aux_to_coords[0]=this.scene.orchestrator.is_moving[2];
         aux_to_coords[1]=this.scene.orchestrator.is_moving[3];
@@ -357,9 +376,9 @@ class MyGameBoard extends CGFobject {
             else aux_to_coords[0]=aux_to_coords[0]+1;
         }
 
+        //this.scene.orchestrator.is_moving[4]!=null -> foi efetuada uma captura, logo após a primeira peça acabar de se mover começa a seguinte
         if(this.scene.orchestrator.is_moving[4]!=null)
         {
-            console.log("here")
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece.animation=null;
             this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[4]][this.scene.orchestrator.is_moving[5]].piece=
             this.matrix[aux_to_coords[0]][aux_to_coords[1]].piece;
@@ -375,7 +394,6 @@ class MyGameBoard extends CGFobject {
         {
             if(this.scene.orchestrator.undo_capture<2)
             {
-                console.log("here")
                 this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece.animation=null;
                 this.matrix[this.scene.orchestrator.is_moving[2]][this.scene.orchestrator.is_moving[3]].piece=
                 this.matrix[this.scene.orchestrator.is_moving[0]][this.scene.orchestrator.is_moving[1]].piece;
@@ -385,7 +403,6 @@ class MyGameBoard extends CGFobject {
             }
             else 
             {
-                console.log("here");
                 this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[0]-12][this.scene.orchestrator.is_moving[1]].piece.animation=null;
                 this.matrix[this.scene.orchestrator.is_moving[2]][this.scene.orchestrator.is_moving[3]].piece=
                 this.auxiliar_board.matrix[this.scene.orchestrator.is_moving[0]-12][this.scene.orchestrator.is_moving[1]].piece;
@@ -397,14 +414,16 @@ class MyGameBoard extends CGFobject {
                 await this.promote([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]],this.scene.orchestrator.is_promoting); 
             }
 
+            //this.scene.orchestrator.move_flags.flags=="k" -> roque pequeno
             if(this.scene.orchestrator.move_flags.flags=="k" && this.is_castling==0 && this.scene.orchestrator.is_undo==0)
             {
-                console.log("good castle")
                 
                 this.is_castling=1;
                 
                 this.effective_move([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1],[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]+1]);
             }
+
+            //this.scene.orchestrator.move_flags.flags=="q" -> roque grande
             else if(this.scene.orchestrator.move_flags.flags=="q" && this.is_castling==0 && this.scene.orchestrator.is_undo==0)
             {
                
@@ -415,14 +434,12 @@ class MyGameBoard extends CGFobject {
 
             else if(this.scene.orchestrator.undo_move.flags=="k"&& this.is_castling==0)
             {
-                console.log("bad castle")
                 this.is_castling=1;
                 this.effective_move([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]+1],[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]+1]);
             }
             else if(this.scene.orchestrator.undo_move.flags=="q"&& this.is_castling==0)
             {
                 this.is_castling=1;
-                console.log(this.scene.orchestrator.is_moving);
                 this.effective_move([this.scene.orchestrator.is_moving[2],this.scene.orchestrator.is_moving[3]-1],[this.scene.orchestrator.is_moving[0],this.scene.orchestrator.is_moving[1]-2]);
             }
 
@@ -450,6 +467,7 @@ class MyGameBoard extends CGFobject {
         }
 
     }
+    //retrocede uma promoção
      undo_promotion(move,color)
     {
         var coords=this.moveToCoords(move);
@@ -463,15 +481,16 @@ class MyGameBoard extends CGFobject {
         
     }
 
+    //retrocede uma captura
     undo_capture(to_coords)
     {
         
         var auxiliar_coords=this.get_last_capture();
-        console.log(auxiliar_coords);
         auxiliar_coords[0]=12-auxiliar_coords[0];
         this.effective_move(auxiliar_coords,to_coords);
     }
 
+    //retorna a posição da última captura
     get_last_capture()
     {
         for (var i=3;i>=0;i--)
@@ -491,6 +510,7 @@ class MyGameBoard extends CGFobject {
         }
     }
 
+    //faz reset do tabuleiro
     reset()
     {
         this.auxiliar_board.reset();

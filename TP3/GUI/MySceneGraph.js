@@ -1368,8 +1368,6 @@ class MySceneGraph {
               var white_piece=grandChildren[descendantsIndex].children[j].getAttribute("white_piece");
               var black_tile=grandChildren[descendantsIndex].children[j].getAttribute("black_tile");
               var white_tile=grandChildren[descendantsIndex].children[j].getAttribute("white_tile");
-  
-              console.log(this.materials[black_piece]);
    
               this.nodes[nodeID].leaves.push(new MyGameBoard(this.scene,this.materials[black_piece],
                 this.materials[white_piece],this.textures[black_tile],this.textures[white_tile],this.materials[this.nodes[nodeID].materialID]));
@@ -1383,6 +1381,7 @@ class MySceneGraph {
 
           else if(type=="table")
           {
+            
             this.nodes[nodeID].leaves.push(new MyTable(this.scene));
           }
 

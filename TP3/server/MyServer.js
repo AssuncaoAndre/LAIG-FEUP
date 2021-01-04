@@ -9,7 +9,7 @@ var got_uci;
 var started_thinking;
 var strength_vec=[3,20];
 var strength;
-var play=0;
+
 
 global.flag=0;
 
@@ -153,11 +153,7 @@ engine.onmessage = function (line)
             //send_to_engine("eval");
             //send_to_engine("d");
         }
-        if(global.play==1)
-        {
-            console.log("depth 20")
-            send_to_engine("go depth 20");
-        }
+
         send_to_engine("go");
     } else if (!started_thinking && line.indexOf("info depth") > -1) {
         //console.log("Thinking...");
