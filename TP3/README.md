@@ -20,3 +20,6 @@ Todos os objetivos propostos para o trabalho foram atingidos com sucesso.
 ## Issues/Problemas
 
 - No know issue
+
+## Foto 
+![Foto of the game](https://github.com/fuscati/LAIG-FEUP/raw/master/TP3/3D%20chess%20screenshot.png)
