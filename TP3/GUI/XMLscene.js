@@ -92,7 +92,7 @@ class XMLscene extends CGFscene {
        
         var i = 0;
         // Lights index.
-
+        
         // Reads the lights from the scene graph.
         for (var key in this.graph.lights) {
             if (i >= 8)
