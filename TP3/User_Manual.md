@@ -17,7 +17,7 @@ npm i stockfish
 ## Como correr
 
 Começar por correr o servidor, abrindo o terminal na pasta server/ do trabalho e executar o comando ```node MyServer.js```.
-Estando o servidor a correr apenas é preciso abrir o proejto no browser e desfrutar da experiência.
+Estando o servidor a correr apenas é preciso abrir o projeto no browser com a extensão ```Web server for Chrome``` e desfrutar da experiência.
 
 ----
 
